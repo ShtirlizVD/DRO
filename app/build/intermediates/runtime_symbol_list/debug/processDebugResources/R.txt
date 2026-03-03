@@ -3075,7 +3075,9 @@ int drawable btn_radio_off_mtrl 0x7f08007d
 int drawable btn_radio_off_to_on_mtrl_animation 0x7f08007e
 int drawable btn_radio_on_mtrl 0x7f08007f
 int drawable btn_radio_on_to_off_mtrl_animation 0x7f080080
+int drawable button_cancel 0x7f0800e3
 int drawable button_menu 0x7f080081
+int drawable button_ok 0x7f0800e4
 int drawable button_tool 0x7f080082
 int drawable button_zero 0x7f080083
 int drawable design_fab_background 0x7f080084
@@ -3083,6 +3085,7 @@ int drawable design_ic_visibility 0x7f080085
 int drawable design_ic_visibility_off 0x7f080086
 int drawable design_password_eye 0x7f080087
 int drawable design_snackbar_background 0x7f080088
+int drawable dialog_background 0x7f0800e5
 int drawable ic_arrow_back_black_24 0x7f080089
 int drawable ic_arrow_down_24dp 0x7f08008a
 int drawable ic_clear_black_24 0x7f08008b
@@ -3098,6 +3101,7 @@ int drawable ic_mtrl_chip_checked_black 0x7f080094
 int drawable ic_mtrl_chip_checked_circle 0x7f080095
 int drawable ic_mtrl_chip_close_circle 0x7f080096
 int drawable ic_search_black_24 0x7f080097
+int drawable input_field_background 0x7f0800e6
 int drawable m3_avd_hide_password 0x7f080098
 int drawable m3_avd_show_password 0x7f080099
 int drawable m3_bottom_sheet_drag_handle 0x7f08009a
@@ -3275,11 +3279,14 @@ int id bounceStart 0x7f090062
 int id btn_add_marker 0x7f090063
 int id btn_angle 0x7f090064
 int id btn_back 0x7f090065
+int id btn_cancel 0x7f090240
 int id btn_close 0x7f090066
 int id btn_connect 0x7f090067
 int id btn_current_pos 0x7f090068
 int id btn_delete 0x7f090069
 int id btn_markers 0x7f09006a
+int id btn_ok 0x7f090241
+int id btn_preset_0 0x7f090242
 int id btn_reset 0x7f09006b
 int id btn_set_d 0x7f09006c
 int id btn_set_end 0x7f09006d
@@ -3345,6 +3352,7 @@ int id design_menu_item_action_area_stub 0x7f0900a8
 int id design_menu_item_text 0x7f0900a9
 int id design_navigation_view 0x7f0900aa
 int id dialog_button 0x7f0900ab
+int id dialog_title 0x7f090247
 int id dimensions 0x7f0900ac
 int id direct 0x7f0900ad
 int id disableHome 0x7f0900ae
@@ -3379,6 +3387,7 @@ int id et_offset_d 0x7f0900ca
 int id et_offset_l 0x7f0900cb
 int id et_offset_x 0x7f0900cc
 int id et_offset_z 0x7f0900cd
+int id et_value 0x7f090248
 int id exitUntilCollapsed 0x7f0900ce
 int id expand_activities_button 0x7f0900cf
 int id expanded_menu 0x7f0900d0
@@ -3705,6 +3714,7 @@ int id transition_transform 0x7f090210
 int id triangle 0x7f090211
 int id tv_angle 0x7f090212
 int id tv_axis 0x7f090213
+int id tv_current_value 0x7f090249
 int id tv_current_x 0x7f090214
 int id tv_current_z 0x7f090215
 int id tv_distance 0x7f090216
@@ -3887,6 +3897,7 @@ int layout design_navigation_menu_item 0x7f0c002e
 int layout design_text_input_end_icon 0x7f0c002f
 int layout design_text_input_start_icon 0x7f0c0030
 int layout dialog_device_list 0x7f0c0031
+int layout dialog_input_value 0x7f0c0085
 int layout dialog_marker 0x7f0c0032
 int layout dialog_tool_offset 0x7f0c0033
 int layout expand_button 0x7f0c0034
@@ -4543,6 +4554,7 @@ int style PreferenceSummaryTextStyle 0x7f100163
 int style PreferenceThemeOverlay 0x7f100164
 int style PreferenceThemeOverlay_v14 0x7f100165
 int style PreferenceThemeOverlay_v14_Material 0x7f100166
+int style PresetButton 0x7f100482
 int style RtlOverlay_DialogWindowTitle_AppCompat 0x7f100167
 int style RtlOverlay_Widget_AppCompat_ActionBar_TitleItem 0x7f100168
 int style RtlOverlay_Widget_AppCompat_DialogTitle_Icon 0x7f100169
