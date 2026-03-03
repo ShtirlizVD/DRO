@@ -13,26 +13,27 @@
         <item name="android:windowBackground">@color/bg_dark</item>
     </style>
 
-    <!-- Coordinate display styles -->
+    <!-- Coordinate display styles - OPTIMIZED FOR DIGMA PLANE 9.7 3G (1024x768) -->
     <style name="CoordinateLabel">
-        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_width">70dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">36sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- МАКСИМАЛЬНЫЙ РАЗМЕР КООРДИНАТ для планшета -->
     <style name="CoordinateValue">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">82sp</item>
+        <item name="android:textSize">96sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">monospace</item>
         <item name="android:shadowColor">@color/black</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">3</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+        <item name="android:shadowRadius">4</item>
     </style>
 
     <style name="CoordinateMode">
@@ -43,18 +44,20 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- УВЕЛИЧЕННЫЕ КНОПКИ ОБНУЛЕНИЯ для планшета -->
     <style name="ZeroButton">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">60dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">90dp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_zero</item>
     </style>
 
+    <!-- УВЕЛИЧЕННЫЕ КНОПКИ ИНСТРУМЕНТОВ для планшета -->
     <style name="ToolButton">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">70dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_tool</item>
     </style>
