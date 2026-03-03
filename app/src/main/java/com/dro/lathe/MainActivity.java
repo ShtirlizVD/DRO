@@ -430,9 +430,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     // Диалог ввода с кнопкой 0
     private void showInputDialog(String title, double currentValue, InputCallback callback) {
-        Dialog dialog = new Dialog(this);
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.dialog_input_value);
         
+        // Прозрачный фон окна - убирает голубую полосу!
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         
         TextView tvTitle = dialog.findViewById(R.id.dialog_title);

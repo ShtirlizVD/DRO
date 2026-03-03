@@ -14,10 +14,10 @@
     <color name="bg_darker">#FF0D0D0D</color>
     
     <!-- Coordinate colors (default) -->
-    <color name="coord_x">#FF00FF00</color>  <!-- Green -->
-    <color name="coord_d">#FF00BFFF</color>  <!-- Blue -->
-    <color name="coord_z">#FFFFA500</color>  <!-- Orange -->
-    <color name="coord_l">#FFAA00FF</color>  <!-- Purple -->
+    <color name="coord_x">#FF00FF00</color>
+    <color name="coord_d">#FF00BFFF</color>
+    <color name="coord_z">#FFFFA500</color>
+    <color name="coord_l">#FFAA00FF</color>
     
     <!-- UI colors -->
     <color name="button_bg">#FF2D2D2D</color>
@@ -26,6 +26,7 @@
     <color name="text_dim">#FF808080</color>
     <color name="text_bright">#FFFFFFFF</color>
     <color name="yellow">#FFFFFF00</color>
+    <color name="cyan">#FF00BFFF</color>
     <color name="tool_selected">#FF00AA00</color>
     
     <!-- Status -->
