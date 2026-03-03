@@ -39,7 +39,7 @@
         android:inputType="numberDecimal|numberSigned"
         android:text=""
         android:textColor="#E82B07"
-        android:textSize="82dp"
+        android:textSize="82sp"
         android:textStyle="bold"
         android:gravity="center"
         android:fontFamily="monospace"
