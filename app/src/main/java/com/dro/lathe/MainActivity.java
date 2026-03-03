@@ -414,22 +414,29 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
+    // ИЗМЕНЕНО: Поле ввода теперь пустое, текущее значение показывается в hint
     private void showInputDialog(String title, double currentValue, InputCallback callback) {
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        input.setText(String.format(Locale.US, "%.3f", currentValue));
-        input.setTextSize(24);
-        input.setGravity(android.view.Gravity.RIGHT);
-        input.setPadding(20, 20, 20, 20);
+        input.setText(""); // Пустое поле для удобства ввода
+        input.setHint("Текущее: " + String.format(Locale.US, "%.3f", currentValue));
+        input.setTextSize(32); // Увеличенный шрифт для планшета
+        input.setGravity(android.view.Gravity.CENTER);
+        input.setPadding(30, 30, 30, 30);
+        input.setTextColor(0xFFFFFFFF);
+        input.setHintTextColor(0xFF808080);
 
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setView(input)
                 .setPositiveButton("OK", (dialog, which) -> {
-                    try {
-                        double value = Double.parseDouble(input.getText().toString());
-                        callback.onValue(value);
-                    } catch (NumberFormatException ignored) {}
+                    String text = input.getText().toString().trim();
+                    if (!text.isEmpty()) {
+                        try {
+                            double value = Double.parseDouble(text);
+                            callback.onValue(value);
+                        } catch (NumberFormatException ignored) {}
+                    }
                 })
                 .setNegativeButton("Отмена", null)
                 .show();
