@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/dialog_background"
-    android:padding="20dp">
+    android:padding="24dp"
+    android:gravity="center">
 
     <!-- Заголовок -->
     <TextView
@@ -12,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Диаметр"
-        android:textColor="@color/text_bright"
-        android:textSize="24sp"
+        android:textColor="#FFFFFFFF"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:gravity="center"
         android:paddingBottom="8dp" />
@@ -24,80 +25,73 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Было: 000.000"
-        android:textColor="@color/text_dim"
-        android:textSize="16sp"
+        android:textColor="#FF808080"
+        android:textSize="18sp"
         android:gravity="center"
-        android:paddingBottom="10dp" />
+        android:paddingBottom="12dp" />
 
-    <!-- Поле ввода + кнопка 0 -->
+    <!-- Поле ввода - БОЛЬШОЕ 120dp высота, шрифт 72sp -->
+    <EditText
+        android:id="@+id/et_value"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:inputType="numberDecimal|numberSigned"
+        android:text=""
+        android:textColor="#FFFFFFFF"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:fontFamily="monospace"
+        android:includeFontPadding="false"
+        android:background="@drawable/input_field_background"
+        android:padding="0dp"
+        android:hint="0.000"
+        android:textColorHint="#FF505050"
+        android:selectAllOnFocus="true"
+        android:maxLines="1" />
+
+    <!-- Кнопки: Отмена - ZERO - OK -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <!-- Поле ввода -->
-        <EditText
-            android:id="@+id/et_value"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:inputType="numberDecimal|numberSigned"
-            android:text=""
-            android:textColor="@color/text_bright"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:fontFamily="monospace"
-            android:includeFontPadding="false"
-            android:background="@drawable/input_field_background"
-            android:padding="0dp"
-            android:hint="0.000"
-            android:textColorHint="#FF505050"
-            android:selectAllOnFocus="true" />
-
-        <!-- Кнопка 0 -->
-        <Button
-            android:id="@+id/btn_preset_0"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="10dp"
-            android:text="0"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/yellow"
-            android:background="@drawable/button_yellow" />
-    </LinearLayout>
-
-    <!-- Кнопки ОК и Отмена -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="20dp"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
             android:text="Отмена"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/text_dim"
+            android:textColor="#FF808080"
             android:background="@drawable/button_cancel" />
+
+        <!-- Кнопка ZERO посередине -->
+        <Button
+            android:id="@+id/btn_preset_0"
+            android:layout_width="100dp"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="6dp"
+            android:text="ZERO"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF00"
+            android:background="@drawable/button_yellow" />
 
         <Button
             android:id="@+id/btn_ok"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
             android:layout_marginStart="6dp"
             android:text="OK"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/text_bright"
+            android:textColor="#FFFFFFFF"
             android:background="@drawable/button_ok" />
     </LinearLayout>
 
