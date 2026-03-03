@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tv_thread_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="M10"
+        android:textColor="@color/text_bright"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_thread_pitch"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="1.500"
+        android:textColor="@color/coord_x"
+        android:textSize="14sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_thread_depth"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="0.920"
+        android:textColor="@color/coord_z"
+        android:textSize="14sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_thread_passes"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="8"
+        android:textColor="@color/coord_d"
+        android:textSize="14sp"
+        android:gravity="center" />
+
+</LinearLayout>

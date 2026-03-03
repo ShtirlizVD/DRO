@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DRO Lathe</string>
+    <string name="settings">Настройки</string>
+    <string name="thread_helper">Помощник резьбы</string>
+    <string name="angle_measurement">Измерение углов</string>
+    <string name="marker_list">Засечки</string>
+    
+    <!-- Coordinates -->
+    <string name="coord_x">X</string>
+    <string name="coord_d">D</string>
+    <string name="coord_z">Z</string>
+    <string name="coord_l">L</string>
+    
+    <!-- Tools -->
+    <string name="tool">Инструмент</string>
+    <string name="tool_1">Инстр. 1</string>
+    <string name="tool_2">Инстр. 2</string>
+    <string name="tool_3">Инстр. 3</string>
+    <string name="tool_4">Инстр. 4</string>
+    
+    <!-- Actions -->
+    <string name="zero">Zero</string>
+    <string name="connect">Подключить</string>
+    <string name="disconnect">Отключить</string>
+    <string name="connected">Подключено</string>
+    <string name="disconnected">Отключено</string>
+    
+    <!-- Settings -->
+    <string name="resolution">Разрешение энкодера</string>
+    <string name="resolution_1um">1 мкм</string>
+    <string name="resolution_5um">5 мкм</string>
+    <string name="orientation">Ориентация</string>
+    <string name="landscape">Альбомная</string>
+    <string name="portrait">Портретная</string>
+    <string name="colors">Цвета</string>
+    <string name="sound">Звуковой сигнал</string>
+    <string name="proximity_alert">Сигнал приближения</string>
+    
+    <!-- Thread Helper -->
+    <string name="thread_type">Тип резьбы</string>
+    <string name="metric">Метрическая</string>
+    <string name="inch">Дюймовая</string>
+    <string name="pipe">Трубная</string>
+    <string name="pitch">Шаг</string>
+    <string name="diameter">Диаметр</string>
+    <string name="depth">Глубина</string>
+    <string name="passes">Проходы</string>
+    
+    <!-- Angle -->
+    <string name="start_point">Начальная точка</string>
+    <string name="end_point">Конечная точка</string>
+    <string name="angle">Угол</string>
+    
+    <!-- Markers -->
+    <string name="add_marker">Добавить засечку</string>
+    <string name="marker_name">Название</string>
+    <string name="marker_position">Позиция</string>
+    <string name="alert_distance">Расстояние сигнала</string>
+    
+    <!-- Bluetooth -->
+    <string name="bt_not_supported">Bluetooth не поддерживается</string>
+    <string name="bt_disabled">Bluetooth выключен</string>
+    <string name="select_device">Выберите устройство</string>
+    <string name="no_paired_devices">Нет сопряжённых устройств</string>
+    
+    <!-- Data formats -->
+    <string-array name="data_formats">
+        <item>ValX|ValZ (STM32)</item>
+        <item>JSON: {"x":..., "z":...}</item>
+        <item>Свой regex</item>
+    </string-array>
+    
+    <!-- Resolution -->
+    <string-array name="resolutions">
+        <item>1 мкм</item>
+        <item>5 мкм</item>
+        <item>10 мкм</item>
+    </string-array>
+</resources>

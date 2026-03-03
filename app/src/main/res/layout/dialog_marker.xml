@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/bg_darker"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_marker"
+        android:textColor="@color/text_bright"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <!-- Axis Selection -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ось"
+        android:textColor="@color/text_dim"
+        android:layout_marginTop="16dp" />
+
+    <RadioGroup
+        android:id="@+id/rg_axis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_axis_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coord_x"
+            android:textColor="@color/coord_x" />
+
+        <RadioButton
+            android:id="@+id/rb_axis_z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coord_z"
+            android:textColor="@color/coord_z"
+            android:layout_marginStart="32dp" />
+    </RadioGroup>
+
+    <!-- Name -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/marker_name"
+        android:textColor="@color/text_dim"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/et_marker_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textColor="@color/text_bright" />
+
+    <!-- Position -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/marker_position"
+        android:textColor="@color/text_dim"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_marker_position"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="numberSigned|numberDecimal"
+            android:textColor="@color/text_bright"
+            android:hint="0.000"
+            android:textColorHint="@color/text_dim" />
+
+        <Button
+            android:id="@+id/btn_current_pos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Текущая"
+            android:background="@drawable/button_menu"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+</LinearLayout>
