@@ -62,4 +62,15 @@
         <item name="android:background">@drawable/button_tool</item>
     </style>
 
+    <!-- Кнопки быстрого ввода в диалоге -->
+    <style name="PresetButton">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_bright</item>
+        <item name="android:background">@drawable/button_zero</item>
+    </style>
+
 </resources>
