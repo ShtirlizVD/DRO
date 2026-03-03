@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,12 +32,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 public class MainActivity extends AppCompatActivity implements BluetoothService.Callback {
 
     private static final int REQUEST_PERMISSIONS = 1;
 
-    // Views
-    private TextView valueX, valueD, valueZ, valueL;
+    // Views - StrokeTextView для координат с контуром
+    private StrokeTextView valueX, valueD, valueZ, valueL;
     private TextView labelX, labelD, labelZ, labelL;
     private TextView modeX;
     private TextView tvStatus, tvTool;
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         setupColorPickers();
         checkPermissions();
         startDemo();
+        
+        // Установить подсветку первого инструмента при старте
+        selectTool(0);
     }
 
     private void initViews() {
@@ -201,27 +205,31 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         setupLongPressColor(valueL, 3, "color_l");
     }
 
-    private void setupLongPressColor(TextView view, int index, String prefKey) {
+    private void setupLongPressColor(View view, int index, String prefKey) {
         view.setOnLongClickListener(v -> {
             showColorPicker(index, prefKey);
             return true;
         });
     }
 
+    // AmbilWarnaDialog для выбора цвета
     private void showColorPicker(int index, String prefKey) {
-        String[] colorNames = {"Зелёный", "Голубой", "Оранжевый", "Фиолетовый",
-                "Красный", "Жёлтый", "Белый", "Серый"};
-        int[] colors = {0xFF51CF66, 0xFF339AF0, 0xFFFF922B, 0xFFCC5DE8,
-                0xFFFF6B6B, 0xFFFCC419, 0xFFFFFFFF, 0xFF808080};
+        int currentColor = coordColors[index];
+        
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, currentColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                coordColors[index] = color;
+                prefs.edit().putInt(prefKey, color).apply();
+                applyColors();
+            }
 
-        new AlertDialog.Builder(this)
-                .setTitle("Цвет " + (index == 0 ? "X" : index == 1 ? "D" : index == 2 ? "Z" : "L"))
-                .setItems(colorNames, (dialog, which) -> {
-                    coordColors[index] = colors[which];
-                    prefs.edit().putInt(prefKey, colors[which]).apply();
-                    applyColors();
-                })
-                .show();
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                // Отмена
+            }
+        });
+        dialog.show();
     }
 
     private void checkPermissions() {
@@ -317,9 +325,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         currentTool = index;
 
+        // Подсветка выбранного инструмента через setSelected()
         int[] toolIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
         for (int i = 0; i < 4; i++) {
-            findViewById(toolIds[i]).setSelected(i == index);
+            Button btn = findViewById(toolIds[i]);
+            btn.setSelected(i == index);
         }
 
         droData.setOffsetX(tools[index].getOffsetX());
@@ -418,12 +428,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
-    // Компактный диалог с кнопкой 0 справа
+    // Диалог ввода с кнопкой 0
     private void showInputDialog(String title, double currentValue, InputCallback callback) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_input_value);
         
-        // Прозрачный фон окна - убирает белые уголки!
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         
         TextView tvTitle = dialog.findViewById(R.id.dialog_title);
@@ -457,7 +466,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         
-        // Показать клавиатуру
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
         

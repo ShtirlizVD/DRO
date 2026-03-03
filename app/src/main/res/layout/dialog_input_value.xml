@@ -45,7 +45,7 @@
             android:inputType="numberDecimal|numberSigned"
             android:text=""
             android:textColor="@color/text_bright"
-            android:textSize="44sp"
+            android:textSize="48sp"
             android:textStyle="bold"
             android:gravity="center"
             android:fontFamily="monospace"
@@ -62,9 +62,9 @@
             android:layout_height="70dp"
             android:layout_marginStart="10dp"
             android:text="0"
-            android:textSize="28sp"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/yellow"
             android:background="@drawable/button_zero" />
     </LinearLayout>
 

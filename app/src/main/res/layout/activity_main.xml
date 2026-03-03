@@ -7,13 +7,13 @@
     android:background="@color/bg_dark"
     tools:context=".MainActivity">
 
-    <!-- Left Panel: Coordinates (maximized for Digma Plane 9.7 3G) -->
+    <!-- Left Panel: Coordinates (MAXIMIZED) -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="10dp">
 
         <!-- X Coordinate Row -->
         <LinearLayout
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/coord_x"
-                    android:textSize="36sp"
+                    android:textSize="40sp"
                     android:textStyle="bold"
                     android:textColor="@color/coord_x" />
 
@@ -45,23 +45,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/coord_x" />
             </LinearLayout>
 
-            <TextView
+            <com.dro.lathe.StrokeTextView
                 android:id="@+id/value_x"
-                style="@style/CoordinateValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/coord_x"
-                android:text="000.000" />
+                android:text="000.000"
+                android:textSize="110sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:includeFontPadding="false" />
 
             <Button
                 android:id="@+id/btn_zero_x"
                 style="@style/ZeroButton"
-                android:text="0"
-                android:textColor="@color/coord_x" />
+                android:text="ZERO"
+                android:textColor="@color/yellow" />
         </LinearLayout>
 
         <!-- D Coordinate Row -->
@@ -80,23 +85,28 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="@string/coord_d"
-                android:textSize="36sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="@color/coord_d"
                 android:gravity="center" />
 
-            <TextView
+            <com.dro.lathe.StrokeTextView
                 android:id="@+id/value_d"
-                style="@style/CoordinateValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/coord_d"
-                android:text="000.000" />
+                android:text="000.000"
+                android:textSize="110sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:includeFontPadding="false" />
 
             <Button
                 android:id="@+id/btn_set_d"
                 style="@style/ZeroButton"
                 android:text="Ø"
-                android:textColor="@color/coord_d" />
+                android:textColor="@color/yellow" />
         </LinearLayout>
 
         <!-- Z Coordinate Row -->
@@ -121,23 +131,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/coord_z"
-                    android:textSize="36sp"
+                    android:textSize="40sp"
                     android:textStyle="bold"
                     android:textColor="@color/coord_z" />
             </LinearLayout>
 
-            <TextView
+            <com.dro.lathe.StrokeTextView
                 android:id="@+id/value_z"
-                style="@style/CoordinateValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/coord_z"
-                android:text="000.000" />
+                android:text="000.000"
+                android:textSize="110sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:includeFontPadding="false" />
 
             <Button
                 android:id="@+id/btn_zero_z"
                 style="@style/ZeroButton"
-                android:text="0"
-                android:textColor="@color/coord_z" />
+                android:text="ZERO"
+                android:textColor="@color/yellow" />
         </LinearLayout>
 
         <!-- L Coordinate Row -->
@@ -156,70 +171,38 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="@string/coord_l"
-                android:textSize="36sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="@color/coord_l"
                 android:gravity="center" />
 
-            <TextView
+            <com.dro.lathe.StrokeTextView
                 android:id="@+id/value_l"
-                style="@style/CoordinateValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/coord_l"
-                android:text="000.000" />
+                android:text="000.000"
+                android:textSize="110sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:includeFontPadding="false" />
 
             <Button
                 android:id="@+id/btn_set_l"
                 style="@style/ZeroButton"
                 android:text="L"
-                android:textColor="@color/coord_l" />
+                android:textColor="@color/yellow" />
         </LinearLayout>
 
-        <!-- Status Bar -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="6dp"
-            android:layout_marginTop="6dp">
-
-            <TextView
-                android:id="@+id/tv_tool"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Инстр. 1"
-                android:textColor="@color/text_bright"
-                android:textSize="16sp"
-                android:background="@drawable/button_menu"
-                android:padding="8dp"
-                android:layout_marginEnd="12dp" />
-
-            <TextView
-                android:id="@+id/tv_status"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/disconnected"
-                android:textColor="@color/status_disconnected"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btn_connect"
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:text="@string/connect"
-                android:textSize="16sp"
-                android:background="@drawable/button_menu" />
-        </LinearLayout>
     </LinearLayout>
 
-    <!-- Right Panel: Tools & Menu (enlarged buttons) -->
+    <!-- Right Panel: Tools & Menu -->
     <LinearLayout
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="8dp"
         android:background="@color/bg_darker">
 
         <!-- Tools -->
@@ -276,42 +259,80 @@
                 android:textColor="@color/text_bright" />
         </LinearLayout>
 
+        <!-- Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="4dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_tool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Инстр. 1"
+                android:textColor="@color/text_bright"
+                android:textSize="14sp"
+                android:background="@drawable/button_menu"
+                android:padding="6dp"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/disconnected"
+                android:textColor="@color/status_disconnected"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/connect"
+                android:textSize="14sp"
+                android:background="@drawable/button_menu" />
+        </LinearLayout>
+
         <!-- Menu Buttons -->
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/button_border"
-            android:layout_marginVertical="12dp" />
+            android:layout_marginVertical="10dp" />
 
         <Button
             android:id="@+id/btn_markers"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:text="@string/marker_list"
             android:textColor="@color/text_bright"
             android:background="@drawable/button_menu"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="15sp"
+            android:layout_marginBottom="6dp" />
 
         <Button
             android:id="@+id/btn_thread"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:text="@string/thread_helper"
             android:textColor="@color/text_bright"
             android:background="@drawable/button_menu"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="15sp"
+            android:layout_marginBottom="6dp" />
 
         <Button
             android:id="@+id/btn_angle"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:text="@string/angle_measurement"
             android:textColor="@color/text_bright"
             android:background="@drawable/button_menu"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="15sp"
+            android:layout_marginBottom="6dp" />
 
         <View
             android:layout_width="match_parent"
@@ -321,11 +342,11 @@
         <Button
             android:id="@+id/btn_settings"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:text="@string/settings"
             android:textColor="@color/text_bright"
             android:background="@drawable/button_menu"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
 </LinearLayout>
