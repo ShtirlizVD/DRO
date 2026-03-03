@@ -15,6 +15,7 @@ import android.os.Vibrator;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -414,32 +415,63 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
-    // ИЗМЕНЕНО: Поле ввода теперь пустое, текущее значение показывается в hint
+    // КРАСИВЫЙ ДИАЛОГ ВВОДА с крупным текстом и кнопками быстрого ввода
     private void showInputDialog(String title, double currentValue, InputCallback callback) {
-        EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        input.setText(""); // Пустое поле для удобства ввода
-        input.setHint("Текущее: " + String.format(Locale.US, "%.3f", currentValue));
-        input.setTextSize(32); // Увеличенный шрифт для планшета
-        input.setGravity(android.view.Gravity.CENTER);
-        input.setPadding(30, 30, 30, 30);
-        input.setTextColor(0xFFFFFFFF);
-        input.setHintTextColor(0xFF808080);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_input_value, null);
+        
+        TextView tvTitle = dialogView.findViewById(R.id.dialog_title);
+        TextView tvCurrentValue = dialogView.findViewById(R.id.tv_current_value);
+        EditText etValue = dialogView.findViewById(R.id.et_value);
+        Button btnOk = dialogView.findViewById(R.id.btn_ok);
+        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        
+        tvTitle.setText(title);
+        tvCurrentValue.setText("Было: " + String.format(Locale.US, "%.3f", currentValue));
+        etValue.setText("");
+        etValue.setHint("0.000");
+        
+        // Быстрые кнопки
+        Button[] presetBtns = {
+            dialogView.findViewById(R.id.btn_preset_0),
+            dialogView.findViewById(R.id.btn_preset_10),
+            dialogView.findViewById(R.id.btn_preset_20),
+            dialogView.findViewById(R.id.btn_preset_50),
+            dialogView.findViewById(R.id.btn_preset_100)
+        };
+        
+        double[] presetValues = {0, 10, 20, 50, 100};
+        for (int i = 0; i < presetBtns.length; i++) {
+            final double val = presetValues[i];
+            presetBtns[i].setOnClickListener(v -> {
+                etValue.setText(String.format(Locale.US, "%.0f", val));
+                etValue.selectAll();
+            });
+        }
 
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setView(input)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    String text = input.getText().toString().trim();
-                    if (!text.isEmpty()) {
-                        try {
-                            double value = Double.parseDouble(text);
-                            callback.onValue(value);
-                        } catch (NumberFormatException ignored) {}
-                    }
-                })
-                .setNegativeButton("Отмена", null)
-                .show();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+        
+        btnOk.setOnClickListener(v -> {
+            String text = etValue.getText().toString().trim();
+            if (!text.isEmpty()) {
+                try {
+                    double value = Double.parseDouble(text);
+                    callback.onValue(value);
+                } catch (NumberFormatException ignored) {}
+            }
+            dialog.dismiss();
+        });
+        
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        
+        // Показать клавиатуру автоматически
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+        
+        // Фокус на поле ввода
+        etValue.requestFocus();
     }
 
     private interface InputCallback {
