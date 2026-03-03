@@ -2,11 +2,14 @@ package com.dro.lathe;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.Bundle;
@@ -415,44 +418,32 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
-    // КРАСИВЫЙ ДИАЛОГ ВВОДА с крупным текстом и кнопками быстрого ввода
+    // Компактный диалог с кнопкой 0 справа
     private void showInputDialog(String title, double currentValue, InputCallback callback) {
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_input_value, null);
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_input_value);
         
-        TextView tvTitle = dialogView.findViewById(R.id.dialog_title);
-        TextView tvCurrentValue = dialogView.findViewById(R.id.tv_current_value);
-        EditText etValue = dialogView.findViewById(R.id.et_value);
-        Button btnOk = dialogView.findViewById(R.id.btn_ok);
-        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        // Прозрачный фон окна - убирает белые уголки!
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        
+        TextView tvTitle = dialog.findViewById(R.id.dialog_title);
+        TextView tvCurrentValue = dialog.findViewById(R.id.tv_current_value);
+        EditText etValue = dialog.findViewById(R.id.et_value);
+        Button btnOk = dialog.findViewById(R.id.btn_ok);
+        Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+        Button btnZero = dialog.findViewById(R.id.btn_preset_0);
         
         tvTitle.setText(title);
         tvCurrentValue.setText("Было: " + String.format(Locale.US, "%.3f", currentValue));
         etValue.setText("");
         etValue.setHint("0.000");
         
-        // Быстрые кнопки
-        Button[] presetBtns = {
-            dialogView.findViewById(R.id.btn_preset_0),
-            dialogView.findViewById(R.id.btn_preset_10),
-            dialogView.findViewById(R.id.btn_preset_20),
-            dialogView.findViewById(R.id.btn_preset_50),
-            dialogView.findViewById(R.id.btn_preset_100)
-        };
-        
-        double[] presetValues = {0, 10, 20, 50, 100};
-        for (int i = 0; i < presetBtns.length; i++) {
-            final double val = presetValues[i];
-            presetBtns[i].setOnClickListener(v -> {
-                etValue.setText(String.format(Locale.US, "%.0f", val));
-                etValue.selectAll();
-            });
-        }
+        // Кнопка 0 - обнуляет поле
+        btnZero.setOnClickListener(v -> {
+            etValue.setText("0");
+            etValue.selectAll();
+        });
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(dialogView)
-                .setCancelable(true)
-                .create();
-        
         btnOk.setOnClickListener(v -> {
             String text = etValue.getText().toString().trim();
             if (!text.isEmpty()) {
@@ -466,11 +457,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         
-        // Показать клавиатуру автоматически
+        // Показать клавиатуру
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
         
-        // Фокус на поле ввода
         etValue.requestFocus();
     }
 
