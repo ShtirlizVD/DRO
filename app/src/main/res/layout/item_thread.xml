@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:gravity="center_vertical">
+    android:padding="8dp"
+    android:gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground">
 
+    <!-- Thread Name -->
     <TextView
         android:id="@+id/tv_thread_name"
         android:layout_width="0dp"
@@ -16,6 +18,17 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <!-- Diameter -->
+    <TextView
+        android:id="@+id/tv_thread_diameter"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="10.0"
+        android:textColor="@color/coord_l"
+        android:textSize="14sp"
+        android:gravity="center" />
+
+    <!-- Pitch -->
     <TextView
         android:id="@+id/tv_thread_pitch"
         android:layout_width="70dp"
@@ -25,6 +38,7 @@
         android:textSize="14sp"
         android:gravity="center" />
 
+    <!-- Depth -->
     <TextView
         android:id="@+id/tv_thread_depth"
         android:layout_width="70dp"
@@ -34,11 +48,12 @@
         android:textSize="14sp"
         android:gravity="center" />
 
+    <!-- Passes -->
     <TextView
         android:id="@+id/tv_thread_passes"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="8"
+        android:text="11"
         android:textColor="@color/coord_d"
         android:textSize="14sp"
         android:gravity="center" />

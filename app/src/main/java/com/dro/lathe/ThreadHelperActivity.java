@@ -1,5 +1,6 @@
 package com.dro.lathe;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,125 +18,122 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Помощник резьбы - главный экран
+ * Показывает список резьб с возможностью перехода к детальному расчёту проходов
+ */
 public class ThreadHelperActivity extends AppCompatActivity {
 
-    private LinearLayout tabsContainer;
     private ListView threadList;
+    private Button btnMetric;
+    private Button btnInch;
+    private Button btnPipe;
+    private Button btnExternal;
+    private Button btnInternal;
 
-    private String currentType = "metric";
-
-    private ThreadData[] metricThreads = {
-            new ThreadData("M3", 0.5, 0.307),
-            new ThreadData("M4", 0.7, 0.429),
-            new ThreadData("M5", 0.8, 0.491),
-            new ThreadData("M6", 1.0, 0.613),
-            new ThreadData("M8", 1.25, 0.767),
-            new ThreadData("M10", 1.5, 0.920),
-            new ThreadData("M12", 1.75, 1.073),
-            new ThreadData("M14", 2.0, 1.227),
-            new ThreadData("M16", 2.0, 1.227),
-            new ThreadData("M18", 2.5, 1.533),
-            new ThreadData("M20", 2.5, 1.533),
-            new ThreadData("M22", 2.5, 1.533),
-            new ThreadData("M24", 3.0, 1.840)
-    };
-
-    private ThreadData[] inchThreads = {
-            new ThreadData("1/4\"-20", 1.270, 0.779),
-            new ThreadData("5/16\"-18", 1.411, 0.866),
-            new ThreadData("3/8\"-16", 1.587, 0.974),
-            new ThreadData("1/2\"-13", 1.954, 1.199),
-            new ThreadData("5/8\"-11", 2.309, 1.417),
-            new ThreadData("3/4\"-10", 2.540, 1.558),
-            new ThreadData("7/8\"-9", 2.822, 1.731),
-            new ThreadData("1\"-8", 3.175, 1.948)
-    };
-
-    private ThreadData[] pipeThreads = {
-            new ThreadData("G1/8\"", 0.907, 0.581),
-            new ThreadData("G1/4\"", 1.337, 0.856),
-            new ThreadData("G3/8\"", 1.337, 0.856),
-            new ThreadData("G1/2\"", 1.814, 1.162),
-            new ThreadData("G5/8\"", 1.814, 1.162),
-            new ThreadData("G3/4\"", 1.814, 1.162),
-            new ThreadData("G7/8\"", 1.814, 1.162),
-            new ThreadData("G1\"", 2.309, 1.479),
-            new ThreadData("G1 1/4\"", 2.309, 1.479),
-            new ThreadData("G1 1/2\"", 2.309, 1.479),
-            new ThreadData("G2\"", 2.309, 1.479)
-    };
+    private ThreadDatabase.ThreadCategory currentCategory = ThreadDatabase.ThreadCategory.METRIC;
+    private ThreadDatabase.ThreadType currentType = ThreadDatabase.ThreadType.EXTERNAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thread_helper);
 
-        tabsContainer = findViewById(R.id.tabs_container);
-        threadList = findViewById(R.id.thread_list);
-
-        // Tab buttons
-        Button btnMetric = findViewById(R.id.tab_metric);
-        Button btnInch = findViewById(R.id.tab_inch);
-        Button btnPipe = findViewById(R.id.tab_pipe);
-
-        btnMetric.setOnClickListener(v -> selectTab("metric"));
-        btnInch.setOnClickListener(v -> selectTab("inch"));
-        btnPipe.setOnClickListener(v -> selectTab("pipe"));
-
-        findViewById(R.id.btn_close).setOnClickListener(v -> finish());
-
-        selectTab("metric");
+        initViews();
+        setupListeners();
+        updateList();
     }
 
-    private void selectTab(String type) {
-        currentType = type;
+    private void initViews() {
+        threadList = findViewById(R.id.thread_list);
+        btnMetric = findViewById(R.id.tab_metric);
+        btnInch = findViewById(R.id.tab_inch);
+        btnPipe = findViewById(R.id.tab_pipe);
 
-        // Update tab buttons
-        int[] ids = {R.id.tab_metric, R.id.tab_inch, R.id.tab_pipe};
-        String[] types = {"metric", "inch", "pipe"};
+        // External/Internal buttons (add to layout)
+        btnExternal = findViewById(R.id.btn_type_external);
+        btnInternal = findViewById(R.id.btn_type_internal);
 
-        for (int i = 0; i < 3; i++) {
-            Button btn = findViewById(ids[i]);
-            btn.setSelected(types[i].equals(type));
+        findViewById(R.id.btn_close).setOnClickListener(v -> finish());
+    }
+
+    private void setupListeners() {
+        // Category tabs
+        btnMetric.setOnClickListener(v -> {
+            currentCategory = ThreadDatabase.ThreadCategory.METRIC;
+            updateTabs();
+            updateList();
+        });
+
+        btnInch.setOnClickListener(v -> {
+            currentCategory = ThreadDatabase.ThreadCategory.INCH;
+            updateTabs();
+            updateList();
+        });
+
+        btnPipe.setOnClickListener(v -> {
+            currentCategory = ThreadDatabase.ThreadCategory.PIPE;
+            updateTabs();
+            updateList();
+        });
+
+        // Type buttons
+        if (btnExternal != null) {
+            btnExternal.setOnClickListener(v -> {
+                currentType = ThreadDatabase.ThreadType.EXTERNAL;
+                updateTypeButtons();
+            });
         }
 
-        // Update list
-        ThreadData[] threads;
-        switch (type) {
-            case "metric": threads = metricThreads; break;
-            case "inch": threads = inchThreads; break;
-            case "pipe": threads = pipeThreads; break;
-            default: threads = metricThreads;
+        if (btnInternal != null) {
+            btnInternal.setOnClickListener(v -> {
+                currentType = ThreadDatabase.ThreadType.INTERNAL;
+                updateTypeButtons();
+            });
         }
 
+        // Click on thread item - open detail
+        threadList.setOnItemClickListener((parent, view, position, id) -> {
+            ThreadDatabase.ThreadInfo thread = (ThreadDatabase.ThreadInfo) parent.getItemAtPosition(position);
+            openThreadDetail(thread);
+        });
+    }
+
+    private void updateTabs() {
+        btnMetric.setSelected(currentCategory == ThreadDatabase.ThreadCategory.METRIC);
+        btnInch.setSelected(currentCategory == ThreadDatabase.ThreadCategory.INCH);
+        btnPipe.setSelected(currentCategory == ThreadDatabase.ThreadCategory.PIPE);
+    }
+
+    private void updateTypeButtons() {
+        if (btnExternal != null) {
+            btnExternal.setSelected(currentType == ThreadDatabase.ThreadType.EXTERNAL);
+        }
+        if (btnInternal != null) {
+            btnInternal.setSelected(currentType == ThreadDatabase.ThreadType.INTERNAL);
+        }
+    }
+
+    private void updateList() {
+        ThreadDatabase.ThreadInfo[] threads = ThreadDatabase.getThreads(currentCategory);
         ThreadAdapter adapter = new ThreadAdapter(threads);
         threadList.setAdapter(adapter);
     }
 
-    private static class ThreadData {
-        String name;
-        double pitch;
-        double depth;
-
-        ThreadData(String name, double pitch, double depth) {
-            this.name = name;
-            this.pitch = pitch;
-            this.depth = depth;
-        }
-
-        int getPasses() {
-            // Approximate number of passes
-            if (depth <= 0.3) return 3;
-            if (depth <= 0.5) return 5;
-            if (depth <= 0.8) return 8;
-            if (depth <= 1.0) return 10;
-            if (depth <= 1.5) return 15;
-            return (int) (depth / 0.1);
-        }
+    private void openThreadDetail(ThreadDatabase.ThreadInfo thread) {
+        Intent intent = new Intent(this, ThreadDetailActivity.class);
+        intent.putExtra(ThreadDetailActivity.EXTRA_THREAD_NAME, thread.name);
+        intent.putExtra(ThreadDetailActivity.EXTRA_THREAD_TYPE,
+                currentType == ThreadDatabase.ThreadType.INTERNAL ? 1 : 0);
+        startActivity(intent);
     }
 
-    private class ThreadAdapter extends ArrayAdapter<ThreadData> {
-        ThreadAdapter(ThreadData[] threads) {
+    /**
+     * Адаптер для списка резьб
+     */
+    private class ThreadAdapter extends ArrayAdapter<ThreadDatabase.ThreadInfo> {
+
+        ThreadAdapter(ThreadDatabase.ThreadInfo[] threads) {
             super(ThreadHelperActivity.this, R.layout.item_thread, threads);
         }
 
@@ -146,7 +144,7 @@ public class ThreadHelperActivity extends AppCompatActivity {
                         .inflate(R.layout.item_thread, parent, false);
             }
 
-            ThreadData t = getItem(position);
+            ThreadDatabase.ThreadInfo t = getItem(position);
 
             TextView tvName = convertView.findViewById(R.id.tv_thread_name);
             TextView tvPitch = convertView.findViewById(R.id.tv_thread_pitch);
@@ -154,11 +152,42 @@ public class ThreadHelperActivity extends AppCompatActivity {
             TextView tvPasses = convertView.findViewById(R.id.tv_thread_passes);
 
             tvName.setText(t.name);
-            tvPitch.setText(String.format(Locale.US, "%.3f мм", t.pitch));
-            tvDepth.setText(String.format(Locale.US, "%.3f мм", t.depth));
-            tvPasses.setText(String.valueOf(t.getPasses()));
+
+            // Format pitch
+            if (t.category == ThreadDatabase.ThreadCategory.INCH) {
+                tvPitch.setText(String.format(Locale.US, "%.3f мм\n(%d TPI)", t.pitch, (int)t.threadsPerInch));
+            } else {
+                tvPitch.setText(String.format(Locale.US, "%.3f мм", t.pitch));
+            }
+
+            tvDepth.setText(String.format(Locale.US, "%.3f мм", t.threadDepth));
+
+            // Calculate number of passes
+            int passes = calculatePassesCount(t.pitch);
+            tvPasses.setText(String.valueOf(passes));
+
+            // Show diameter info
+            TextView tvDiameter = convertView.findViewById(R.id.tv_thread_diameter);
+            if (tvDiameter != null) {
+                tvDiameter.setText(String.format(Locale.US, "%.1f", t.majorDiameter));
+            }
 
             return convertView;
+        }
+
+        private int calculatePassesCount(double pitch) {
+            if (pitch <= 0.5) return 3;
+            if (pitch <= 0.7) return 5;
+            if (pitch <= 0.8) return 6;
+            if (pitch <= 1.0) return 7;
+            if (pitch <= 1.25) return 9;
+            if (pitch <= 1.5) return 11;
+            if (pitch <= 1.75) return 13;
+            if (pitch <= 2.0) return 15;
+            if (pitch <= 2.5) return 18;
+            if (pitch <= 3.0) return 21;
+            if (pitch <= 3.5) return 24;
+            return 27;
         }
     }
 }

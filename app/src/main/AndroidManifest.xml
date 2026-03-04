@@ -62,6 +62,12 @@
             android:label="@string/marker_list"
             android:theme="@style/Theme.DRO" />
 
+        <activity
+            android:name=".ThreadDetailActivity"
+            android:exported="false"
+            android:label="@string/thread_detail"
+            android:theme="@style/Theme.DRO" />
+
     </application>
 
 </manifest>

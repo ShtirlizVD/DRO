@@ -36,4 +36,10 @@
     
     <!-- Disconnected state -->
     <color name="coord_disconnected">#FF505050</color>
+
+    <!-- Thread pass states -->
+    <color name="pass_pending">#FF404040</color>
+    <color name="pass_current">#FFFFFF00</color>
+    <color name="pass_completed">#FF00AA00</color>
+    <color name="pass_spring">#FF00BFFF</color>
 </resources>
