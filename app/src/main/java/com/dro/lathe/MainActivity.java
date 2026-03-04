@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     // Views - StrokeTextView для координат с контуром
     private StrokeTextView valueX, valueD, valueZ, valueL;
     private TextView labelX, labelD, labelZ, labelL;
-    private TextView modeX;
+    private ImageView imgMode;
     private Button btnConnectOverlay;
 
     // Data
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         labelD = findViewById(R.id.label_d);
         labelZ = findViewById(R.id.label_z);
         labelL = findViewById(R.id.label_l);
-        modeX = findViewById(R.id.mode_x);
+        imgMode = findViewById(R.id.img_mode);
         btnConnectOverlay = findViewById(R.id.btn_connect_overlay);
 
         // Button listeners
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         valueX.setTextColor(colorX);
         labelX.setTextColor(colorX);
-        modeX.setTextColor(colorX);
+        imgMode.setColorFilter(colorX);
 
         valueD.setTextColor(colorD);
         labelD.setTextColor(colorD);
@@ -419,9 +420,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     private void updateModeLabel() {
         if (droData.isDiameterMode()) {
-            modeX.setText("");
+            imgMode.setImageResource(R.drawable.ic_diameter);
         } else {
-            modeX.setText("÷2");
+            imgMode.setImageResource(R.drawable.ic_radius);
         }
     }
 
