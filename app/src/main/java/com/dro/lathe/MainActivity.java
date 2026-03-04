@@ -1,6 +1,7 @@
 package com.dro.lathe;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
