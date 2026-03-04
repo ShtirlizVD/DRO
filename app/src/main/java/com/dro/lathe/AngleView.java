@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,15 +22,17 @@ import androidx.core.content.ContextCompat;
 public class AngleView extends View {
 
     // Paints
-    private Paint paintAxis;        // Пунктирная ось Z
-    private Paint paintStartPoint;  // Начальная точка
-    private Paint paintEndPoint;    // Конечная точка
-    private Paint paintCurrentPos;  // Текущая позиция
-    private Paint paintLine;        // Линия между точками
-    private Paint paintAngleArc;    // Дуга угла
-    private Paint paintAngleText;   // Текст угла
-    private Paint paintLabels;      // Подписи
-    private Paint paintGrid;        // Сетка
+    private Paint paintAxis;
+    private Paint paintStartPoint;
+    private Paint paintEndPoint;
+    private Paint paintCurrentPos;
+    private Paint paintLine;
+    private Paint paintAngleArc;
+    private Paint paintAngleText;
+    private Paint paintLabels;
+    private Paint paintGrid;
+    private Paint paintBoxBg;
+    private Paint paintBoxBorder;
 
     // Data
     private double startX = Double.NaN, startZ = Double.NaN;
@@ -37,11 +41,9 @@ public class AngleView extends View {
     private double angle = Double.NaN;
     private double distance = 0;
 
-    // Scale and offset for drawing
+    // Scale and offset
     private float scale = 10.0f;
-
-    // Origin point (where Z axis starts from left side)
-    private float originX, originY;
+    private float originX = 50, originY = 100;
 
     // View dimensions
     private int viewWidth = 1, viewHeight = 1;
@@ -114,6 +116,18 @@ public class AngleView extends View {
         paintGrid.setColor(ContextCompat.getColor(context, R.color.button_border));
         paintGrid.setStrokeWidth(1);
         paintGrid.setAlpha(80);
+
+        // Box background
+        paintBoxBg = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintBoxBg.setColor(ContextCompat.getColor(context, R.color.bg_dark));
+        paintBoxBg.setAlpha(220);
+        paintBoxBg.setStyle(Paint.Style.FILL);
+
+        // Box border
+        paintBoxBorder = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintBoxBorder.setColor(ContextCompat.getColor(context, R.color.button_border));
+        paintBoxBorder.setStyle(Paint.Style.STROKE);
+        paintBoxBorder.setStrokeWidth(2);
     }
 
     @Override
@@ -121,7 +135,6 @@ public class AngleView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         viewWidth = Math.max(w, 1);
         viewHeight = Math.max(h, 1);
-        // Origin is at left-center (Z starts from left)
         originX = 50;
         originY = viewHeight / 2f;
         calculateScale();
@@ -134,11 +147,10 @@ public class AngleView extends View {
         }
 
         if (Double.isNaN(startX) || Double.isNaN(startZ)) {
-            scale = 10; // Default scale
+            scale = 10;
             return;
         }
 
-        // Calculate scale based on the range of values
         double minX = Double.isNaN(endX) ? Math.min(startX, currentX) : Math.min(startX, Math.min(endX, currentX));
         double maxX = Double.isNaN(endX) ? Math.max(startX, currentX) : Math.max(startX, Math.max(endX, currentX));
         double minZ = Double.isNaN(endZ) ? Math.min(startZ, currentZ) : Math.min(startZ, Math.min(endZ, currentZ));
@@ -147,18 +159,13 @@ public class AngleView extends View {
         double rangeX = Math.abs(maxX - minX);
         double rangeZ = Math.abs(maxZ - minZ);
         double maxRange = Math.max(rangeX, rangeZ);
-
-        // Ensure minimum range
         maxRange = Math.max(maxRange, 20);
 
-        // Scale to fit 70% of view
         float availableWidth = viewWidth * 0.7f;
         float availableHeight = viewHeight * 0.7f;
         float availableSize = Math.min(availableWidth, availableHeight);
 
         scale = availableSize / (float) maxRange;
-
-        // Clamp scale
         scale = Math.max(scale, 1);
         scale = Math.min(scale, 50);
     }
@@ -215,23 +222,15 @@ public class AngleView extends View {
         double deltaX = endX - startX;
         double deltaZ = endZ - startZ;
 
-        // Distance between points
         distance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 
-        // Angle from Z-axis (always positive)
         if (deltaZ == 0 && deltaX == 0) {
             angle = 0;
         } else {
-            // atan2 gives angle from positive Z axis
             angle = Math.abs(Math.toDegrees(Math.atan2(deltaX, deltaZ)));
         }
     }
 
-    /**
-     * Convert machine coordinates to screen coordinates
-     * Z axis: horizontal (left to right)
-     * X axis: vertical (up is positive)
-     */
     private float toScreenX(double z) {
         return originX + (float) (z * scale);
     }
@@ -252,7 +251,7 @@ public class AngleView extends View {
         // Draw grid
         drawGrid(canvas);
 
-        // Draw Z axis (horizontal dashed line through origin)
+        // Draw Z axis (horizontal dashed line)
         canvas.drawLine(0, originY, viewWidth, originY, paintAxis);
 
         // Draw axis labels
@@ -276,15 +275,12 @@ public class AngleView extends View {
                 float cx = toScreenX(currentZ);
                 float cy = toScreenY(currentX);
 
-                // Draw line
                 paintLine.setColor(ContextCompat.getColor(getContext(), R.color.yellow));
                 paintLine.setStrokeWidth(2);
                 canvas.drawLine(sx, sy, cx, cy, paintLine);
 
-                // Draw current position
                 canvas.drawCircle(cx, cy, 8, paintCurrentPos);
 
-                // Draw angle preview
                 double previewAngle = Math.abs(Math.toDegrees(
                         Math.atan2(currentX - startX, currentZ - startZ)));
                 drawAngleDisplay(canvas, sx, sy, previewAngle, true);
@@ -298,27 +294,22 @@ public class AngleView extends View {
             float ex = toScreenX(endZ);
             float ey = toScreenY(endX);
 
-            // Draw line from start to end
             paintLine.setColor(ContextCompat.getColor(getContext(), R.color.coord_d));
             paintLine.setStrokeWidth(4);
             canvas.drawLine(sx, sy, ex, ey, paintLine);
 
-            // Draw end point
             canvas.drawCircle(ex, ey, 14, paintEndPoint);
             paintLabels.setTextAlign(Paint.Align.LEFT);
             canvas.drawText("E", ex + 18, ey + 6, paintLabels);
 
-            // Draw angle arc and value
             drawAngleDisplay(canvas, sx, sy, angle, false);
         }
     }
 
     private void drawGrid(Canvas canvas) {
-        // Draw grid lines every 10mm (scaled)
         float gridStep = 10 * scale;
-        if (gridStep < 20) gridStep = 20; // Minimum step
+        if (gridStep < 20) gridStep = 20;
 
-        // Vertical lines (Z axis direction)
         for (float x = originX; x < viewWidth; x += gridStep) {
             canvas.drawLine(x, 0, x, viewHeight, paintGrid);
         }
@@ -326,7 +317,6 @@ public class AngleView extends View {
             canvas.drawLine(x, 0, x, viewHeight, paintGrid);
         }
 
-        // Horizontal lines (X axis direction)
         for (float y = originY; y < viewHeight; y += gridStep) {
             canvas.drawLine(0, y, viewWidth, y, paintGrid);
         }
@@ -338,41 +328,20 @@ public class AngleView extends View {
     private void drawAngleDisplay(Canvas canvas, float sx, float sy, double angleValue, boolean isPreview) {
         if (Double.isNaN(angleValue)) return;
 
-        // Draw angle arc around start point
+        // Draw angle arc
         float arcRadius = 50;
-
-        // Calculate arc angles
-        // Z axis is horizontal to the right (0 degrees in canvas = right, 90 = down)
-        // We want angle from Z axis (horizontal right)
-        // X positive is up, so angle from Z to point
-
-        double endAngle;
-        if (!Double.isNaN(endX)) {
-            endAngle = Math.toDegrees(Math.atan2(-(endX - startX), endZ - startZ));
-        } else {
-            endAngle = Math.toDegrees(Math.atan2(-(currentX - startX), currentZ - startZ));
-        }
-
-        // Draw arc from Z axis (0 degrees) to the measured angle
         RectF arcRect = new RectF(sx - arcRadius, sy - arcRadius, sx + arcRadius, sy + arcRadius);
 
-        // Arc starts from Z axis (0 = right direction on canvas)
-        // Sweep angle is the measured angle
         float sweepAngle = (float) angleValue;
-
-        // Determine direction of arc based on which side the end point is
         if (!Double.isNaN(endX) && endX < startX) {
-            // End point has smaller X (higher on screen) - arc goes up
             sweepAngle = -(float) angleValue;
         } else if (Double.isNaN(endX) && currentX < startX) {
             sweepAngle = -(float) angleValue;
-        } else {
-            sweepAngle = (float) angleValue;
         }
 
         canvas.drawArc(arcRect, 0, sweepAngle, false, paintAngleArc);
 
-        // Draw angle text in upper right corner
+        // Draw angle text box
         paintAngleText.setColor(isPreview ?
                 ContextCompat.getColor(getContext(), R.color.yellow) :
                 ContextCompat.getColor(getContext(), R.color.coord_l));
@@ -381,32 +350,39 @@ public class AngleView extends View {
         float textX = viewWidth - 100;
         float textY = 70;
 
-        // Background for text
-        Paint bgPaint = new Paint();
-        bgPaint.setColor(ContextCompat.getColor(getContext(), R.color.bg_dark));
-        bgPaint.setAlpha(220);
         float boxLeft = textX - 80;
         float boxTop = textY - 45;
         float boxRight = textX + 80;
         float boxBottom = textY + 50;
-        canvas.drawRoundRect(boxLeft, boxTop, boxRight, boxBottom, 10, 10, bgPaint);
 
-        // Draw border
-        Paint borderPaint = new Paint();
-        borderPaint.setColor(ContextCompat.getColor(getContext(), R.color.button_border));
-        borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(2);
-        canvas.drawRoundRect(boxLeft, boxTop, boxRight, boxBottom, 10, 10, borderPaint);
+        // Draw rounded rect using Path (compatible with old API)
+        drawRoundedRect(canvas, boxLeft, boxTop, boxRight, boxBottom, 10, paintBoxBg);
+        drawRoundedRect(canvas, boxLeft, boxTop, boxRight, boxBottom, 10, paintBoxBorder);
 
-        // Label
+        // Draw text
         paintLabels.setTextAlign(Paint.Align.CENTER);
         canvas.drawText("Угол к Z:", textX, textY - 15, paintLabels);
         canvas.drawText(angleText, textX, textY + 25, paintAngleText);
 
-        // Draw distance if available
         if (distance > 0) {
             String distText = String.format("L: %.2f мм", distance);
             canvas.drawText(distText, textX, textY + 50, paintLabels);
+        }
+    }
+
+    /**
+     * Draw rounded rectangle compatible with old API
+     */
+    private void drawRoundedRect(Canvas canvas, float left, float top, float right, float bottom, float radius, Paint paint) {
+        RectF rect = new RectF(left, top, right, bottom);
+        
+        if (Build.VERSION.SDK_INT >= 21) {
+            canvas.drawRoundRect(rect, radius, radius, paint);
+        } else {
+            // Fallback for old API: use Path
+            Path path = new Path();
+            path.addRoundRect(rect, radius, radius, Path.Direction.CW);
+            canvas.drawPath(path, paint);
         }
     }
 }
