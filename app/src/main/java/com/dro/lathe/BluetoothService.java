@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Bluetooth service for HC-06 connection
+ * Bluetooth service for HC-06 connection - Singleton
  */
 public class BluetoothService {
     private static final String TAG = "BluetoothService";
@@ -28,8 +28,10 @@ public class BluetoothService {
         void onDataReceived(double x, double z);
     }
 
+    private static BluetoothService instance;
+
     private final BluetoothAdapter bluetoothAdapter;
-    private final Callback callback;
+    private Callback callback;
     private BluetoothSocket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -37,8 +39,18 @@ public class BluetoothService {
     private volatile boolean running = false;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-    public BluetoothService(Callback callback) {
+    private BluetoothService() {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    }
+
+    public static synchronized BluetoothService getInstance() {
+        if (instance == null) {
+            instance = new BluetoothService();
+        }
+        return instance;
+    }
+
+    public void setCallback(Callback callback) {
         this.callback = callback;
     }
 
@@ -65,12 +77,16 @@ public class BluetoothService {
                 outputStream = socket.getOutputStream();
                 running = true;
 
-                mainHandler.post(callback::onConnected);
+                mainHandler.post(() -> {
+                    if (callback != null) callback.onConnected();
+                });
 
                 startReading();
             } catch (IOException e) {
                 Log.e(TAG, "Connection failed", e);
-                mainHandler.post(() -> callback.onError("Ошибка подключения: " + e.getMessage()));
+                mainHandler.post(() -> {
+                    if (callback != null) callback.onError("Ошибка подключения: " + e.getMessage());
+                });
                 disconnect();
             }
         }).start();
@@ -102,8 +118,10 @@ public class BluetoothService {
                 } catch (IOException e) {
                     if (running) {
                         Log.e(TAG, "Read error", e);
-                        mainHandler.post(() -> callback.onError("Ошибка чтения: " + e.getMessage()));
-                        mainHandler.post(callback::onDisconnected);
+                        mainHandler.post(() -> {
+                            if (callback != null) callback.onError("Ошибка чтения: " + e.getMessage());
+                            if (callback != null) callback.onDisconnected();
+                        });
                     }
                     break;
                 }
@@ -119,7 +137,9 @@ public class BluetoothService {
             if (parts.length >= 2) {
                 double x = Double.parseDouble(parts[0].trim());
                 double z = Double.parseDouble(parts[1].trim());
-                mainHandler.post(() -> callback.onDataReceived(x, z));
+                mainHandler.post(() -> {
+                    if (callback != null) callback.onDataReceived(x, z);
+                });
             }
         } catch (NumberFormatException e) {
             Log.w(TAG, "Parse error: " + line);
@@ -155,7 +175,9 @@ public class BluetoothService {
             socket = null;
         }
 
-        mainHandler.post(callback::onDisconnected);
+        mainHandler.post(() -> {
+            if (callback != null) callback.onDisconnected();
+        });
     }
 
     public boolean isConnected() {

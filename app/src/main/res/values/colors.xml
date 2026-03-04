@@ -33,4 +33,7 @@
     <color name="status_connected">#FF00FF00</color>
     <color name="status_disconnected">#FFFF0000</color>
     <color name="status_connecting">#FFFFFF00</color>
+    
+    <!-- Disconnected state -->
+    <color name="coord_disconnected">#FF505050</color>
 </resources>

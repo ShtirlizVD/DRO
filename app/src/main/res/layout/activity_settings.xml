@@ -19,6 +19,60 @@
             android:background="@drawable/button_menu"
             android:layout_marginBottom="16dp" />
 
+        <!-- Device Connection -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Устройство Bluetooth"
+            android:textColor="@color/text_bright"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_device"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Не выбрано"
+                android:textColor="@color/text_dim"
+                android:textSize="14sp"
+                android:padding="8dp"
+                android:background="@color/button_bg" />
+
+            <Button
+                android:id="@+id/btn_disconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Откл."
+                android:textColor="@color/text_bright"
+                android:background="@drawable/button_menu"
+                android:layout_marginStart="8dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_select_device"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Выбрать устройство"
+            android:textColor="@color/text_bright"
+            android:background="@drawable/button_menu"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/button_border"
+            android:layout_marginVertical="8dp" />
+
         <!-- Resolution X -->
         <TextView
             android:layout_width="match_parent"
@@ -96,7 +150,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="20"
+                android:max="100"
                 android:progress="5" />
 
             <TextView

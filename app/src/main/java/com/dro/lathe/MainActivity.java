@@ -13,7 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private TextView labelX, labelD, labelZ, labelL;
     private TextView modeX;
     private TextView tvStatus, tvTool;
-    private Button btnConnect;
+    private Button btnConnectOverlay;
 
     // Data
     private DROData droData;
@@ -53,11 +52,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     // Connection
     private BluetoothService bluetoothService;
-
-    // Demo mode
-    private Handler demoHandler = new Handler();
-    private double demoX = 50, demoZ = 200, dirX = 1, dirZ = 1;
-    private boolean demoMode = true;
+    private boolean isConnected = false;
+    private String connectedDeviceName = "";
 
     // Settings
     private SharedPreferences prefs;
@@ -77,10 +73,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         loadSettings();
         setupColorPickers();
         checkPermissions();
-        startDemo();
         
         // Установить подсветку первого инструмента при старте
         selectTool(0);
+        
+        // Показать серые координаты при старте (не подключено)
+        updateConnectionState();
     }
 
     private void initViews() {
@@ -95,10 +93,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         modeX = findViewById(R.id.mode_x);
         tvStatus = findViewById(R.id.tv_status);
         tvTool = findViewById(R.id.tv_tool);
-        btnConnect = findViewById(R.id.btn_connect);
+        btnConnectOverlay = findViewById(R.id.btn_connect_overlay);
 
         // Button listeners
-        btnConnect.setOnClickListener(v -> onConnectClick());
+        btnConnectOverlay.setOnClickListener(v -> onConnectClick());
         findViewById(R.id.btn_zero_x).setOnClickListener(v -> onZeroX());
         findViewById(R.id.btn_zero_z).setOnClickListener(v -> onZeroZ());
         findViewById(R.id.btn_set_d).setOnClickListener(v -> onSetDiameter());
@@ -184,18 +182,23 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
 
     private void applyColors() {
-        valueX.setTextColor(coordColors[0]);
-        labelX.setTextColor(coordColors[0]);
-        modeX.setTextColor(coordColors[0]);
+        int colorX = isConnected ? coordColors[0] : ContextCompat.getColor(this, R.color.coord_disconnected);
+        int colorD = isConnected ? coordColors[1] : ContextCompat.getColor(this, R.color.coord_disconnected);
+        int colorZ = isConnected ? coordColors[2] : ContextCompat.getColor(this, R.color.coord_disconnected);
+        int colorL = isConnected ? coordColors[3] : ContextCompat.getColor(this, R.color.coord_disconnected);
 
-        valueD.setTextColor(coordColors[1]);
-        labelD.setTextColor(coordColors[1]);
+        valueX.setTextColor(colorX);
+        labelX.setTextColor(colorX);
+        modeX.setTextColor(colorX);
 
-        valueZ.setTextColor(coordColors[2]);
-        labelZ.setTextColor(coordColors[2]);
+        valueD.setTextColor(colorD);
+        labelD.setTextColor(colorD);
 
-        valueL.setTextColor(coordColors[3]);
-        labelL.setTextColor(coordColors[3]);
+        valueZ.setTextColor(colorZ);
+        labelZ.setTextColor(colorZ);
+
+        valueL.setTextColor(colorL);
+        labelL.setTextColor(colorL);
     }
 
     private void setupColorPickers() {
@@ -253,40 +256,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
-    private void startDemo() {
-        demoHandler.postDelayed(demoRunnable, 200);
-    }
-
-    private Runnable demoRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (demoMode) {
-                updateDemo();
-            }
-            demoHandler.postDelayed(this, 200);
-        }
-    };
-
-    private void updateDemo() {
-        if (Math.random() < 0.03) dirX *= -1;
-        if (Math.random() < 0.03) dirZ *= -1;
-
-        demoX += dirX * (0.03 + Math.random() * 0.07);
-        demoZ += dirZ * (0.08 + Math.random() * 0.15);
-
-        demoX = Math.max(0, Math.min(85, demoX));
-        demoZ = Math.max(0, Math.min(800, demoZ));
-
-        if (demoX <= 0 || demoX >= 85) dirX *= -1;
-        if (demoZ <= 0 || demoZ >= 800) dirZ *= -1;
-
-        onDataReceived(demoX, demoZ);
-    }
-
     private void onConnectClick() {
         if (bluetoothService.isConnected()) {
             bluetoothService.disconnect();
-            demoMode = true;
             return;
         }
 
@@ -309,7 +281,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         new AlertDialog.Builder(this)
                 .setTitle(R.string.select_device)
                 .setItems(names, (dialog, which) -> {
-                    bluetoothService.connect(deviceArray[which]);
+                    BluetoothDevice device = deviceArray[which];
+                    connectedDeviceName = device.getName();
+                    bluetoothService.connect(device);
                 })
                 .show();
     }
@@ -517,24 +491,37 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
-    @Override
-    public void onConnected() {
+    private void updateConnectionState() {
         runOnUiThread(() -> {
-            demoMode = false;
-            tvStatus.setText("BT");
-            tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_connected));
-            btnConnect.setText(R.string.disconnect);
+            if (isConnected) {
+                btnConnectOverlay.setVisibility(View.GONE);
+                tvStatus.setText(connectedDeviceName.isEmpty() ? "BT" : connectedDeviceName);
+                tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_connected));
+            } else {
+                btnConnectOverlay.setVisibility(View.VISIBLE);
+                tvStatus.setText(R.string.disconnected);
+                tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_disconnected));
+            }
+            applyColors();
         });
     }
 
     @Override
+    public void onConnected() {
+        isConnected = true;
+        // Сохраняем имя устройства
+        prefs.edit()
+                .putString("last_device_name", connectedDeviceName)
+                .putBoolean("connected", true)
+                .apply();
+        updateConnectionState();
+    }
+
+    @Override
     public void onDisconnected() {
-        runOnUiThread(() -> {
-            demoMode = true;
-            tvStatus.setText("Демо");
-            tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_disconnected));
-            btnConnect.setText(R.string.connect);
-        });
+        isConnected = false;
+        prefs.edit().putBoolean("connected", false).apply();
+        updateConnectionState();
     }
 
     @Override
@@ -558,6 +545,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         loadSettings();
         loadMarkers();
         updateDisplay();
+        updateConnectionState();
     }
 
     private void loadMarkers() {
@@ -568,7 +556,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        demoHandler.removeCallbacks(demoRunnable);
         if (bluetoothService != null) {
             bluetoothService.disconnect();
         }
