@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,6 +12,10 @@ import androidx.core.content.ContextCompat;
 
 /**
  * Custom view для визуализации измерения угла
+ *
+ * Система координат токарного станка:
+ * - Ось Z горизонтальная (вдоль шпинделя, вправо - положительная)
+ * - Ось X вертикальная (поперечная, вверх - положительная)
  */
 public class AngleView extends View {
 
@@ -25,6 +28,7 @@ public class AngleView extends View {
     private Paint paintAngleArc;    // Дуга угла
     private Paint paintAngleText;   // Текст угла
     private Paint paintLabels;      // Подписи
+    private Paint paintGrid;        // Сетка
 
     // Data
     private double startX = Double.NaN, startZ = Double.NaN;
@@ -34,12 +38,13 @@ public class AngleView extends View {
     private double distance = 0;
 
     // Scale and offset for drawing
-    private float scale = 1.0f;
-    private float offsetX = 0, offsetY = 0;
-    private float centerX, centerY;  // Center of the view (represents Z axis)
+    private float scale = 10.0f;
+
+    // Origin point (where Z axis starts from left side)
+    private float originX, originY;
 
     // View dimensions
-    private int viewWidth, viewHeight;
+    private int viewWidth = 1, viewHeight = 1;
 
     public AngleView(Context context) {
         super(context);
@@ -62,7 +67,7 @@ public class AngleView extends View {
         paintAxis.setColor(ContextCompat.getColor(context, R.color.text_dim));
         paintAxis.setStrokeWidth(2);
         paintAxis.setStyle(Paint.Style.STROKE);
-        paintAxis.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
+        paintAxis.setPathEffect(new DashPathEffect(new float[]{15, 10}, 0));
 
         // Start point paint
         paintStartPoint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -88,61 +93,74 @@ public class AngleView extends View {
         // Angle arc paint
         paintAngleArc = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAngleArc.setColor(ContextCompat.getColor(context, R.color.coord_l));
-        paintAngleArc.setStrokeWidth(2);
+        paintAngleArc.setStrokeWidth(3);
         paintAngleArc.setStyle(Paint.Style.STROKE);
 
         // Angle text paint
         paintAngleText = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAngleText.setColor(ContextCompat.getColor(context, R.color.coord_l));
-        paintAngleText.setTextSize(64);
+        paintAngleText.setTextSize(48);
         paintAngleText.setTextAlign(Paint.Align.CENTER);
         paintAngleText.setFakeBoldText(true);
 
         // Labels paint
         paintLabels = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintLabels.setColor(ContextCompat.getColor(context, R.color.text_bright));
-        paintLabels.setTextSize(24);
+        paintLabels.setTextSize(20);
         paintLabels.setTextAlign(Paint.Align.CENTER);
+
+        // Grid paint
+        paintGrid = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintGrid.setColor(ContextCompat.getColor(context, R.color.button_border));
+        paintGrid.setStrokeWidth(1);
+        paintGrid.setAlpha(80);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        viewWidth = w;
-        viewHeight = h;
-        centerX = w / 2f;
-        centerY = h / 2f;
+        viewWidth = Math.max(w, 1);
+        viewHeight = Math.max(h, 1);
+        // Origin is at left-center (Z starts from left)
+        originX = 50;
+        originY = viewHeight / 2f;
         calculateScale();
     }
 
     private void calculateScale() {
+        if (viewWidth <= 1 || viewHeight <= 1) {
+            scale = 10;
+            return;
+        }
+
         if (Double.isNaN(startX) || Double.isNaN(startZ)) {
-            scale = 10; // Default scale in mm
+            scale = 10; // Default scale
             return;
         }
 
         // Calculate scale based on the range of values
-        double minX = Double.isNaN(endX) ? Math.min(startX, currentX) : Math.min(startX, endX);
-        double maxX = Double.isNaN(endX) ? Math.max(startX, currentX) : Math.max(startX, endX);
-        double minZ = Double.isNaN(endZ) ? Math.min(startZ, currentZ) : Math.min(startZ, endZ);
-        double maxZ = Double.isNaN(endZ) ? Math.max(startZ, currentZ) : Math.max(startZ, endZ);
+        double minX = Double.isNaN(endX) ? Math.min(startX, currentX) : Math.min(startX, Math.min(endX, currentX));
+        double maxX = Double.isNaN(endX) ? Math.max(startX, currentX) : Math.max(startX, Math.max(endX, currentX));
+        double minZ = Double.isNaN(endZ) ? Math.min(startZ, currentZ) : Math.min(startZ, Math.min(endZ, currentZ));
+        double maxZ = Double.isNaN(endZ) ? Math.max(startZ, currentZ) : Math.max(startZ, Math.max(endZ, currentZ));
 
-        double rangeX = maxX - minX;
-        double rangeZ = maxZ - minZ;
+        double rangeX = Math.abs(maxX - minX);
+        double rangeZ = Math.abs(maxZ - minZ);
         double maxRange = Math.max(rangeX, rangeZ);
 
         // Ensure minimum range
-        maxRange = Math.max(maxRange, 10);
+        maxRange = Math.max(maxRange, 20);
 
-        // Scale to fit 80% of view
-        float availableWidth = viewWidth * 0.8f;
-        float availableHeight = viewHeight * 0.8f;
+        // Scale to fit 70% of view
+        float availableWidth = viewWidth * 0.7f;
+        float availableHeight = viewHeight * 0.7f;
         float availableSize = Math.min(availableWidth, availableHeight);
 
         scale = availableSize / (float) maxRange;
 
-        // Ensure minimum scale
+        // Clamp scale
         scale = Math.max(scale, 1);
+        scale = Math.min(scale, 50);
     }
 
     public void setStartPoint(double x, double z) {
@@ -205,45 +223,62 @@ public class AngleView extends View {
             angle = 0;
         } else {
             // atan2 gives angle from positive Z axis
-            // We want angle relative to Z axis, always positive
             angle = Math.abs(Math.toDegrees(Math.atan2(deltaX, deltaZ)));
         }
+    }
+
+    /**
+     * Convert machine coordinates to screen coordinates
+     * Z axis: horizontal (left to right)
+     * X axis: vertical (up is positive)
+     */
+    private float toScreenX(double z) {
+        return originX + (float) (z * scale);
+    }
+
+    private float toScreenY(double x) {
+        return originY - (float) (x * scale);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if (viewWidth <= 1 || viewHeight <= 1) return;
+
         // Draw background
         canvas.drawColor(ContextCompat.getColor(getContext(), R.color.bg_darker));
 
-        // Draw Z axis (dashed vertical line)
-        canvas.drawLine(centerX, 0, centerX, viewHeight, paintAxis);
+        // Draw grid
+        drawGrid(canvas);
+
+        // Draw Z axis (horizontal dashed line through origin)
+        canvas.drawLine(0, originY, viewWidth, originY, paintAxis);
 
         // Draw axis labels
         paintLabels.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("Z+", viewWidth - 40, centerY - 10, paintLabels);
-        paintLabels.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("X+", centerX + 10, 30, paintLabels);
-
-        // Draw reference lines (grid)
-        drawGrid(canvas);
+        canvas.drawText("Z+", viewWidth - 40, originY - 10, paintLabels);
+        paintLabels.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("X+", originX + 10, 30, paintLabels);
+        canvas.drawText("X-", originX + 10, viewHeight - 15, paintLabels);
 
         // Draw start point
         if (!Double.isNaN(startX) && !Double.isNaN(startZ)) {
-            float sx = centerX + (float) (startX * scale);
-            float sy = centerY - (float) (startZ * scale);
+            float sx = toScreenX(startZ);
+            float sy = toScreenY(startX);
 
-            canvas.drawCircle(sx, sy, 12, paintStartPoint);
-            canvas.drawText("S", sx + 20, sy + 5, paintLabels);
+            canvas.drawCircle(sx, sy, 14, paintStartPoint);
+            paintLabels.setTextAlign(Paint.Align.LEFT);
+            canvas.drawText("S", sx + 18, sy + 6, paintLabels);
 
             // Draw line to current position if end point not set
             if (Double.isNaN(endX)) {
-                float cx = centerX + (float) (currentX * scale);
-                float cy = centerY - (float) (currentZ * scale);
+                float cx = toScreenX(currentZ);
+                float cy = toScreenY(currentX);
 
                 // Draw line
                 paintLine.setColor(ContextCompat.getColor(getContext(), R.color.yellow));
+                paintLine.setStrokeWidth(2);
                 canvas.drawLine(sx, sy, cx, cy, paintLine);
 
                 // Draw current position
@@ -257,21 +292,21 @@ public class AngleView extends View {
         }
 
         // Draw end point and angle
-        if (!Double.isNaN(endX) && !Double.isNaN(endZ)) {
-            float sx = centerX + (float) (startX * scale);
-            float sy = centerY - (float) (startZ * scale);
-            float ex = centerX + (float) (endX * scale);
-            float ey = centerY - (float) (endZ * scale);
+        if (!Double.isNaN(endX) && !Double.isNaN(endZ) && !Double.isNaN(startX)) {
+            float sx = toScreenX(startZ);
+            float sy = toScreenY(startX);
+            float ex = toScreenX(endZ);
+            float ey = toScreenY(endX);
 
             // Draw line from start to end
             paintLine.setColor(ContextCompat.getColor(getContext(), R.color.coord_d));
             paintLine.setStrokeWidth(4);
             canvas.drawLine(sx, sy, ex, ey, paintLine);
-            paintLine.setStrokeWidth(3);
 
             // Draw end point
-            canvas.drawCircle(ex, ey, 12, paintEndPoint);
-            canvas.drawText("E", ex + 20, ey + 5, paintLabels);
+            canvas.drawCircle(ex, ey, 14, paintEndPoint);
+            paintLabels.setTextAlign(Paint.Align.LEFT);
+            canvas.drawText("E", ex + 18, ey + 6, paintLabels);
 
             // Draw angle arc and value
             drawAngleDisplay(canvas, sx, sy, angle, false);
@@ -279,27 +314,23 @@ public class AngleView extends View {
     }
 
     private void drawGrid(Canvas canvas) {
-        Paint paintGrid = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintGrid.setColor(ContextCompat.getColor(getContext(), R.color.button_border));
-        paintGrid.setStrokeWidth(1);
-        paintGrid.setAlpha(100);
-
         // Draw grid lines every 10mm (scaled)
         float gridStep = 10 * scale;
+        if (gridStep < 20) gridStep = 20; // Minimum step
 
-        // Vertical lines
-        for (float x = centerX; x < viewWidth; x += gridStep) {
+        // Vertical lines (Z axis direction)
+        for (float x = originX; x < viewWidth; x += gridStep) {
             canvas.drawLine(x, 0, x, viewHeight, paintGrid);
         }
-        for (float x = centerX; x > 0; x -= gridStep) {
+        for (float x = originX; x > 0; x -= gridStep) {
             canvas.drawLine(x, 0, x, viewHeight, paintGrid);
         }
 
-        // Horizontal lines
-        for (float y = centerY; y < viewHeight; y += gridStep) {
+        // Horizontal lines (X axis direction)
+        for (float y = originY; y < viewHeight; y += gridStep) {
             canvas.drawLine(0, y, viewWidth, y, paintGrid);
         }
-        for (float y = centerY; y > 0; y -= gridStep) {
+        for (float y = originY; y > 0; y -= gridStep) {
             canvas.drawLine(0, y, viewWidth, y, paintGrid);
         }
     }
@@ -307,51 +338,75 @@ public class AngleView extends View {
     private void drawAngleDisplay(Canvas canvas, float sx, float sy, double angleValue, boolean isPreview) {
         if (Double.isNaN(angleValue)) return;
 
-        // Draw angle arc
-        float arcRadius = 60;
+        // Draw angle arc around start point
+        float arcRadius = 50;
 
-        // Angle from Z axis (vertical up)
-        float startAngle = -90; // Z axis points up
+        // Calculate arc angles
+        // Z axis is horizontal to the right (0 degrees in canvas = right, 90 = down)
+        // We want angle from Z axis (horizontal right)
+        // X positive is up, so angle from Z to point
 
-        // The measured angle
-        float sweepAngle = (float) -angleValue;
+        double endAngle;
+        if (!Double.isNaN(endX)) {
+            endAngle = Math.toDegrees(Math.atan2(-(endX - startX), endZ - startZ));
+        } else {
+            endAngle = Math.toDegrees(Math.atan2(-(currentX - startX), currentZ - startZ));
+        }
 
-        // Determine which side to draw arc
+        // Draw arc from Z axis (0 degrees) to the measured angle
+        RectF arcRect = new RectF(sx - arcRadius, sy - arcRadius, sx + arcRadius, sy + arcRadius);
+
+        // Arc starts from Z axis (0 = right direction on canvas)
+        // Sweep angle is the measured angle
+        float sweepAngle = (float) angleValue;
+
+        // Determine direction of arc based on which side the end point is
         if (!Double.isNaN(endX) && endX < startX) {
-            // End point is to the left of start point - draw arc on left
-            sweepAngle = (float) angleValue;
+            // End point has smaller X (higher on screen) - arc goes up
+            sweepAngle = -(float) angleValue;
         } else if (Double.isNaN(endX) && currentX < startX) {
-            // Current position is to the left - draw arc on left
+            sweepAngle = -(float) angleValue;
+        } else {
             sweepAngle = (float) angleValue;
         }
 
-        RectF arcRect = new RectF(sx - arcRadius, sy - arcRadius, sx + arcRadius, sy + arcRadius);
-        canvas.drawArc(arcRect, startAngle, sweepAngle, false, paintAngleArc);
+        canvas.drawArc(arcRect, 0, sweepAngle, false, paintAngleArc);
 
-        // Draw angle text in corner
+        // Draw angle text in upper right corner
         paintAngleText.setColor(isPreview ?
                 ContextCompat.getColor(getContext(), R.color.yellow) :
                 ContextCompat.getColor(getContext(), R.color.coord_l));
 
         String angleText = String.format("%.2f°", angleValue);
-        float textX = viewWidth - 120;
-        float textY = 80;
+        float textX = viewWidth - 100;
+        float textY = 70;
 
         // Background for text
         Paint bgPaint = new Paint();
-        bgPaint.setColor(ContextCompat.getColor(getContext(), R.color.bg_darker));
-        bgPaint.setAlpha(200);
-        canvas.drawRoundRect(textX - 100, textY - 50, textX + 100, textY + 30, 10, 10, bgPaint);
+        bgPaint.setColor(ContextCompat.getColor(getContext(), R.color.bg_dark));
+        bgPaint.setAlpha(220);
+        float boxLeft = textX - 80;
+        float boxTop = textY - 45;
+        float boxRight = textX + 80;
+        float boxBottom = textY + 50;
+        canvas.drawRoundRect(boxLeft, boxTop, boxRight, boxBottom, 10, 10, bgPaint);
+
+        // Draw border
+        Paint borderPaint = new Paint();
+        borderPaint.setColor(ContextCompat.getColor(getContext(), R.color.button_border));
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setStrokeWidth(2);
+        canvas.drawRoundRect(boxLeft, boxTop, boxRight, boxBottom, 10, 10, borderPaint);
 
         // Label
         paintLabels.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Угол к Z:", textX, textY - 20, paintLabels);
+        canvas.drawText("Угол к Z:", textX, textY - 15, paintLabels);
         canvas.drawText(angleText, textX, textY + 25, paintAngleText);
 
         // Draw distance if available
         if (distance > 0) {
             String distText = String.format("L: %.2f мм", distance);
-            canvas.drawText(distText, textX, textY + 60, paintLabels);
+            canvas.drawText(distText, textX, textY + 50, paintLabels);
         }
     }
 }
