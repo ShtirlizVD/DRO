@@ -144,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     private void initData() {
         droData = new DROData();
-        bluetoothService = new BluetoothService(this);
+        bluetoothService = BluetoothService.getInstance();
+        bluetoothService.setCallback(this);
         prefs = getSharedPreferences("DRO_PREFS", MODE_PRIVATE);
 
         for (int i = 0; i < 4; i++) {
