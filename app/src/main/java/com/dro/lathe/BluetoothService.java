@@ -3,7 +3,6 @@ package com.dro.lathe;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -15,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Bluetooth service for HC-06 connection - Singleton
+ * Bluetooth service for HC-06 connection
  */
 public class BluetoothService {
     private static final String TAG = "BluetoothService";
@@ -28,10 +27,8 @@ public class BluetoothService {
         void onDataReceived(double x, double z);
     }
 
-    private static BluetoothService instance;
-
     private final BluetoothAdapter bluetoothAdapter;
-    private Callback callback;
+    private final Callback callback;
     private BluetoothSocket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -39,18 +36,8 @@ public class BluetoothService {
     private volatile boolean running = false;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-    private BluetoothService() {
+    public BluetoothService(Callback callback) {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    }
-
-    public static synchronized BluetoothService getInstance() {
-        if (instance == null) {
-            instance = new BluetoothService();
-        }
-        return instance;
-    }
-
-    public void setCallback(Callback callback) {
         this.callback = callback;
     }
 
@@ -77,16 +64,12 @@ public class BluetoothService {
                 outputStream = socket.getOutputStream();
                 running = true;
 
-                mainHandler.post(() -> {
-                    if (callback != null) callback.onConnected();
-                });
+                mainHandler.post(callback::onConnected);
 
                 startReading();
             } catch (IOException e) {
                 Log.e(TAG, "Connection failed", e);
-                mainHandler.post(() -> {
-                    if (callback != null) callback.onError("Ошибка подключения: " + e.getMessage());
-                });
+                mainHandler.post(() -> callback.onError("Ошибка подключения: " + e.getMessage()));
                 disconnect();
             }
         }).start();
@@ -118,10 +101,8 @@ public class BluetoothService {
                 } catch (IOException e) {
                     if (running) {
                         Log.e(TAG, "Read error", e);
-                        mainHandler.post(() -> {
-                            if (callback != null) callback.onError("Ошибка чтения: " + e.getMessage());
-                            if (callback != null) callback.onDisconnected();
-                        });
+                        mainHandler.post(() -> callback.onError("Ошибка чтения: " + e.getMessage()));
+                        mainHandler.post(callback::onDisconnected);
                     }
                     break;
                 }
@@ -137,9 +118,7 @@ public class BluetoothService {
             if (parts.length >= 2) {
                 double x = Double.parseDouble(parts[0].trim());
                 double z = Double.parseDouble(parts[1].trim());
-                mainHandler.post(() -> {
-                    if (callback != null) callback.onDataReceived(x, z);
-                });
+                mainHandler.post(() -> callback.onDataReceived(x, z));
             }
         } catch (NumberFormatException e) {
             Log.w(TAG, "Parse error: " + line);
@@ -175,9 +154,7 @@ public class BluetoothService {
             socket = null;
         }
 
-        mainHandler.post(() -> {
-            if (callback != null) callback.onDisconnected();
-        });
+        mainHandler.post(callback::onDisconnected);
     }
 
     public boolean isConnected() {
@@ -186,51 +163,28 @@ public class BluetoothService {
 
     // === Двусторонняя связь (для будущего использования) ===
 
-    /**
-     * Отправить строку на устройство
-     */
     public boolean send(String data) {
         if (socket == null || !socket.isConnected() || outputStream == null) {
-            Log.w(TAG, "Cannot send - not connected");
             return false;
         }
-
         try {
             outputStream.write(data.getBytes());
             outputStream.flush();
-            Log.d(TAG, "Sent: " + data.trim());
             return true;
         } catch (IOException e) {
-            Log.e(TAG, "Send failed", e);
             return false;
         }
     }
 
-    /**
-     * Отправить команду обнуления X
-     */
     public boolean sendZeroX() {
         return send("ZERO_X\n");
     }
 
-    /**
-     * Отправить команду обнуления Z
-     */
     public boolean sendZeroZ() {
         return send("ZERO_Z\n");
     }
 
-    /**
-     * Отправить команду обнуления обоих осей
-     */
     public boolean sendZeroAll() {
         return send("ZERO_ALL\n");
-    }
-
-    /**
-     * Отправить произвольную команду
-     */
-    public boolean sendCommand(String command) {
-        return send(command + "\n");
     }
 }
