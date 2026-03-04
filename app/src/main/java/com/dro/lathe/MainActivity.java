@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private StrokeTextView valueX, valueD, valueZ, valueL;
     private TextView labelX, labelD, labelZ, labelL;
     private TextView modeX;
-    private TextView tvStatus, tvTool;
     private Button btnConnectOverlay;
 
     // Data
@@ -91,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         labelZ = findViewById(R.id.label_z);
         labelL = findViewById(R.id.label_l);
         modeX = findViewById(R.id.mode_x);
-        tvStatus = findViewById(R.id.tv_status);
-        tvTool = findViewById(R.id.tv_tool);
         btnConnectOverlay = findViewById(R.id.btn_connect_overlay);
 
         // Button listeners
@@ -311,7 +308,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         droData.setOffsetZ(tools[index].getOffsetZ());
         droData.setOffsetL(tools[index].getOffsetL());
 
-        tvTool.setText("Инстр. " + (index + 1));
         updateDisplay();
     }
 
@@ -495,12 +491,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         runOnUiThread(() -> {
             if (isConnected) {
                 btnConnectOverlay.setVisibility(View.GONE);
-                tvStatus.setText(connectedDeviceName.isEmpty() ? "BT" : connectedDeviceName);
-                tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_connected));
             } else {
                 btnConnectOverlay.setVisibility(View.VISIBLE);
-                tvStatus.setText(R.string.disconnected);
-                tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_disconnected));
             }
             applyColors();
         });

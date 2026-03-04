@@ -263,42 +263,12 @@
                     android:textColor="@color/text_bright" />
             </LinearLayout>
 
-            <!-- Status -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="4dp"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:id="@+id/tv_tool"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Инстр. 1"
-                    android:textColor="@color/text_bright"
-                    android:textSize="14sp"
-                    android:background="@drawable/button_menu"
-                    android:padding="6dp"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:id="@+id/tv_status"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/disconnected"
-                    android:textColor="@color/status_disconnected"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
             <!-- Menu Buttons -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/button_border"
-                android:layout_marginVertical="10dp" />
+                android:layout_marginTop="10dp" />
 
             <Button
                 android:id="@+id/btn_markers"
