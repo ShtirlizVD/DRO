@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         // Показать серые координаты при старте (не подключено)
         updateConnectionState();
+        
+        // Автоматическое подключение
+        tryAutoConnect();
     }
 
     private void initViews() {
@@ -282,6 +285,31 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
 
         Toast.makeText(this, "Устройство не найдено", Toast.LENGTH_SHORT).show();
+    }
+
+    private void tryAutoConnect() {
+        String lastDeviceAddr = prefs.getString("last_device", "");
+        if (lastDeviceAddr.isEmpty()) {
+            return; // Нет сохранённого устройства
+        }
+
+        // Небольшая задержка перед подключением
+        new android.os.Handler().postDelayed(() -> {
+            if (bluetoothService == null || bluetoothService.isConnected()) {
+                return;
+            }
+
+            Set<BluetoothDevice> devices = bluetoothService.getPairedDevices();
+            if (devices == null) return;
+
+            for (BluetoothDevice device : devices) {
+                if (device.getAddress().equals(lastDeviceAddr)) {
+                    connectedDeviceName = device.getName();
+                    bluetoothService.connect(device);
+                    return;
+                }
+            }
+        }, 1000);
     }
 
     private void selectTool(int index) {
