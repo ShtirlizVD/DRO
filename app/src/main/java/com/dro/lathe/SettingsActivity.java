@@ -1,14 +1,21 @@
 package com.dro.lathe;
 
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -18,6 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch switchSound;
     private SeekBar seekProximity;
     private TextView tvProximity, tvDevice;
+    private Button btnSelectDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +45,12 @@ public class SettingsActivity extends AppCompatActivity {
         seekProximity = findViewById(R.id.seek_proximity);
         tvProximity = findViewById(R.id.tv_proximity);
         tvDevice = findViewById(R.id.tv_device);
+        btnSelectDevice = findViewById(R.id.btn_select_device);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
+        // Select device button
+        btnSelectDevice.setOnClickListener(v -> showDeviceDialog());
 
         // Resolution spinners
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -91,6 +103,49 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void showDeviceDialog() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth не поддерживается", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!bluetoothAdapter.isEnabled()) {
+            Toast.makeText(this, "Bluetooth выключен", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
+        if (devices == null || devices.isEmpty()) {
+            Toast.makeText(this, R.string.no_paired_devices, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final BluetoothDevice[] deviceArray = devices.toArray(new BluetoothDevice[0]);
+        String[] names = new String[deviceArray.length];
+        for (int i = 0; i < deviceArray.length; i++) {
+            names[i] = deviceArray[i].getName() + "\n" + deviceArray[i].getAddress();
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.select_device)
+                .setItems(names, (dialog, which) -> {
+                    BluetoothDevice device = deviceArray[which];
+                    String deviceName = device.getName();
+                    String deviceAddr = device.getAddress();
+
+                    // Сохраняем устройство
+                    prefs.edit()
+                            .putString("last_device", deviceAddr)
+                            .putString("last_device_name", deviceName)
+                            .apply();
+
+                    updateDeviceDisplay(deviceName, deviceAddr);
+                    Toast.makeText(this, "Устройство сохранено", Toast.LENGTH_SHORT).show();
+                })
+                .show();
+    }
+
     private void loadSettings() {
         // Resolution X
         float resX = prefs.getFloat("resolution_x", 0.005f);
@@ -113,8 +168,12 @@ public class SettingsActivity extends AppCompatActivity {
         // Device info
         String deviceAddr = prefs.getString("last_device", "");
         String deviceName = prefs.getString("last_device_name", "");
-        if (!deviceAddr.isEmpty()) {
-            tvDevice.setText((deviceName.isEmpty() ? "DRO" : deviceName) + "\n" + deviceAddr);
+        updateDeviceDisplay(deviceName, deviceAddr);
+    }
+
+    private void updateDeviceDisplay(String name, String address) {
+        if (!address.isEmpty()) {
+            tvDevice.setText((name.isEmpty() ? "DRO" : name) + "\n" + address);
             tvDevice.setTextColor(0xFF00FF00);
         } else {
             tvDevice.setText("Не выбрано");

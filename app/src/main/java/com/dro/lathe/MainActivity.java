@@ -1,7 +1,6 @@
 package com.dro.lathe;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -259,30 +258,29 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
             return;
         }
 
-        showBluetoothDialog();
-    }
-
-    private void showBluetoothDialog() {
-        Set<BluetoothDevice> devices = bluetoothService.getPairedDevices();
-        if (devices == null || devices.isEmpty()) {
-            Toast.makeText(this, R.string.no_paired_devices, Toast.LENGTH_SHORT).show();
+        // Подключаемся к сохранённому устройству
+        String lastDeviceAddr = prefs.getString("last_device", "");
+        if (lastDeviceAddr.isEmpty()) {
+            Toast.makeText(this, "Выберите устройство в настройках", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final BluetoothDevice[] deviceArray = devices.toArray(new BluetoothDevice[0]);
-        String[] names = new String[deviceArray.length];
-        for (int i = 0; i < deviceArray.length; i++) {
-            names[i] = deviceArray[i].getName() + "\n" + deviceArray[i].getAddress();
+        // Ищем устройство по адресу
+        Set<BluetoothDevice> devices = bluetoothService.getPairedDevices();
+        if (devices == null) {
+            Toast.makeText(this, "Bluetooth недоступен", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.select_device)
-                .setItems(names, (dialog, which) -> {
-                    BluetoothDevice device = deviceArray[which];
-                    connectedDeviceName = device.getName();
-                    bluetoothService.connect(device);
-                })
-                .show();
+        for (BluetoothDevice device : devices) {
+            if (device.getAddress().equals(lastDeviceAddr)) {
+                connectedDeviceName = device.getName();
+                bluetoothService.connect(device);
+                return;
+            }
+        }
+
+        Toast.makeText(this, "Устройство не найдено", Toast.LENGTH_SHORT).show();
     }
 
     private void selectTool(int index) {
