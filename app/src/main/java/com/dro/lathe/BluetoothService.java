@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ public class BluetoothService {
     private final Callback callback;
     private BluetoothSocket socket;
     private InputStream inputStream;
+    private OutputStream outputStream;
     private Thread readThread;
     private volatile boolean running = false;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -60,6 +62,7 @@ public class BluetoothService {
                 socket = device.createRfcommSocketToServiceRecord(SPP_UUID);
                 socket.connect();
                 inputStream = socket.getInputStream();
+                outputStream = socket.getOutputStream();
                 running = true;
 
                 mainHandler.post(callback::onConnected);
@@ -138,6 +141,13 @@ public class BluetoothService {
             inputStream = null;
         }
 
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException ignored) {}
+            outputStream = null;
+        }
+
         if (socket != null) {
             try {
                 socket.close();
@@ -150,5 +160,55 @@ public class BluetoothService {
 
     public boolean isConnected() {
         return socket != null && socket.isConnected();
+    }
+
+    // === Двусторонняя связь (для будущего использования) ===
+
+    /**
+     * Отправить строку на устройство
+     */
+    public boolean send(String data) {
+        if (socket == null || !socket.isConnected() || outputStream == null) {
+            Log.w(TAG, "Cannot send - not connected");
+            return false;
+        }
+
+        try {
+            outputStream.write(data.getBytes());
+            outputStream.flush();
+            Log.d(TAG, "Sent: " + data.trim());
+            return true;
+        } catch (IOException e) {
+            Log.e(TAG, "Send failed", e);
+            return false;
+        }
+    }
+
+    /**
+     * Отправить команду обнуления X
+     */
+    public boolean sendZeroX() {
+        return send("ZERO_X\n");
+    }
+
+    /**
+     * Отправить команду обнуления Z
+     */
+    public boolean sendZeroZ() {
+        return send("ZERO_Z\n");
+    }
+
+    /**
+     * Отправить команду обнуления обоих осей
+     */
+    public boolean sendZeroAll() {
+        return send("ZERO_ALL\n");
+    }
+
+    /**
+     * Отправить произвольную команду
+     */
+    public boolean sendCommand(String command) {
+        return send(command + "\n");
     }
 }
