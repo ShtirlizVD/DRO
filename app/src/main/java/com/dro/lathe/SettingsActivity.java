@@ -11,6 +11,7 @@ import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -26,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences prefs;
 
     private Spinner spinnerResolutionX, spinnerResolutionZ;
+    private CheckBox cbInvertX, cbInvertZ;
     private Switch switchSound;
     private SeekBar seekProximity;
     private TextView tvProximity, tvDevice;
@@ -48,6 +50,8 @@ public class SettingsActivity extends AppCompatActivity {
     private void initViews() {
         spinnerResolutionX = findViewById(R.id.spinner_resolution_x);
         spinnerResolutionZ = findViewById(R.id.spinner_resolution_z);
+        cbInvertX = findViewById(R.id.cb_invert_x);
+        cbInvertZ = findViewById(R.id.cb_invert_z);
         switchSound = findViewById(R.id.switch_sound);
         seekProximity = findViewById(R.id.seek_proximity);
         tvProximity = findViewById(R.id.tv_proximity);
@@ -91,6 +95,15 @@ public class SettingsActivity extends AppCompatActivity {
         // Sound
         switchSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             prefs.edit().putBoolean("sound", isChecked).apply();
+        });
+
+        // Invert checkboxes
+        cbInvertX.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            prefs.edit().putBoolean("invert_x", isChecked).apply();
+        });
+
+        cbInvertZ.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            prefs.edit().putBoolean("invert_z", isChecked).apply();
         });
 
         // Proximity
@@ -166,6 +179,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Sound
         switchSound.setChecked(prefs.getBoolean("sound", true));
+
+        // Invert
+        cbInvertX.setChecked(prefs.getBoolean("invert_x", false));
+        cbInvertZ.setChecked(prefs.getBoolean("invert_z", false));
 
         // Proximity
         int proximity = (int) prefs.getFloat("proximity_distance", 5.0f);

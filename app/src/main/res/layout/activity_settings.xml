@@ -60,33 +60,67 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Разрешение линейки X (поперечная)"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/coord_x"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/spinner_resolution_x"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            android:background="@color/button_bg" />
+            android:gravity="center_vertical">
+
+            <Spinner
+                android:id="@+id/spinner_resolution_x"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/button_bg" />
+
+            <CheckBox
+                android:id="@+id/cb_invert_x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Инверсия"
+                android:textColor="@color/text_bright"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <!-- Resolution Z -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Разрешение линейки Z (продольная)"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/coord_x"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp" />
 
-        <Spinner
-            android:id="@+id/spinner_resolution_z"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            android:background="@color/button_bg" />
+            android:gravity="center_vertical">
+
+            <Spinner
+                android:id="@+id/spinner_resolution_z"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/button_bg" />
+
+            <CheckBox
+                android:id="@+id/cb_invert_z"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Инверсия"
+                android:textColor="@color/text_bright"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <!-- Sound -->
         <LinearLayout

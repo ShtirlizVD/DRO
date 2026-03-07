@@ -290,9 +290,9 @@ public class AngleView extends View {
         return originX + (float) (z * scale);
     }
 
-    // Convert X coordinate to screen Y (vertical, inverted because screen Y goes down)
+    // Convert X coordinate to screen Y (vertical, inverted: positive X = down on screen)
     private float toScreenY(double x) {
-        return originY - (float) (x * scale);
+        return originY + (float) (x * scale);
     }
 
     @Override
@@ -317,8 +317,8 @@ public class AngleView extends View {
         canvas.drawText("Z-", 15, originY - 10, paintLabels);
         
         paintLabels.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("X+", originX + 10, 25, paintLabels);
-        canvas.drawText("X-", originX + 10, viewHeight - 15, paintLabels);
+        canvas.drawText("X-", originX + 10, 25, paintLabels);
+        canvas.drawText("X+", originX + 10, viewHeight - 15, paintLabels);
 
         // Draw start point
         if (!Double.isNaN(startX) && !Double.isNaN(startZ)) {
@@ -404,7 +404,7 @@ public class AngleView extends View {
             }
 
             float ex = sx + (float)((endZ - startZ) * scale);
-            float ey = sy - (float)((endX - startX) * scale);
+            float ey = sy + (float)((endX - startX) * scale);
 
             paintLine.setColor(ContextCompat.getColor(getContext(), R.color.coord_d));
             paintLine.setStrokeWidth(4);
