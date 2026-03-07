@@ -6,7 +6,7 @@
     android:background="@color/bg_dark"
     android:padding="8dp">
 
-    <!-- Left Panel: Points -->
+    <!-- Left Panel -->
     <LinearLayout
         android:layout_width="280dp"
         android:layout_height="match_parent"
@@ -62,7 +62,7 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Start Point -->
+        <!-- Start Point Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,15 +121,15 @@
             <Button
                 android:id="@+id/btn_set_start"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="44dp"
                 android:layout_marginTop="6dp"
-                android:text="Запомнить"
+                android:text="Установить начальную точку"
                 android:textSize="12sp"
                 android:textColor="@color/text_bright"
                 android:background="@drawable/button_tool" />
         </LinearLayout>
 
-        <!-- End Point -->
+        <!-- End Point Section (no button, just display) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,6 +145,14 @@
                 android:textColor="@color/coord_z"
                 android:textSize="13sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(относительно начальной)"
+                android:textColor="@color/text_dim"
+                android:textSize="10sp"
+                android:layout_marginTop="2dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,16 +192,6 @@
                     android:textColor="@color/text_bright"
                     android:textSize="18sp" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_set_end"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="6dp"
-                android:text="Запомнить"
-                android:textSize="12sp"
-                android:textColor="@color/text_bright"
-                android:background="@drawable/button_tool" />
         </LinearLayout>
 
         <!-- Angle Result -->
@@ -209,7 +207,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Угол к оси Z"
+                android:text="Угол (острый)"
                 android:textColor="@color/text_dim"
                 android:textSize="12sp" />
 
@@ -221,27 +219,6 @@
                 android:textColor="@color/coord_l"
                 android:textSize="36sp"
                 android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Расстояние: "
-                    android:textColor="@color/text_dim"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/tv_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="—"
-                    android:textColor="@color/text_bright"
-                    android:textSize="11sp" />
-            </LinearLayout>
         </LinearLayout>
 
         <!-- Spacer -->
