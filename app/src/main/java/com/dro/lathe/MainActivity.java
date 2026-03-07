@@ -17,6 +17,8 @@ import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Включить полноэкранный режим (скрыть статус-бар и навигационную панель)
+        enableFullscreenMode();
+
         initViews();
         initData();
         loadSettings();
@@ -82,6 +87,37 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         // Автоматическое подключение
         tryAutoConnect();
+    }
+
+    private void enableFullscreenMode() {
+        // Полноэкранный режим для скрытия статус-бара и навигационной панели
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android 11+ (API 30+)
+            getWindow().setDecorFitsSystemWindows(false);
+            WindowInsetsController controller = getWindow().getInsetsController();
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
+                controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
+        } else {
+            // Android 10 и ниже
+            getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            );
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            enableFullscreenMode();
+        }
     }
 
     private void initViews() {
