@@ -41,6 +41,11 @@ public class AngleView extends View {
     private double angle = Double.NaN;
     private double distance = 0;
 
+    // Direction tracking
+    private double previousX = Double.NaN;
+    private int movementDirection = 0; // -1 = left (X decreasing), 1 = right (X increasing), 0 = unknown
+    private static final double DIRECTION_THRESHOLD = 0.1; // Minimum movement to detect direction
+
     // Scale and offset
     private float scale = 10.0f;
     private float originX = 50, originY = 100;
@@ -173,6 +178,9 @@ public class AngleView extends View {
     public void setStartPoint(double x, double z) {
         this.startX = x;
         this.startZ = z;
+        // Reset direction tracking for new measurement
+        this.previousX = Double.NaN;
+        this.movementDirection = 0;
         calculateScale();
         invalidate();
     }
@@ -180,12 +188,26 @@ public class AngleView extends View {
     public void setEndPoint(double x, double z) {
         this.endX = x;
         this.endZ = z;
+        // Clear direction tracking when measurement complete
+        this.previousX = Double.NaN;
+        this.movementDirection = 0;
         calculateAngle();
         calculateScale();
         invalidate();
     }
 
     public void setCurrentPosition(double x, double z) {
+        // Detect movement direction after start point is set
+        if (!Double.isNaN(startX) && Double.isNaN(endX)) {
+            if (!Double.isNaN(previousX)) {
+                double deltaX = x - previousX;
+                if (Math.abs(deltaX) > DIRECTION_THRESHOLD) {
+                    movementDirection = deltaX < 0 ? -1 : 1; // -1 = left (decreasing), 1 = right (increasing)
+                }
+            }
+            previousX = x;
+        }
+
         this.currentX = x;
         this.currentZ = z;
         if (Double.isNaN(endX) && !Double.isNaN(startX)) {
@@ -206,6 +228,8 @@ public class AngleView extends View {
 
     public void reset() {
         startX = startZ = endX = endZ = Double.NaN;
+        previousX = Double.NaN;
+        movementDirection = 0;
         angle = Double.NaN;
         distance = 0;
         calculateScale();
@@ -279,7 +303,35 @@ public class AngleView extends View {
                 paintLine.setStrokeWidth(2);
                 canvas.drawLine(sx, sy, cx, cy, paintLine);
 
-                canvas.drawCircle(cx, cy, 8, paintCurrentPos);
+                // Draw current position at edge based on movement direction
+                // -1 = left (X decreasing) → draw at right edge
+                // 1 = right (X increasing) → draw at left edge
+                float edgeX, edgeY;
+                float margin = 60f;
+                
+                if (movementDirection == -1) {
+                    // Movement left → point at right edge
+                    edgeX = viewWidth - margin;
+                    edgeY = viewHeight / 2f;
+                } else if (movementDirection == 1) {
+                    // Movement right → point at left edge  
+                    edgeX = margin;
+                    edgeY = viewHeight / 2f;
+                } else {
+                    // No direction detected yet - use actual position
+                    edgeX = cx;
+                    edgeY = cy;
+                }
+                
+                canvas.drawCircle(edgeX, edgeY, 12, paintCurrentPos);
+
+                // Draw direction indicator
+                if (movementDirection != 0) {
+                    String directionText = movementDirection == -1 ? "← Влево" : "Вправо →";
+                    paintLabels.setTextAlign(movementDirection == -1 ? Paint.Align.RIGHT : Paint.Align.LEFT);
+                    float textX = movementDirection == -1 ? viewWidth - 20 : 20;
+                    canvas.drawText(directionText, textX, 30, paintLabels);
+                }
 
                 double previewAngle = Math.abs(Math.toDegrees(
                         Math.atan2(currentX - startX, currentZ - startZ)));

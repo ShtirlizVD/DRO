@@ -4,7 +4,7 @@
     <string name="settings">Настройки</string>
     <string name="thread_helper">Помощник резьбы</string>
     <string name="thread_detail">Детали резьбы</string>
-    <string name="angle_measurement">Измерение углов</string>
+    <string name="angle_measurement">Угломер</string>
     <string name="marker_list">Засечки</string>
     
     <!-- Coordinates -->
