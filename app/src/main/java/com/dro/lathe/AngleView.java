@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat;
  * - Ось Z - продольная подача (влево/вправо) - отображается горизонтально
  *   - Уменьшение Z = движение влево
  *   - Увеличение Z = движение вправо
+ *   
+ * Угол всегда острый (0-90°) - угол между линией и осью Z
  */
 public class AngleView extends View {
 
@@ -36,7 +38,7 @@ public class AngleView extends View {
     private Paint paintBoxBg;
     private Paint paintBoxBorder;
 
-    // Data
+    // Data (absolute coordinates from DRO)
     private double startX = Double.NaN, startZ = Double.NaN;
     private double endX = Double.NaN, endZ = Double.NaN;
     private double currentX = 0, currentZ = 0;
@@ -50,12 +52,14 @@ public class AngleView extends View {
     private int zDirection = 0; // -1 = left (Z decreasing), 1 = right (Z increasing)
     private static final double DIRECTION_THRESHOLD = 0.1; // Minimum movement to detect direction
 
-    // Scale and offset
+    // Scale
     private float scale = 10.0f;
-    private float originX = 50, originY = 100;
 
     // View dimensions
     private int viewWidth = 1, viewHeight = 1;
+
+    // Screen position of point S (calculated based on direction)
+    private float screenSX, screenSY;
 
     public AngleView(Context context) {
         super(context);
@@ -144,44 +148,49 @@ public class AngleView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         viewWidth = Math.max(w, 1);
         viewHeight = Math.max(h, 1);
-        updateOrigin();
-        calculateScale();
+        calculateScaleAndPosition();
     }
 
-    private void updateOrigin() {
-        // Origin is always at center of view
-        originX = viewWidth / 2f;
-        originY = viewHeight / 2f;
-    }
-
-    private void calculateScale() {
-        if (viewWidth <= 1 || viewHeight <= 1) {
+    private void calculateScaleAndPosition() {
+        if (viewWidth <= 1 || viewHeight <= 1 || Double.isNaN(startX) || Double.isNaN(startZ)) {
             scale = 10;
+            screenSX = viewWidth / 2f;
+            screenSY = viewHeight / 2f;
             return;
         }
 
-        if (Double.isNaN(startX) || Double.isNaN(startZ)) {
-            scale = 10;
-            return;
-        }
+        // Calculate relative deltas
+        double relX = Double.isNaN(endX) ? (currentX - startX) : (endX - startX);
+        double relZ = Double.isNaN(endZ) ? (currentZ - startZ) : (endZ - startZ);
 
-        double minX = Double.isNaN(endX) ? Math.min(startX, currentX) : Math.min(startX, Math.min(endX, currentX));
-        double maxX = Double.isNaN(endX) ? Math.max(startX, currentX) : Math.max(startX, Math.max(endX, currentX));
-        double minZ = Double.isNaN(endZ) ? Math.min(startZ, currentZ) : Math.min(startZ, Math.min(endZ, currentZ));
-        double maxZ = Double.isNaN(endZ) ? Math.max(startZ, currentZ) : Math.max(startZ, Math.max(endZ, currentZ));
+        // Determine max range for scaling
+        double maxRange = Math.max(Math.abs(relX), Math.abs(relZ));
+        maxRange = Math.max(maxRange, 10); // Minimum range
 
-        double rangeX = Math.abs(maxX - minX);
-        double rangeZ = Math.abs(maxZ - minZ);
-        double maxRange = Math.max(rangeX, rangeZ);
-        maxRange = Math.max(maxRange, 20);
-
-        float availableWidth = viewWidth * 0.7f;
-        float availableHeight = viewHeight * 0.7f;
-        float availableSize = Math.min(availableWidth, availableHeight);
-
-        scale = availableSize / (float) maxRange;
+        // Calculate scale to fit in 70% of view
+        float availableSize = Math.min(viewWidth, viewHeight) * 0.35f;
+        scale = (float) (availableSize / maxRange);
         scale = Math.max(scale, 1);
         scale = Math.min(scale, 50);
+
+        // Calculate screen position of S based on primary axis and direction
+        float margin = Math.min(viewWidth, viewHeight) * 0.15f;
+
+        if (primaryAxis == 2 && zDirection != 0) {
+            // Z moved first
+            if (zDirection == 1) {
+                // Moving right (Z increasing) - S on the LEFT
+                screenSX = margin + 50;
+            } else {
+                // Moving left (Z decreasing) - S on the RIGHT
+                screenSX = viewWidth - margin - 50;
+            }
+            screenSY = viewHeight / 2f;
+        } else {
+            // X moved first or unknown - S at CENTER
+            screenSX = viewWidth / 2f;
+            screenSY = viewHeight / 2f;
+        }
     }
 
     public void setStartPoint(double x, double z) {
@@ -192,7 +201,7 @@ public class AngleView extends View {
         this.previousZ = Double.NaN;
         this.primaryAxis = 0;
         this.zDirection = 0;
-        calculateScale();
+        calculateScaleAndPosition();
         invalidate();
     }
 
@@ -205,7 +214,7 @@ public class AngleView extends View {
         this.primaryAxis = 0;
         this.zDirection = 0;
         calculateAngle();
-        calculateScale();
+        calculateScaleAndPosition();
         invalidate();
     }
 
@@ -239,7 +248,7 @@ public class AngleView extends View {
         this.currentX = x;
         this.currentZ = z;
         if (Double.isNaN(endX) && !Double.isNaN(startX)) {
-            calculateScale();
+            calculateScaleAndPosition();
         }
         invalidate();
     }
@@ -261,7 +270,7 @@ public class AngleView extends View {
         zDirection = 0;
         angle = Double.NaN;
         distance = 0;
-        calculateScale();
+        calculateScaleAndPosition();
         invalidate();
     }
 
@@ -280,19 +289,10 @@ public class AngleView extends View {
         if (deltaZ == 0 && deltaX == 0) {
             angle = 0;
         } else {
-            // Angle from Z axis
-            angle = Math.abs(Math.toDegrees(Math.atan2(deltaX, deltaZ)));
+            // Angle from Z axis - always acute (0-90)
+            double rawAngle = Math.toDegrees(Math.atan2(Math.abs(deltaX), Math.abs(deltaZ)));
+            angle = Math.min(rawAngle, 90); // Ensure acute angle
         }
-    }
-
-    // Convert Z coordinate to screen X (horizontal)
-    private float toScreenX(double z) {
-        return originX + (float) (z * scale);
-    }
-
-    // Convert X coordinate to screen Y (vertical, inverted: positive X = down on screen)
-    private float toScreenY(double x) {
-        return originY + (float) (x * scale);
     }
 
     @Override
@@ -307,62 +307,41 @@ public class AngleView extends View {
         // Draw grid
         drawGrid(canvas);
 
-        // Draw Z axis (horizontal dashed line through center)
-        canvas.drawLine(0, originY, viewWidth, originY, paintAxis);
-
         // Draw axis labels
-        paintLabels.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("Z+", viewWidth - 15, originY - 10, paintLabels);
-        paintLabels.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("Z-", 15, originY - 10, paintLabels);
-        
         paintLabels.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("X-", originX + 10, 25, paintLabels);
-        canvas.drawText("X+", originX + 10, viewHeight - 15, paintLabels);
+        canvas.drawText("Z+", viewWidth - 30, viewHeight / 2f - 10, paintLabels);
+        canvas.drawText("Z-", 30, viewHeight / 2f - 10, paintLabels);
+        canvas.drawText("X+", viewWidth / 2f + 10, 25, paintLabels);
+        canvas.drawText("X-", viewWidth / 2f + 10, viewHeight - 15, paintLabels);
 
-        // Draw start point
+        // Draw start point S
         if (!Double.isNaN(startX) && !Double.isNaN(startZ)) {
-            // Calculate start point position based on primary axis and direction
-            float sx, sy;
-            
-            if (primaryAxis == 2 && zDirection != 0) {
-                // Z axis moved first - position S based on Z direction
-                float margin = viewWidth * 0.15f;
-                if (zDirection == 1) {
-                    // Moving right (Z increasing) - S on the left
-                    sx = margin;
-                } else {
-                    // Moving left (Z decreasing) - S on the right
-                    sx = viewWidth - margin;
-                }
-                sy = originY;
-            } else {
-                // X axis moved first or unknown - S at center
-                sx = originX;
-                sy = originY;
-            }
-
-            canvas.drawCircle(sx, sy, 14, paintStartPoint);
+            // S is always at (0,0) relative, shown at screenSX, screenSY
+            canvas.drawCircle(screenSX, screenSY, 14, paintStartPoint);
             paintLabels.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText("S", sx + 18, sy + 6, paintLabels);
+            canvas.drawText("S", screenSX + 18, screenSY + 6, paintLabels);
+
+            // Draw Z axis through S (dashed horizontal line)
+            canvas.drawLine(screenSX - 200, screenSY, screenSX + 200, screenSY, paintAxis);
 
             // Draw line to current position if end point not set
             if (Double.isNaN(endX)) {
-                float cx = toScreenX(currentZ - startZ);
-                float cy = toScreenY(currentX - startX);
-                
-                // Offset from S position
-                if (primaryAxis == 2 && zDirection != 0) {
-                    // When Z first, offset from S position
-                    float baseZ = (zDirection == 1) ? -viewWidth * 0.35f : viewWidth * 0.35f;
-                    cx = sx + (float)((currentZ - startZ) * scale);
-                }
+                double relX = currentX - startX;
+                double relZ = currentZ - startZ;
+
+                float cx = screenSX + (float)(relZ * scale);
+                float cy = screenSY + (float)(relX * scale); // X inverted: positive X = down
 
                 paintLine.setColor(ContextCompat.getColor(getContext(), R.color.yellow));
                 paintLine.setStrokeWidth(2);
-                canvas.drawLine(sx, sy, cx, cy, paintLine);
+                canvas.drawLine(screenSX, screenSY, cx, cy, paintLine);
 
                 canvas.drawCircle(cx, cy, 10, paintCurrentPos);
+
+                // Calculate and show preview angle (always acute)
+                double previewAngle = Math.toDegrees(Math.atan2(Math.abs(relX), Math.abs(relZ)));
+                previewAngle = Math.min(previewAngle, 90);
+                drawAngleDisplay(canvas, previewAngle, true);
 
                 // Draw direction indicator
                 if (primaryAxis != 0) {
@@ -375,46 +354,26 @@ public class AngleView extends View {
                     paintLabels.setTextAlign(Paint.Align.CENTER);
                     canvas.drawText(directionText, viewWidth / 2f, 30, paintLabels);
                 }
-
-                double previewAngle = Math.abs(Math.toDegrees(
-                        Math.atan2(currentX - startX, currentZ - startZ)));
-                drawAngleDisplay(canvas, sx, sy, previewAngle, true);
             }
         }
 
-        // Draw end point and angle
+        // Draw end point and final angle
         if (!Double.isNaN(endX) && !Double.isNaN(endZ) && !Double.isNaN(startX)) {
-            // Use same positioning logic for S
-            float sx, sy;
-            float margin = viewWidth * 0.15f;
-            
-            double deltaZ = endZ - startZ;
-            if (Math.abs(deltaZ) > Math.abs(endX - startX) && Math.abs(deltaZ) > DIRECTION_THRESHOLD) {
-                // Z movement dominant
-                if (deltaZ > 0) {
-                    sx = margin; // Moving right - S on left
-                } else {
-                    sx = viewWidth - margin; // Moving left - S on right  
-                }
-                sy = originY;
-            } else {
-                // X movement dominant or equal
-                sx = originX;
-                sy = originY;
-            }
+            double relX = endX - startX;
+            double relZ = endZ - startZ;
 
-            float ex = sx + (float)((endZ - startZ) * scale);
-            float ey = sy + (float)((endX - startX) * scale);
+            float ex = screenSX + (float)(relZ * scale);
+            float ey = screenSY + (float)(relX * scale); // X inverted: positive X = down
 
             paintLine.setColor(ContextCompat.getColor(getContext(), R.color.coord_d));
             paintLine.setStrokeWidth(4);
-            canvas.drawLine(sx, sy, ex, ey, paintLine);
+            canvas.drawLine(screenSX, screenSY, ex, ey, paintLine);
 
             canvas.drawCircle(ex, ey, 14, paintEndPoint);
             paintLabels.setTextAlign(Paint.Align.LEFT);
             canvas.drawText("E", ex + 18, ey + 6, paintLabels);
 
-            drawAngleDisplay(canvas, sx, sy, angle, false);
+            drawAngleDisplay(canvas, angle, false);
         }
     }
 
@@ -422,39 +381,43 @@ public class AngleView extends View {
         float gridStep = 10 * scale;
         if (gridStep < 20) gridStep = 20;
 
-        for (float x = originX; x < viewWidth; x += gridStep) {
+        // Draw grid centered at S position
+        for (float x = screenSX; x < viewWidth; x += gridStep) {
             canvas.drawLine(x, 0, x, viewHeight, paintGrid);
         }
-        for (float x = originX; x > 0; x -= gridStep) {
+        for (float x = screenSX; x > 0; x -= gridStep) {
             canvas.drawLine(x, 0, x, viewHeight, paintGrid);
         }
 
-        for (float y = originY; y < viewHeight; y += gridStep) {
+        for (float y = screenSY; y < viewHeight; y += gridStep) {
             canvas.drawLine(0, y, viewWidth, y, paintGrid);
         }
-        for (float y = originY; y > 0; y -= gridStep) {
+        for (float y = screenSY; y > 0; y -= gridStep) {
             canvas.drawLine(0, y, viewWidth, y, paintGrid);
         }
     }
 
-    private void drawAngleDisplay(Canvas canvas, float sx, float sy, double angleValue, boolean isPreview) {
+    private void drawAngleDisplay(Canvas canvas, double angleValue, boolean isPreview) {
         if (Double.isNaN(angleValue)) return;
 
         // Draw angle arc from Z axis (horizontal) toward the line
         float arcRadius = 50;
-        RectF arcRect = new RectF(sx - arcRadius, sy - arcRadius, sx + arcRadius, sy + arcRadius);
+        RectF arcRect = new RectF(screenSX - arcRadius, screenSY - arcRadius, 
+                                   screenSX + arcRadius, screenSY + arcRadius);
 
-        // Arc starts from Z axis (0 degrees = right) and sweeps toward the line
-        float sweepAngle;
-        if (!Double.isNaN(endX)) {
-            double deltaX = endX - startX;
-            double deltaZ = endZ - startZ;
-            // Angle in degrees from positive Z direction
-            sweepAngle = (float) Math.toDegrees(Math.atan2(deltaX, deltaZ));
+        // Arc from Z axis (0°) to the angle
+        float sweepAngle = (float) angleValue;
+        
+        // Determine sweep direction based on relative position
+        double relX = Double.isNaN(endX) ? (currentX - startX) : (endX - startX);
+        double relZ = Double.isNaN(endZ) ? (currentZ - startZ) : (endZ - startZ);
+        
+        if (relX >= 0) {
+            // Point is below Z axis (positive X) - sweep clockwise (positive)
+            sweepAngle = (float) angleValue;
         } else {
-            double deltaX = currentX - startX;
-            double deltaZ = currentZ - startZ;
-            sweepAngle = (float) Math.toDegrees(Math.atan2(deltaX, deltaZ));
+            // Point is above Z axis (negative X) - sweep counter-clockwise (negative)
+            sweepAngle = -(float) angleValue;
         }
 
         canvas.drawArc(arcRect, 0, sweepAngle, false, paintAngleArc);
@@ -473,7 +436,6 @@ public class AngleView extends View {
         float boxRight = textX + 80;
         float boxBottom = textY + 50;
 
-        // Draw rounded rect using Path (compatible with old API)
         drawRoundedRect(canvas, boxLeft, boxTop, boxRight, boxBottom, 10, paintBoxBg);
         drawRoundedRect(canvas, boxLeft, boxTop, boxRight, boxBottom, 10, paintBoxBorder);
 

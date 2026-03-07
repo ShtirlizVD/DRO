@@ -186,13 +186,14 @@ public class AngleActivity extends AppCompatActivity {
         // Distance between points
         double dist = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 
-        // Angle from Z-axis (always positive)
+        // Angle from Z-axis (always acute 0-90°)
         double angle;
         if (deltaZ == 0 && deltaX == 0) {
             angle = 0;
         } else {
-            // atan2 gives angle from positive Z axis
-            angle = Math.abs(Math.toDegrees(Math.atan2(deltaX, deltaZ)));
+            // Angle from Z axis - always acute (0-90°)
+            angle = Math.toDegrees(Math.atan2(Math.abs(deltaX), Math.abs(deltaZ)));
+            angle = Math.min(angle, 90); // Ensure acute
         }
 
         tvAngle.setText(String.format(Locale.US, "%.2f°", angle));
