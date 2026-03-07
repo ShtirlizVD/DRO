@@ -204,6 +204,26 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         toneGenerator = new ToneGenerator(android.media.AudioManager.STREAM_MUSIC, 100);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        
+        // Load saved raw coordinates from last session
+        loadSavedCoordinates();
+    }
+    
+    private void loadSavedCoordinates() {
+        // Load last known raw coordinates
+        double savedRawX = prefs.getFloat("saved_raw_x", 0);
+        double savedRawZ = prefs.getFloat("saved_raw_z", 0);
+        droData.setRawX(savedRawX);
+        droData.setRawZ(savedRawZ);
+        
+        // Load current tool
+        currentTool = prefs.getInt("current_tool", 0);
+        
+        // Apply tool offsets to droData
+        droData.setOffsetX(tools[currentTool].getOffsetX());
+        droData.setOffsetD(tools[currentTool].getOffsetD());
+        droData.setOffsetZ(tools[currentTool].getOffsetZ());
+        droData.setOffsetL(tools[currentTool].getOffsetL());
     }
 
     private void loadSettings() {
@@ -618,6 +638,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         loadMarkers();
         updateDisplay();
         updateConnectionState();
+        
+        // Update tool selection UI
+        int[] toolIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
+        for (int i = 0; i < 4; i++) {
+            Button btn = findViewById(toolIds[i]);
+            btn.setSelected(i == currentTool);
+        }
     }
 
     private void loadMarkers() {
@@ -626,8 +653,35 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        // Save current state before pausing
+        saveCurrentState();
+    }
+
+    private void saveCurrentState() {
+        // Save current tool offsets before saving state
+        if (currentTool >= 0 && currentTool < 4) {
+            tools[currentTool].setOffsetX(droData.getOffsetX());
+            tools[currentTool].setOffsetD(droData.getOffsetD());
+            tools[currentTool].setOffsetZ(droData.getOffsetZ());
+            tools[currentTool].setOffsetL(droData.getOffsetL());
+            saveToolOffset(currentTool);
+        }
+        
+        prefs.edit()
+                .putFloat("saved_raw_x", (float) droData.getRawX())
+                .putFloat("saved_raw_z", (float) droData.getRawZ())
+                .putInt("current_tool", currentTool)
+                .apply();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Save state before destroying
+        saveCurrentState();
+        
         if (bluetoothService != null) {
             bluetoothService.disconnect();
         }
