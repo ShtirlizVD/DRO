@@ -64,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private int[] coordColors = new int[4];
     private ToneGenerator toneGenerator;
     private Vibrator vibrator;
+    
+    // Inversion settings (X is inverted by default)
+    private boolean invertX = false; // When true, ADDITIONAL inversion is applied (checkbox)
+    private boolean invertZ = false; // When true, Z is inverted (checkbox)
+    private static final boolean DEFAULT_INVERT_X = true; // X is always inverted by default
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +213,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         soundEnabled = prefs.getBoolean("sound", true);
         proximityDistance = prefs.getFloat("proximity_distance", 5.0f);
+        
+        // Inversion: X is inverted by default, checkbox CANCELS the default inversion
+        invertX = prefs.getBoolean("invert_x", false);
+        invertZ = prefs.getBoolean("invert_z", false);
 
         coordColors[0] = prefs.getInt("color_x", coordColors[0]);
         coordColors[1] = prefs.getInt("color_d", coordColors[1]);
@@ -588,8 +597,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     @Override
     public void onDataReceived(double x, double z) {
         runOnUiThread(() -> {
-            droData.setRawX(x);
-            droData.setRawZ(z);
+            // Apply inversion: X is inverted by default (DEFAULT_INVERT_X = true)
+            // Checkbox cancels the default inversion when checked
+            // Final X = DEFAULT_INVERT_X XOR invertX (checkbox)
+            double finalX = (DEFAULT_INVERT_X != invertX) ? -x : x;
+            // Z is not inverted by default, checkbox enables inversion
+            double finalZ = invertZ ? -z : z;
+            
+            droData.setRawX(finalX);
+            droData.setRawZ(finalZ);
             updateDisplay();
             checkMarkers();
         });

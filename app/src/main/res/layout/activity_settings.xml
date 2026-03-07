@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Разрешение линейки X (поперечная)"
-            android:textColor="@color/coord_x"
+            android:textColor="@color/text_bright"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Разрешение линейки Z (продольная)"
-            android:textColor="@color/coord_x"
+            android:textColor="@color/text_bright"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp" />

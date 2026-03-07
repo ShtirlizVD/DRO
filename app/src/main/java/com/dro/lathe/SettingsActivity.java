@@ -3,7 +3,9 @@ package com.dro.lathe;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -63,12 +65,42 @@ public class SettingsActivity extends AppCompatActivity {
         // Select device button
         btnSelectDevice.setOnClickListener(v -> showDeviceDialog());
 
-        // Resolution spinners
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.resolutions, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerResolutionX.setAdapter(adapter);
-        spinnerResolutionZ.setAdapter(adapter);
+        // Resolution spinners with green text
+        String[] resolutions = getResources().getStringArray(R.array.resolutions);
+        ArrayAdapter<String> adapterX = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, resolutions) {
+            @Override
+            public View getView(int position, View convertView, android.view.ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#FF00FF00")); // Green
+                return v;
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#FFFFFFFF")); // White for dropdown
+                return v;
+            }
+        };
+        ArrayAdapter<String> adapterZ = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, resolutions) {
+            @Override
+            public View getView(int position, View convertView, android.view.ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#FF00FF00")); // Green
+                return v;
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#FFFFFFFF")); // White for dropdown
+                return v;
+            }
+        };
+        adapterX.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterZ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerResolutionX.setAdapter(adapterX);
+        spinnerResolutionZ.setAdapter(adapterZ);
 
         spinnerResolutionX.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
