@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,9 +15,10 @@ import androidx.core.content.ContextCompat;
 /**
  * Custom view для визуализации угла в виде прямоугольного треугольника
  *
- * Треугольник центрируется на экране так, что линия SE проходит через центр.
+ * Треугольник центрируется на экране.
  * Гипотенуза - жёлтая, катеты - серые.
- * Все стороны подписаны размерами.
+ * Все стороны подписаны размерами снаружи треугольника.
+ * Показываются два угла: относительно Z и относительно X.
  */
 public class AngleView extends View {
 
@@ -24,14 +26,18 @@ public class AngleView extends View {
     private Paint paintAxis;
     private Paint paintSideGray;      // Gray sides (legs)
     private Paint paintHypotenuse;    // Yellow hypotenuse
-    private Paint paintVertex;
+    private Paint paintStartPoint;    // Green start point
+    private Paint paintEndPoint;
     private Paint paintLabelBg;
     private Paint paintLabelText;
-    private Paint paintAngleText;
+    private Paint paintAngleTextZ;    // Angle Z text (cyan/blue)
+    private Paint paintAngleTextX;    // Angle X text (orange)
+    private Paint paintAngleArcZ;     // Arc for Z angle
+    private Paint paintAngleArcX;     // Arc for X angle
 
     // Data
-    private double relX = Double.NaN;  // Relative X (delta from start to end)
-    private double relZ = Double.NaN;  // Relative Z (delta from start to end)
+    private double relX = Double.NaN;
+    private double relZ = Double.NaN;
     private double angle = Double.NaN;
     private double startX = Double.NaN, startZ = Double.NaN;
 
@@ -41,8 +47,8 @@ public class AngleView extends View {
     // View dimensions
     private int viewWidth = 1, viewHeight = 1;
 
-    // Padding from edges
-    private static final float PADDING = 80f;
+    // Reduced padding for larger triangle
+    private static final float PADDING = 40f;
 
     public AngleView(Context context) {
         super(context);
@@ -60,48 +66,72 @@ public class AngleView extends View {
     }
 
     private void init(Context context) {
-        // Z axis paint (dashed horizontal line through center)
+        // Z axis paint
         paintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAxis.setColor(ContextCompat.getColor(context, R.color.text_dim));
-        paintAxis.setStrokeWidth(2);
-        paintAxis.setAlpha(120);
+        paintAxis.setStrokeWidth(1);
+        paintAxis.setAlpha(100);
 
-        // Gray sides (legs of triangle)
+        // Gray sides (legs)
         paintSideGray = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintSideGray.setColor(Color.parseColor("#808080")); // Gray
+        paintSideGray.setColor(Color.parseColor("#808080"));
         paintSideGray.setStrokeWidth(4);
         paintSideGray.setStyle(Paint.Style.STROKE);
 
         // Yellow hypotenuse
         paintHypotenuse = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintHypotenuse.setColor(Color.parseColor("#FFD700")); // Gold/Yellow
+        paintHypotenuse.setColor(Color.parseColor("#FFD700"));
         paintHypotenuse.setStrokeWidth(5);
         paintHypotenuse.setStyle(Paint.Style.STROKE);
 
-        // Vertex points
-        paintVertex = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintVertex.setColor(ContextCompat.getColor(context, R.color.text_bright));
-        paintVertex.setStyle(Paint.Style.FILL);
+        // Start point - GREEN
+        paintStartPoint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintStartPoint.setColor(Color.parseColor("#4CAF50")); // Green
+        paintStartPoint.setStyle(Paint.Style.FILL);
+
+        // End point
+        paintEndPoint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintEndPoint.setColor(ContextCompat.getColor(context, R.color.coord_z));
+        paintEndPoint.setStyle(Paint.Style.FILL);
 
         // Label background
         paintLabelBg = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintLabelBg.setColor(ContextCompat.getColor(context, R.color.bg_dark));
-        paintLabelBg.setAlpha(230);
+        paintLabelBg.setAlpha(240);
         paintLabelBg.setStyle(Paint.Style.FILL);
 
         // Label text
         paintLabelText = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintLabelText.setColor(ContextCompat.getColor(context, R.color.text_bright));
-        paintLabelText.setTextSize(22);
+        paintLabelText.setTextSize(24);
         paintLabelText.setTextAlign(Paint.Align.CENTER);
         paintLabelText.setFakeBoldText(true);
 
-        // Angle text
-        paintAngleText = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintAngleText.setColor(ContextCompat.getColor(context, R.color.coord_l));
-        paintAngleText.setTextSize(48);
-        paintAngleText.setTextAlign(Paint.Align.CENTER);
-        paintAngleText.setFakeBoldText(true);
+        // Angle Z text (cyan)
+        paintAngleTextZ = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintAngleTextZ.setColor(Color.parseColor("#00BCD4")); // Cyan
+        paintAngleTextZ.setTextSize(42);
+        paintAngleTextZ.setTextAlign(Paint.Align.CENTER);
+        paintAngleTextZ.setFakeBoldText(true);
+
+        // Angle X text (orange)
+        paintAngleTextX = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintAngleTextX.setColor(Color.parseColor("#FF9800")); // Orange
+        paintAngleTextX.setTextSize(42);
+        paintAngleTextX.setTextAlign(Paint.Align.CENTER);
+        paintAngleTextX.setFakeBoldText(true);
+
+        // Angle Z arc (cyan)
+        paintAngleArcZ = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintAngleArcZ.setColor(Color.parseColor("#00BCD4"));
+        paintAngleArcZ.setStrokeWidth(3);
+        paintAngleArcZ.setStyle(Paint.Style.STROKE);
+
+        // Angle X arc (orange)
+        paintAngleArcX = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintAngleArcX.setColor(Color.parseColor("#FF9800"));
+        paintAngleArcX.setStrokeWidth(3);
+        paintAngleArcX.setStyle(Paint.Style.STROKE);
     }
 
     @Override
@@ -118,18 +148,17 @@ public class AngleView extends View {
             return;
         }
 
-        // Determine max range for scaling
         double maxRange = Math.max(Math.abs(relX), Math.abs(relZ));
-        maxRange = Math.max(maxRange, 1); // Minimum range
+        maxRange = Math.max(maxRange, 1);
 
-        // Calculate scale to fit in view with padding
-        float availableWidth = viewWidth - 2 * PADDING - 150; // Extra for labels
-        float availableHeight = viewHeight - 2 * PADDING - 100;
+        // Larger triangle - use most of the available space
+        float availableWidth = viewWidth - 2 * PADDING - 280; // Space for right panel
+        float availableHeight = viewHeight - 2 * PADDING - 80;
 
         float availableSize = Math.min(availableWidth, availableHeight);
         scale = (float) (availableSize / maxRange);
         scale = Math.max(scale, 1);
-        scale = Math.min(scale, 100);
+        scale = Math.min(scale, 200);
     }
 
     public void setStartPoint(double x, double z) {
@@ -139,7 +168,6 @@ public class AngleView extends View {
     }
 
     public void setCurrentPosition(double x, double z) {
-        // Not used directly - we use setMeasurements instead
         invalidate();
     }
 
@@ -165,19 +193,13 @@ public class AngleView extends View {
 
         if (viewWidth <= 1 || viewHeight <= 1) return;
 
-        // Draw background
         canvas.drawColor(ContextCompat.getColor(getContext(), R.color.bg_darker));
 
-        // Draw Z axis (horizontal line through center)
-        float centerX = viewWidth / 2f;
+        float centerX = viewWidth / 2f - 100; // Shift left to make room for angle display
         float centerY = viewHeight / 2f;
-        canvas.drawLine(0, centerY, viewWidth, centerY, paintAxis);
 
-        // Draw Z axis label
-        paintLabelText.setAlpha(150);
-        paintLabelText.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("Z", viewWidth - 20, centerY - 15, paintLabelText);
-        paintLabelText.setAlpha(255);
+        // Draw Z axis (horizontal line through center)
+        canvas.drawLine(0, centerY, viewWidth - 250, centerY, paintAxis);
 
         // If no measurements, show instruction
         if (Double.isNaN(relX) || Double.isNaN(relZ)) {
@@ -189,44 +211,18 @@ public class AngleView extends View {
         }
 
         // Calculate triangle vertices
-        // S = Start point (on Z axis)
-        // E = End point
-        // P = Point on Z axis at same X as E (forms right angle)
-
-        // For centering: midpoint of SE is at center of screen
-        // S_screen = center - half_vector
-        // E_screen = center + half_vector
-
         float halfZ = (float)(relZ * scale / 2);
         float halfX = (float)(relX * scale / 2);
 
-        // S is on Z axis (horizontal line), so its Y = centerY
-        // E is at (centerX + halfZ*2, centerY + halfX*2) -- wait, that's wrong
+        float sX = centerX - halfZ;
+        float sY = centerY;
+        float eX = centerX + halfZ;
+        float eY = centerY + halfX;
+        float pX = eX;
+        float pY = sY;
 
-        // Let me recalculate:
-        // The vector from S to E is (relZ, relX) in screen coords (Z is horizontal, X is vertical)
-        // For centering, midpoint of SE should be at (centerX, centerY)
-        // So S = (centerX - relZ*scale/2, centerY - relX*scale/2)
-        // And E = (centerX + relZ*scale/2, centerY + relX*scale/2)
-
-        // But we want S to be ON the Z axis (Y = centerY)
-        // So we need to adjust...
-
-        // Actually, let's think differently:
-        // S should be on Z axis (horizontal line through center)
-        // So S has Y = centerY
-        // E is at (S_x + relZ*scale, S_y + relX*scale) = (S_x + relZ*scale, centerY + relX*scale)
-        // For centering, we want midpoint at center:
-        // midpoint = ((S_x + E_x)/2, (centerY + E_y)/2) = (centerX, centerY)
-        // (S_x + S_x + relZ*scale)/2 = centerX => S_x = centerX - relZ*scale/2
-        // (centerY + centerY + relX*scale)/2 = centerY => this is automatically satisfied
-
-        float sX = centerX - halfZ;  // S screen X
-        float sY = centerY;          // S screen Y (on Z axis)
-        float eX = centerX + halfZ;  // E screen X
-        float eY = centerY + halfX;  // E screen Y
-        float pX = eX;               // P screen X (same as E)
-        float pY = sY;               // P screen Y (same as S, on Z axis)
+        // Determine if triangle is "above" or "below" the Z axis
+        boolean triangleAbove = relX < 0;
 
         // Draw triangle sides
         // SP - horizontal leg (gray)
@@ -242,156 +238,179 @@ public class AngleView extends View {
         // SE - hypotenuse (yellow)
         canvas.drawLine(sX, sY, eX, eY, paintHypotenuse);
 
-        // Draw vertices
-        canvas.drawCircle(sX, sY, 10, paintVertex);  // S
-        canvas.drawCircle(eX, eY, 10, paintVertex);  // E
-        canvas.drawCircle(pX, pY, 8, paintVertex);   // P (smaller, right angle)
+        // Draw angle arcs at point S (for Z angle) and point P (for X angle)
+        drawAngleArcs(canvas, sX, sY, pX, pY, eX, eY, triangleAbove);
 
-        // Labels for vertices
-        paintLabelText.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("S", sX, sY - 25, paintLabelText);
-        canvas.drawText("E", eX, eY - 25, paintLabelText);
-        canvas.drawText("P", pX + (relZ >= 0 ? 25 : -25), pY + 25, paintLabelText);
+        // Draw vertices (no labels)
+        canvas.drawCircle(sX, sY, 12, paintStartPoint);  // S - green
+        canvas.drawCircle(eX, eY, 12, paintEndPoint);    // E
+        // Don't draw P point - it's just a corner
 
-        // Draw dimension labels on sides
-        drawDimensionLabel(canvas, sX, sY, pX, pY, String.format("%.2f", Math.abs(relZ)), true);
-        drawDimensionLabel(canvas, pX, pY, eX, eY, String.format("%.2f", Math.abs(relX)), false);
+        // Draw dimension labels OUTSIDE the triangle
+        drawDimensionLabels(canvas, sX, sY, pX, pY, eX, eY, triangleAbove);
 
-        // Hypotenuse length
-        double hypLen = Math.sqrt(relX * relX + relZ * relZ);
-        drawHypotenuseLabel(canvas, sX, sY, eX, eY, String.format("%.2f", hypLen));
-
-        // Draw angle display box
-        drawAngleBox(canvas, centerX, centerY);
+        // Draw angle display on the right side
+        drawAngleDisplay(canvas);
     }
 
-    private void drawDimensionLabel(Canvas canvas, float x1, float y1, float x2, float y2, String text, boolean isHorizontal) {
-        float midX = (x1 + x2) / 2;
-        float midY = (y1 + y2) / 2;
+    private void drawAngleArcs(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
+        float arcRadius = 50;
 
-        // Offset perpendicular to the line
-        float offsetX = 0, offsetY = 0;
-        if (isHorizontal) {
-            offsetY = 35; // Below horizontal line
-        } else {
-            offsetX = relZ >= 0 ? 45 : -45; // Right or left of vertical line
+        // Z angle arc at point S (from Z axis to hypotenuse)
+        // Z axis goes horizontally from S
+        // Hypotenuse goes from S to E
+
+        // Calculate angle of hypotenuse from horizontal (Z axis)
+        double hypAngle = Math.atan2(eY - sY, eX - sX);
+        double angleZ = Math.abs(Math.toDegrees(hypAngle));
+        if (angleZ > 90) angleZ = 180 - angleZ;
+
+        // Draw arc from Z axis to hypotenuse
+        RectF arcRectZ = new RectF(sX - arcRadius, sY - arcRadius, sX + arcRadius, sY + arcRadius);
+
+        if (Math.abs(relZ) > 0.1 && Math.abs(relX) > 0.1) {
+            if (relZ > 0) {
+                // E is to the right of S
+                if (triangleAbove) {
+                    // Arc from 180° (left) to hypotenuse angle
+                    canvas.drawArc(arcRectZ, 180 - (float) angleZ, (float) angleZ, false, paintAngleArcZ);
+                } else {
+                    // Arc from 0° to hypotenuse angle
+                    canvas.drawArc(arcRectZ, 0, (float) angleZ, false, paintAngleArcZ);
+                }
+            } else {
+                // E is to the left of S
+                if (triangleAbove) {
+                    canvas.drawArc(arcRectZ, 180, (float) angleZ, false, paintAngleArcZ);
+                } else {
+                    canvas.drawArc(arcRectZ, -angleZ, (float) angleZ, false, paintAngleArcZ);
+                }
+            }
+
+            // X angle arc at point P (from Z axis perpendicular to hypotenuse)
+            float arcRadiusX = 40;
+            RectF arcRectX = new RectF(pX - arcRadiusX, pY - arcRadiusX, pX + arcRadiusX, pY + arcRadiusX);
+
+            double angleX = 90 - angleZ; // Complementary angle
+
+            if (triangleAbove) {
+                // Arc from 270° (down) toward hypotenuse
+                canvas.drawArc(arcRectX, 270 - (float) angleX, (float) angleX, false, paintAngleArcX);
+            } else {
+                // Arc from 90° (up) toward hypotenuse
+                canvas.drawArc(arcRectX, 90, (float) angleX, false, paintAngleArcX);
+            }
         }
-
-        // Draw background
-        float textWidth = paintLabelText.measureText(text) + 20;
-        float left = midX + offsetX - textWidth / 2;
-        float top = midY + offsetY - 18;
-        float right = midX + offsetX + textWidth / 2;
-        float bottom = midY + offsetY + 18;
-
-        drawRoundedRect(canvas, left, top, right, bottom, 6, paintLabelBg);
-
-        // Draw text
-        paintLabelText.setColor(Color.parseColor("#808080")); // Gray for legs
-        canvas.drawText(text, midX + offsetX, midY + offsetY + 7, paintLabelText);
-        paintLabelText.setColor(ContextCompat.getColor(getContext(), R.color.text_bright));
     }
 
-    private void drawHypotenuseLabel(Canvas canvas, float x1, float y1, float x2, float y2, String text) {
-        float midX = (x1 + x2) / 2;
-        float midY = (y1 + y2) / 2;
+    private void drawDimensionLabels(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
+        // Horizontal side (SP) - always outside (below if triangle above, above if triangle below)
+        String zLabel = String.format("%.2f", Math.abs(relZ));
+        float spMidX = (sX + pX) / 2;
+        float spOffsetY = triangleAbove ? 35 : -35;
 
-        // Offset perpendicular to hypotenuse (toward center)
-        float dx = x2 - x1;
-        float dy = y2 - y1;
+        drawLabelWithBackground(canvas, zLabel, spMidX, sY + spOffsetY, paintSideGray.getColor());
+
+        // Vertical side (PE) - always outside (right if E is right of S, left otherwise)
+        String xLabel = String.format("%.2f", Math.abs(relX));
+        float peMidY = (pY + eY) / 2;
+        float peOffsetX = relZ >= 0 ? 50 : -50;
+
+        drawLabelWithBackground(canvas, xLabel, pX + peOffsetX, peMidY, paintSideGray.getColor());
+
+        // Hypotenuse (SE) - outside the triangle
+        String hypLabel = String.format("%.2f", Math.sqrt(relX * relX + relZ * relZ));
+        float seMidX = (sX + eX) / 2;
+        float seMidY = (sY + eY) / 2;
+
+        // Calculate perpendicular offset (toward outside of triangle)
+        float dx = eX - sX;
+        float dy = eY - sY;
         float len = (float) Math.sqrt(dx * dx + dy * dy);
-        if (len < 1) len = 1;
+        if (len > 0) {
+            // Perpendicular vector (rotated 90°)
+            float perpX = -dy / len;
+            float perpY = dx / len;
 
-        // Perpendicular direction
-        float perpX = -dy / len;
-        float perpY = dx / len;
+            // Determine which side is "outside"
+            // Outside is opposite to where P is relative to the line SE
+            // P is at (pX, pY) = (eX, sY)
+            // Check which side of line SE the point P is on
+            // Using cross product: (E-S) × (P-S)
+            float cross = (eX - sX) * (pY - sY) - (eY - sY) * (pX - sX);
 
-        // Offset toward "inside" of triangle (toward P)
-        // P is at (eX, sY), which is at one corner
-        float pX = x2; // = eX
-        float pY = y1; // = sY
+            // If cross > 0, P is on the left side of SE, so outside is right
+            // If cross < 0, P is on the right side of SE, so outside is left
+            float direction = cross > 0 ? 1 : -1;
 
-        // Vector from midpoint to P
-        float toPx = pX - midX;
-        float toPy = pY - midY;
-        float toPlen = (float) Math.sqrt(toPx * toPx + toPy * toPy);
-        if (toPlen < 1) toPlen = 1;
-        toPx /= toPlen;
-        toPy /= toPlen;
+            float offset = 45 * direction;
+            float labelX = seMidX + perpX * offset;
+            float labelY = seMidY + perpY * offset;
 
-        // Use this direction for offset
-        float offsetX = toPx * 40;
-        float offsetY = toPy * 40;
-
-        float labelX = midX + offsetX;
-        float labelY = midY + offsetY;
-
-        // Draw background
-        float textWidth = paintLabelText.measureText(text) + 20;
-        float left = labelX - textWidth / 2;
-        float top = labelY - 18;
-        float right = labelX + textWidth / 2;
-        float bottom = labelY + 18;
-
-        drawRoundedRect(canvas, left, top, right, bottom, 6, paintLabelBg);
-
-        // Draw text in yellow
-        paintLabelText.setColor(Color.parseColor("#FFD700")); // Yellow for hypotenuse
-        canvas.drawText(text, labelX, labelY + 7, paintLabelText);
-        paintLabelText.setColor(ContextCompat.getColor(getContext(), R.color.text_bright));
+            drawLabelWithBackground(canvas, hypLabel, labelX, labelY, paintHypotenuse.getColor());
+        }
     }
 
-    private void drawAngleBox(Canvas canvas, float centerX, float centerY) {
+    private void drawLabelWithBackground(Canvas canvas, String text, float x, float y, int color) {
+        float textWidth = paintLabelText.measureText(text) + 16;
+        float left = x - textWidth / 2;
+        float top = y - 16;
+        float right = x + textWidth / 2;
+        float bottom = y + 16;
+
+        drawRoundedRect(canvas, left, top, right, bottom, 5, paintLabelBg);
+
+        paintLabelText.setColor(color);
+        canvas.drawText(text, x, y + 8, paintLabelText);
+    }
+
+    private void drawAngleDisplay(Canvas canvas) {
         if (Double.isNaN(angle)) return;
 
-        // Position angle box at top right
-        float boxX = viewWidth - 120;
-        float boxY = 80;
+        // Right side panel for angles
+        float panelX = viewWidth - 130;
+        float panelY = viewHeight / 2f - 60;
 
-        // Background
-        float boxWidth = 200;
-        float boxHeight = 130;
-        float left = boxX - boxWidth / 2;
-        float top = boxY - boxHeight / 2;
-        float right = boxX + boxWidth / 2;
-        float bottom = boxY + boxHeight / 2;
+        // Background panel
+        Paint panelBg = new Paint(Paint.ANTI_ALIAS_FLAG);
+        panelBg.setColor(ContextCompat.getColor(getContext(), R.color.bg_dark));
+        panelBg.setAlpha(240);
+        panelBg.setStyle(Paint.Style.FILL);
 
-        Paint paintBoxBg = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintBoxBg.setColor(ContextCompat.getColor(getContext(), R.color.bg_dark));
-        paintBoxBg.setAlpha(230);
-        paintBoxBg.setStyle(Paint.Style.FILL);
+        Paint panelBorder = new Paint(Paint.ANTI_ALIAS_FLAG);
+        panelBorder.setColor(ContextCompat.getColor(getContext(), R.color.button_border));
+        panelBorder.setStyle(Paint.Style.STROKE);
+        panelBorder.setStrokeWidth(2);
 
-        Paint paintBoxBorder = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintBoxBorder.setColor(ContextCompat.getColor(getContext(), R.color.button_border));
-        paintBoxBorder.setStyle(Paint.Style.STROKE);
-        paintBoxBorder.setStrokeWidth(2);
+        float panelWidth = 220;
+        float panelHeight = 180;
+        RectF panelRect = new RectF(panelX - panelWidth/2, panelY - 30, panelX + panelWidth/2, panelY + panelHeight);
+        drawRoundedRect(canvas, panelRect.left, panelRect.top, panelRect.right, panelRect.bottom, 12, panelBg);
+        drawRoundedRect(canvas, panelRect.left, panelRect.top, panelRect.right, panelRect.bottom, 12, panelBorder);
 
-        drawRoundedRect(canvas, left, top, right, bottom, 12, paintBoxBg);
-        drawRoundedRect(canvas, left, top, right, bottom, 12, paintBoxBorder);
-
-        // Title
+        // Angle Z
+        paintLabelText.setColor(Color.parseColor("#00BCD4"));
         paintLabelText.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Угол", boxX, boxY - 30, paintLabelText);
+        canvas.drawText("Угол (Z)", panelX, panelY + 10, paintLabelText);
 
-        // Angle value
-        String angleText = String.format("%.2f°", angle);
-        canvas.drawText(angleText, boxX, boxY + 20, paintAngleText);
+        String angleZText = String.format("%.2f°", angle);
+        canvas.drawText(angleZText, panelX, panelY + 55, paintAngleTextZ);
 
-        // Hypotenuse length
-        if (!Double.isNaN(relX) && !Double.isNaN(relZ)) {
-            double hypLen = Math.sqrt(relX * relX + relZ * relZ);
-            String hypText = String.format("Гип.: %.2f мм", hypLen);
-            paintLabelText.setAlpha(200);
-            canvas.drawText(hypText, boxX, boxY + 55, paintLabelText);
-            paintLabelText.setAlpha(255);
-        }
+        // Angle X (complementary)
+        double angleX = 90 - angle;
+
+        paintLabelText.setColor(Color.parseColor("#FF9800"));
+        canvas.drawText("Угол (X)", panelX, panelY + 95, paintLabelText);
+
+        String angleXText = String.format("%.2f°", angleX);
+        canvas.drawText(angleXText, panelX, panelY + 140, paintAngleTextX);
     }
 
     private void drawRoundedRect(Canvas canvas, float left, float top, float right, float bottom, float radius, Paint paint) {
         if (Build.VERSION.SDK_INT >= 21) {
             canvas.drawRoundRect(left, top, right, bottom, radius, radius, paint);
         } else {
-            android.graphics.RectF rect = new android.graphics.RectF(left, top, right, bottom);
+            RectF rect = new RectF(left, top, right, bottom);
             Path path = new Path();
             path.addRoundRect(rect, radius, radius, Path.Direction.CW);
             canvas.drawPath(path, paint);

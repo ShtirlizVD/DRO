@@ -26,7 +26,7 @@ import java.util.Locale;
  */
 public class AngleActivity extends AppCompatActivity {
 
-    private TextView tvStartX, tvStartZ, tvEndX, tvEndZ, tvAngle;
+    private TextView tvStartX, tvStartZ, tvEndX, tvEndZ;
     private TextView tvCurrentX, tvCurrentZ;
     private Button btnSetStart;
     private AngleView angleView;
@@ -35,12 +35,10 @@ public class AngleActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
 
-    // Handler for position updates
     private Handler handler;
     private Runnable positionUpdater;
     private static final int UPDATE_INTERVAL_MS = 100;
 
-    // Button colors
     private int colorButtonNormal;
     private int colorButtonActive;
 
@@ -53,9 +51,8 @@ public class AngleActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("DRO_PREFS", MODE_PRIVATE);
 
-        // Initialize colors
         colorButtonNormal = ContextCompat.getColor(this, R.color.button_bg);
-        colorButtonActive = Color.parseColor("#2E7D32"); // Green
+        colorButtonActive = Color.parseColor("#2E7D32");
 
         initViews();
         setupListeners();
@@ -69,7 +66,6 @@ public class AngleActivity extends AppCompatActivity {
         tvStartZ = findViewById(R.id.tv_start_z);
         tvEndX = findViewById(R.id.tv_end_x);
         tvEndZ = findViewById(R.id.tv_end_z);
-        tvAngle = findViewById(R.id.tv_angle);
         btnSetStart = findViewById(R.id.btn_set_start);
         angleView = findViewById(R.id.angle_view);
     }
@@ -95,7 +91,6 @@ public class AngleActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         handler.post(positionUpdater);
-        // Register for broadcast updates from MainActivity
         IntentFilter filter = new IntentFilter("com.dro.lathe.POSITION_UPDATE");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(positionReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
@@ -136,12 +131,10 @@ public class AngleActivity extends AppCompatActivity {
         tvCurrentX.setText(String.format(Locale.US, "%.2f", x));
         tvCurrentZ.setText(String.format(Locale.US, "%.2f", z));
 
-        // Update angle view with current position
         if (angleView != null) {
             angleView.setCurrentPosition(x, z);
         }
 
-        // If start point is set, update relative end point and angle
         if (!Double.isNaN(startX)) {
             updateRelativePosition(x, z);
         }
@@ -154,7 +147,6 @@ public class AngleActivity extends AppCompatActivity {
         tvEndX.setText(String.format(Locale.US, "%.3f", relX));
         tvEndZ.setText(String.format(Locale.US, "%.3f", relZ));
 
-        // Calculate angle (always acute 0-90°)
         double angle;
         if (Math.abs(relZ) < 0.001 && Math.abs(relX) < 0.001) {
             angle = 0;
@@ -163,32 +155,23 @@ public class AngleActivity extends AppCompatActivity {
             angle = Math.min(angle, 90);
         }
 
-        tvAngle.setText(String.format(Locale.US, "%.2f°", angle));
-
-        // Update view
         angleView.setMeasurements(relX, relZ, angle);
     }
 
     private void toggleStartPoint() {
         if (Double.isNaN(startX)) {
-            // Set start point
             startX = prefs.getFloat("current_x", 0);
             startZ = prefs.getFloat("current_z", 0);
 
             tvStartX.setText(String.format(Locale.US, "%.3f", startX));
             tvStartZ.setText(String.format(Locale.US, "%.3f", startZ));
 
-            // Change button appearance
             btnSetStart.setText("Начальная точка установлена");
             btnSetStart.setBackgroundColor(colorButtonActive);
 
-            // Update angle view
             angleView.setStartPoint(startX, startZ);
-
-            // Immediately update relative position
             updateCurrentPosition();
         } else {
-            // Unset start point
             reset();
         }
     }
@@ -200,9 +183,7 @@ public class AngleActivity extends AppCompatActivity {
         tvStartZ.setText("—");
         tvEndX.setText("—");
         tvEndZ.setText("—");
-        tvAngle.setText("—°");
 
-        // Reset button
         btnSetStart.setText("Установить начальную точку");
         btnSetStart.setBackgroundColor(colorButtonNormal);
 
