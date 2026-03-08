@@ -8,7 +8,7 @@
 
     <!-- Left Panel -->
     <LinearLayout
-        android:layout_width="240dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -191,6 +191,102 @@
                     android:text="—"
                     android:textColor="@color/text_bright"
                     android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Angle Results -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="6dp"
+            android:background="@color/bg_darker"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Результаты измерения"
+                android:textColor="@color/text_bright"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <!-- Angle Z -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Угол (Z)"
+                    android:textColor="#00BCD4"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_angle_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—°"
+                    android:textColor="#00BCD4"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Angle X -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Угол (X)"
+                    android:textColor="#FF9800"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_angle_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—°"
+                    android:textColor="#FF9800"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Hypotenuse -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Гипотенуза"
+                    android:textColor="#FFD700"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_hypotenuse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="— мм"
+                    android:textColor="#FFD700"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 

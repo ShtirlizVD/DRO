@@ -27,6 +27,7 @@ import java.util.Locale;
 public class AngleActivity extends AppCompatActivity {
 
     private TextView tvStartX, tvStartZ, tvEndX, tvEndZ;
+    private TextView tvAngleZ, tvAngleX, tvHypotenuse;
     private TextView tvCurrentX, tvCurrentZ;
     private Button btnSetStart;
     private AngleView angleView;
@@ -66,6 +67,9 @@ public class AngleActivity extends AppCompatActivity {
         tvStartZ = findViewById(R.id.tv_start_z);
         tvEndX = findViewById(R.id.tv_end_x);
         tvEndZ = findViewById(R.id.tv_end_z);
+        tvAngleZ = findViewById(R.id.tv_angle_z);
+        tvAngleX = findViewById(R.id.tv_angle_x);
+        tvHypotenuse = findViewById(R.id.tv_hypotenuse);
         btnSetStart = findViewById(R.id.btn_set_start);
         angleView = findViewById(R.id.angle_view);
     }
@@ -147,15 +151,26 @@ public class AngleActivity extends AppCompatActivity {
         tvEndX.setText(String.format(Locale.US, "%.3f", relX));
         tvEndZ.setText(String.format(Locale.US, "%.3f", relZ));
 
-        double angle;
+        // Calculate angles
+        double angleZ;
         if (Math.abs(relZ) < 0.001 && Math.abs(relX) < 0.001) {
-            angle = 0;
+            angleZ = 0;
         } else {
-            angle = Math.toDegrees(Math.atan2(Math.abs(relX), Math.abs(relZ)));
-            angle = Math.min(angle, 90);
+            angleZ = Math.toDegrees(Math.atan2(Math.abs(relX), Math.abs(relZ)));
+            angleZ = Math.min(angleZ, 90);
         }
+        double angleX = 90 - angleZ;
 
-        angleView.setMeasurements(relX, relZ, angle);
+        // Calculate hypotenuse
+        double hypotenuse = Math.sqrt(relX * relX + relZ * relZ);
+
+        // Update left panel
+        tvAngleZ.setText(String.format(Locale.US, "%.2f°", angleZ));
+        tvAngleX.setText(String.format(Locale.US, "%.2f°", angleX));
+        tvHypotenuse.setText(String.format(Locale.US, "%.2f мм", hypotenuse));
+
+        // Update view
+        angleView.setMeasurements(relX, relZ, angleZ);
     }
 
     private void toggleStartPoint() {
@@ -183,6 +198,9 @@ public class AngleActivity extends AppCompatActivity {
         tvStartZ.setText("—");
         tvEndX.setText("—");
         tvEndZ.setText("—");
+        tvAngleZ.setText("—°");
+        tvAngleX.setText("—°");
+        tvHypotenuse.setText("— мм");
 
         btnSetStart.setText("Установить начальную точку");
         btnSetStart.setBackgroundColor(colorButtonNormal);
