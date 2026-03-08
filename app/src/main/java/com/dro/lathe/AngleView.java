@@ -90,18 +90,18 @@ public class AngleView extends View {
 
         paintLabelText = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintLabelText.setColor(ContextCompat.getColor(context, R.color.text_bright));
-        paintLabelText.setTextSize(22);
+        paintLabelText.setTextSize(44);
         paintLabelText.setTextAlign(Paint.Align.CENTER);
         paintLabelText.setFakeBoldText(true);
 
         paintAngleArcZ = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAngleArcZ.setColor(Color.parseColor("#00BCD4"));
-        paintAngleArcZ.setStrokeWidth(3);
+        paintAngleArcZ.setStrokeWidth(5);
         paintAngleArcZ.setStyle(Paint.Style.STROKE);
 
         paintAngleArcX = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAngleArcX.setColor(Color.parseColor("#FF9800"));
-        paintAngleArcX.setStrokeWidth(3);
+        paintAngleArcX.setStrokeWidth(5);
         paintAngleArcX.setStyle(Paint.Style.STROKE);
     }
 
@@ -223,8 +223,8 @@ public class AngleView extends View {
     private void drawAngleArcs(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
         if (Math.abs(relZ) < 0.1 || Math.abs(relX) < 0.1) return;
 
-        float arcRadiusZ = 60f;
-        float arcRadiusX = 50f;
+        float arcRadiusZ = 100f;
+        float arcRadiusX = 80f;
 
         // Calculate angle of hypotenuse from horizontal (Z axis)
         double hypAngle = Math.atan2(eY - sY, eX - sX);
@@ -287,30 +287,32 @@ public class AngleView extends View {
         boolean eBelow = eY > sY;
         boolean eRight = eX > sX;
         
-        float labelHeight = 32f;
+        float labelHeight = 50f;
+        float labelOffset = 65f;
         
-        // Horizontal side (SP) - check if outside fits
+        // Horizontal side (SP) - always outside first, move inside if hits edge
         String zLabel = String.format("%.2f", Math.abs(relZ));
         float spMidX = (sX + pX) / 2;
-        // Outside is below if triangle goes down (E below S), above if triangle goes up
-        float spOutsideY = sY + (eBelow ? 40 : -40);
-        float spInsideY = sY + (eBelow ? -40 : 40);
+        // Outside is on the opposite side of triangle (below if E below S, above if E above S)
+        float spOutsideY = sY + (eBelow ? labelOffset : -labelOffset);
+        float spInsideY = sY + (eBelow ? -labelOffset : labelOffset);
         
+        // Check if outside position hits the edge
         boolean spUseInside = (eBelow && spOutsideY + labelHeight/2 > viewHeight - PADDING) ||
                               (!eBelow && spOutsideY - labelHeight/2 < PADDING);
         
         float spLabelY = spUseInside ? spInsideY : spOutsideY;
         drawLabelWithBackground(canvas, zLabel, spMidX, spLabelY, paintSideGray.getColor());
 
-        // Vertical side (PE) - check if outside fits
+        // Vertical side (PE) - always outside first, move inside if hits edge
         String xLabel = String.format("%.2f", Math.abs(relX));
         float peMidY = (pY + eY) / 2;
         // Outside is to the right if E is to the right of S, left otherwise
-        float peOutsideX = pX + (eRight ? 55 : -55);
-        float peInsideX = pX + (eRight ? -55 : 55);
+        float peOutsideX = pX + (eRight ? labelOffset : -labelOffset);
+        float peInsideX = pX + (eRight ? -labelOffset : labelOffset);
         
-        boolean peUseInside = (eRight && peOutsideX + 40 > viewWidth - PADDING) ||
-                              (!eRight && peOutsideX - 40 < PADDING);
+        boolean peUseInside = (eRight && peOutsideX + 60 > viewWidth - PADDING) ||
+                              (!eRight && peOutsideX - 60 < PADDING);
         
         float peLabelX = peUseInside ? peInsideX : peOutsideX;
         drawLabelWithBackground(canvas, xLabel, peLabelX, peMidY, paintSideGray.getColor());
@@ -333,14 +335,14 @@ public class AngleView extends View {
             float dot = nx * toPx + ny * toPy;
             
             // Outside direction (away from P)
-            float offsetMult = (dot > 0) ? -50 : 50;
+            float offsetMult = (dot > 0) ? -70 : 70;
             
             float hypLabelX = seMidX + nx * offsetMult;
             float hypLabelY = seMidY + ny * offsetMult;
             
             // Check if hypotenuse label fits, if not put inside
-            if (hypLabelX < PADDING + 30 || hypLabelX > viewWidth - PADDING - 30 ||
-                hypLabelY < PADDING + 20 || hypLabelY > viewHeight - PADDING - 20) {
+            if (hypLabelX < PADDING + 50 || hypLabelX > viewWidth - PADDING - 50 ||
+                hypLabelY < PADDING + 40 || hypLabelY > viewHeight - PADDING - 40) {
                 // Move to inside
                 offsetMult = -offsetMult;
                 hypLabelX = seMidX + nx * offsetMult;
@@ -352,16 +354,16 @@ public class AngleView extends View {
     }
 
     private void drawLabelWithBackground(Canvas canvas, String text, float x, float y, int color) {
-        float textWidth = paintLabelText.measureText(text) + 16;
+        float textWidth = paintLabelText.measureText(text) + 30;
         float left = x - textWidth / 2;
-        float top = y - 14;
+        float top = y - 25;
         float right = x + textWidth / 2;
-        float bottom = y + 14;
+        float bottom = y + 25;
 
-        drawRoundedRect(canvas, left, top, right, bottom, 5, paintLabelBg);
+        drawRoundedRect(canvas, left, top, right, bottom, 8, paintLabelBg);
 
         paintLabelText.setColor(color);
-        canvas.drawText(text, x, y + 7, paintLabelText);
+        canvas.drawText(text, x, y + 15, paintLabelText);
     }
 
     private void drawRoundedRect(Canvas canvas, float left, float top, float right, float bottom, float radius, Paint paint) {
