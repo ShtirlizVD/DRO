@@ -192,11 +192,11 @@ public class MarkerListActivity extends AppCompatActivity {
                 confirmDialog.setContentView(R.layout.dialog_confirm);
                 confirmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 
-                TextView tvName = confirmDialog.findViewById(R.id.tv_marker_name);
+                TextView tvConfirmName = confirmDialog.findViewById(R.id.tv_marker_name);
                 Button btnDeleteConfirm = confirmDialog.findViewById(R.id.btn_delete);
-                Button btnCancel = confirmDialog.findViewById(R.id.btn_cancel);
+                Button btnCancelConfirm = confirmDialog.findViewById(R.id.btn_cancel);
                 
-                tvName.setText(m.getName());
+                tvConfirmName.setText(m.getName());
                 
                 btnDeleteConfirm.setOnClickListener(d -> {
                     markers.remove(position);
@@ -205,7 +205,7 @@ public class MarkerListActivity extends AppCompatActivity {
                     confirmDialog.dismiss();
                 });
                 
-                btnCancel.setOnClickListener(d -> confirmDialog.dismiss());
+                btnCancelConfirm.setOnClickListener(d -> confirmDialog.dismiss());
                 
                 confirmDialog.show();
             });
