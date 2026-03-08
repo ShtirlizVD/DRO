@@ -219,6 +219,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
     
     private void loadSavedCoordinates() {
+        // Load resolution FIRST (needed for absolute coordinates calculation)
+        double resX = prefs.getFloat("resolution_x", 0.005f);
+        double resZ = prefs.getFloat("resolution_z", 0.005f);
+        droData.setResolutionX(resX);
+        droData.setResolutionZ(resZ);
+        
         // Load last known raw coordinates
         double savedRawX = prefs.getFloat("saved_raw_x", 0);
         double savedRawZ = prefs.getFloat("saved_raw_z", 0);
