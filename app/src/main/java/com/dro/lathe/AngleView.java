@@ -234,51 +234,52 @@ public class AngleView extends View {
         // Z angle arc at point S (from Z axis to hypotenuse)
         RectF arcRectZ = new RectF(sX - arcRadiusZ, sY - arcRadiusZ, sX + arcRadiusZ, sY + arcRadiusZ);
         
-        // Determine arc direction based on E position relative to S
         boolean eRight = eX > sX;
         boolean eBelow = eY > sY;
         
         if (eRight) {
-            // E is to the right of S
             if (eBelow) {
-                // Arc from 0° clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 0, angleDeg, false, paintAngleArcZ);
             } else {
-                // Arc from 0° counter-clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 0, -angleDeg, false, paintAngleArcZ);
             }
         } else {
-            // E is to the left of S
             if (eBelow) {
-                // Arc from 180° counter-clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 180, -angleDeg, false, paintAngleArcZ);
             } else {
-                // Arc from 180° clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 180, angleDeg, false, paintAngleArcZ);
             }
         }
 
-        // X angle arc at point P (from vertical to hypotenuse)
-        RectF arcRectX = new RectF(pX - arcRadiusX, pY - arcRadiusX, pX + arcRadiusX, pY + arcRadiusX);
-        float angleXDeg = 90 - angleDeg;
-        
-        if (eRight) {
-            if (eBelow) {
-                // Arc from 270° (down) counter-clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 270 - angleXDeg, angleXDeg, false, paintAngleArcX);
-            } else {
-                // Arc from 90° (up) clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 90, angleXDeg, false, paintAngleArcX);
-            }
+        // X angle arc at point E (between vertical PE and hypotenuse ES)
+        RectF arcRectX = new RectF(eX - arcRadiusX, eY - arcRadiusX, eX + arcRadiusX, eY + arcRadiusX);
+        float angleXDeg = 90 - angleDeg; // Complementary angle
+
+        // Vertical direction from E toward P (on the Y axis)
+        // In canvas: 270° = up, 90° = down
+        float verticalAngle;
+        if (eBelow) {
+            // E is below S, so PE goes UP from E
+            verticalAngle = -90; // = 270°
         } else {
-            if (eBelow) {
-                // Arc from 270° (down) clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 270, angleXDeg, false, paintAngleArcX);
-            } else {
-                // Arc from 90° (up) counter-clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 90 - angleXDeg, angleXDeg, false, paintAngleArcX);
-            }
+            // E is above S, so PE goes DOWN from E
+            verticalAngle = 90;
         }
+
+        // Hypotenuse direction from E toward S
+        float hypAngleDeg = (float) Math.toDegrees(Math.atan2(sY - eY, sX - eX));
+
+        // Draw arc from vertical to hypotenuse
+        float startAngle = verticalAngle;
+        float sweepAngle = hypAngleDeg - verticalAngle;
+        
+        // Normalize sweep to be the smaller arc (the angle X)
+        if (Math.abs(sweepAngle) > 90) {
+            if (sweepAngle > 0) sweepAngle = sweepAngle - 360;
+            else sweepAngle = sweepAngle + 360;
+        }
+        
+        canvas.drawArc(arcRectX, startAngle, sweepAngle, false, paintAngleArcX);
     }
 
     private void drawDimensionLabels(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
