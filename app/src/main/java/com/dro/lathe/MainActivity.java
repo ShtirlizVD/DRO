@@ -414,14 +414,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.popup_tools);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        
-        // Position at top right, near the tool button
-        android.view.WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.gravity = android.view.Gravity.TOP | android.view.Gravity.RIGHT;
-        lp.x = 10;
-        lp.y = 10;
-        lp.flags &= ~android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        dialog.getWindow().setAttributes(lp);
 
         int[] btnIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
         for (int i = 0; i < 4; i++) {
@@ -445,6 +437,17 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
             android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         
         dialog.show();
+        
+        // Position after show - get screen size and place at top right
+        android.view.Display display = getWindowManager().getDefaultDisplay();
+        android.graphics.Point size = new android.graphics.Point();
+        display.getSize(size);
+        
+        android.view.WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.gravity = android.view.Gravity.TOP | android.view.Gravity.LEFT;
+        lp.x = size.x - 180; // Right side with some margin
+        lp.y = 10;
+        dialog.getWindow().setAttributes(lp);
         
         // Re-enable fullscreen after show
         dialog.getWindow().getDecorView().setSystemUiVisibility(
