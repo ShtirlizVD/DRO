@@ -80,16 +80,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="6dp"
             android:background="@color/bg_darker"
             android:padding="8dp">
 
             <!-- Angle Z -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -114,10 +113,10 @@
 
             <!-- Angle X -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
+                android:layout_marginTop="4dp"
                 android:gravity="center">
 
                 <TextView
