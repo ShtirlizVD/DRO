@@ -210,14 +210,23 @@ public class AngleActivity extends AppCompatActivity {
 
     /**
      * Format taper value as "1:n"
-     * Если конусность очень маленькая - показываем прочерк
+     * Регулируемое количество знаков после запятой:
+     * - n < 10: 2 знака (1:3.44)
+     * - n < 100: 1 знак (1:52.1)
+     * - n >= 100: без знаков (1:542)
      */
     private String formatTaper(double tan) {
         if (tan < 0.001) {
             return "—";
         } else {
             double n = 1.0 / tan;
-            return String.format(Locale.US, "1:%.2f", n);
+            if (n < 10) {
+                return String.format(Locale.US, "1:%.2f", n);
+            } else if (n < 100) {
+                return String.format(Locale.US, "1:%.1f", n);
+            } else {
+                return String.format(Locale.US, "1:%.0f", n);
+            }
         }
     }
 
