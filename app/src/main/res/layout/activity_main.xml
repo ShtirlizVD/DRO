@@ -207,15 +207,16 @@
             android:padding="8dp"
             android:background="@color/bg_darker">
 
-            <!-- Tool Button -->
-            <Button
+            <!-- Tool Button with icon -->
+            <ImageButton
                 android:id="@+id/btn_tool"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:text="Инстр. 1"
-                android:textColor="@color/text_bright"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_tool_1"
+                android:scaleType="fitCenter"
                 android:background="@drawable/button_menu"
-                android:textSize="15sp" />
+                android:contentDescription="Выбор инструмента"
+                android:padding="8dp" />
 
             <!-- Absolute Coordinates Display -->
             <LinearLayout

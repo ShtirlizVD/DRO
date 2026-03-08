@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         findViewById(R.id.btn_set_l).setOnClickListener(v -> onSetLength());
 
         // Tool button - shows popup with 4 tools
-        Button btnTool = findViewById(R.id.btn_tool);
+        android.widget.ImageButton btnTool = findViewById(R.id.btn_tool);
         btnTool.setOnClickListener(v -> showToolPopup(v));
         btnTool.setOnLongClickListener(v -> {
             editToolOffset(currentTool);
@@ -420,9 +420,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         currentTool = index;
 
-        // Update button text
-        Button btnTool = findViewById(R.id.btn_tool);
-        btnTool.setText("Инстр. " + (index + 1));
+        // Update button icon
+        android.widget.ImageButton btnTool = findViewById(R.id.btn_tool);
+        int[] toolIcons = {R.drawable.ic_tool_1, R.drawable.ic_tool_2, R.drawable.ic_tool_3, R.drawable.ic_tool_4};
+        btnTool.setImageResource(toolIcons[index]);
 
         droData.setOffsetX(tools[index].getOffsetX());
         droData.setOffsetD(tools[index].getOffsetD());
@@ -449,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         int[] btnIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
         for (int i = 0; i < 4; i++) {
-            android.widget.ImageButton btn = popupView.findViewById(btnIds[i]);
+            Button btn = popupView.findViewById(btnIds[i]);
             btn.setSelected(i == currentTool);
             final int toolIndex = i;
             btn.setOnClickListener(v -> {
@@ -793,9 +794,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         updateConnectionState();
         updateActiveMarkersDisplay();
         
-        // Update tool button text
-        Button btnTool = findViewById(R.id.btn_tool);
-        btnTool.setText("Инстр. " + (currentTool + 1));
+        // Update tool button icon
+        android.widget.ImageButton btnTool = findViewById(R.id.btn_tool);
+        int[] toolIcons = {R.drawable.ic_tool_1, R.drawable.ic_tool_2, R.drawable.ic_tool_3, R.drawable.ic_tool_4};
+        btnTool.setImageResource(toolIcons[currentTool]);
     }
 
     private void loadMarkers() {
