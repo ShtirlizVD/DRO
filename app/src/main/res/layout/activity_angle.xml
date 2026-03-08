@@ -6,60 +6,68 @@
     android:background="@color/bg_dark"
     android:padding="8dp">
 
-    <!-- Left Panel -->
+    <!-- Left Panel - compact -->
     <LinearLayout
-        android:layout_width="280dp"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Current Position (compact) -->
+        <!-- Current Position - large, two rows -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:background="@color/bg_darker"
-            android:padding="6dp"
-            android:gravity="center">
+            android:padding="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Текущая: "
-                android:textColor="@color/text_dim"
-                android:textSize="11sp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X"
-                android:textColor="@color/coord_x"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="X: "
+                    android:textColor="@color/coord_x"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_current_x"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.00"
-                android:textColor="@color/text_bright"
-                android:textSize="12sp"
-                android:layout_marginEnd="8dp" />
+                <TextView
+                    android:id="@+id/tv_current_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.000"
+                    android:textColor="@color/text_bright"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Z"
-                android:textColor="@color/coord_z"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/tv_current_z"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.00"
-                android:textColor="@color/text_bright"
-                android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Z: "
+                    android:textColor="@color/coord_z"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_current_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.000"
+                    android:textColor="@color/text_bright"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Start Point Section -->
@@ -76,21 +84,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/start_point"
                 android:textColor="@color/coord_x"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="2dp">
 
                 <TextView
-                    android:layout_width="24dp"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:text="@string/coord_x"
                     android:textColor="@color/coord_x"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_start_x"
@@ -99,14 +107,14 @@
                     android:layout_weight="1"
                     android:text="—"
                     android:textColor="@color/text_bright"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:layout_width="24dp"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:text="@string/coord_z"
                     android:textColor="@color/coord_z"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_start_z"
@@ -115,114 +123,39 @@
                     android:layout_weight="1"
                     android:text="—"
                     android:textColor="@color/text_bright"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_set_start"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="6dp"
-                android:text="Установить начальную точку"
-                android:textSize="12sp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:text="Установить точку"
+                android:textSize="11sp"
                 android:textColor="@color/text_bright"
                 android:background="@drawable/button_tool" />
         </LinearLayout>
 
-        <!-- End Point Section -->
+        <!-- Angle Results - large -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="6dp"
             android:background="@color/bg_darker"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/end_point"
-                android:textColor="@color/coord_z"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="(относительно начальной)"
-                android:textColor="@color/text_dim"
-                android:textSize="10sp"
-                android:layout_marginTop="2dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp">
-
-                <TextView
-                    android:layout_width="24dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/coord_x"
-                    android:textColor="@color/coord_x"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_end_x"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="—"
-                    android:textColor="@color/text_bright"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="24dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/coord_z"
-                    android:textColor="@color/coord_z"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_end_z"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="—"
-                    android:textColor="@color/text_bright"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Angle Results -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="6dp"
-            android:background="@color/bg_darker"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Результаты измерения"
-                android:textColor="@color/text_bright"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+            android:padding="10dp">
 
             <!-- Angle Z -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical">
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Угол (Z)"
                     android:textColor="#00BCD4"
                     android:textSize="14sp" />
@@ -233,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:text="—°"
                     android:textColor="#00BCD4"
-                    android:textSize="28sp"
+                    android:textSize="42sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -241,14 +174,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:gravity="center">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Угол (X)"
                     android:textColor="#FF9800"
                     android:textSize="14sp" />
@@ -259,33 +191,7 @@
                     android:layout_height="wrap_content"
                     android:text="—°"
                     android:textColor="#FF9800"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Hypotenuse -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Гипотенуза"
-                    android:textColor="#FFD700"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_hypotenuse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="— мм"
-                    android:textColor="#FFD700"
-                    android:textSize="20sp"
+                    android:textSize="42sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -296,34 +202,15 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <!-- Bottom Buttons -->
-        <LinearLayout
+        <!-- Close Button -->
+        <Button
+            android:id="@+id/btn_close"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_reset"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:text="Сброс"
-                android:textSize="12sp"
-                android:textColor="@color/text_bright"
-                android:background="@drawable/button_cancel"
-                android:layout_marginEnd="4dp" />
-
-            <Button
-                android:id="@+id/btn_close"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:text="Закрыть"
-                android:textSize="12sp"
-                android:textColor="@color/text_bright"
-                android:background="@drawable/button_menu"
-                android:layout_marginStart="4dp" />
-        </LinearLayout>
+            android:layout_height="44dp"
+            android:text="Закрыть"
+            android:textSize="12sp"
+            android:textColor="@color/text_bright"
+            android:background="@drawable/button_menu" />
     </LinearLayout>
 
     <!-- Right Panel: Angle Visualization -->
