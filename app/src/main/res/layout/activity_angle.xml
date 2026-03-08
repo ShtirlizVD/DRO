@@ -36,12 +36,15 @@
 
                 <TextView
                     android:id="@+id/tv_current_x"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
                     android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd"
+                    android:gravity="end" />
             </LinearLayout>
 
             <LinearLayout
@@ -61,12 +64,15 @@
 
                 <TextView
                     android:id="@+id/tv_current_z"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
                     android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd"
+                    android:gravity="end" />
             </LinearLayout>
         </LinearLayout>
 
@@ -103,6 +109,15 @@
                     android:textColor="#00BCD4"
                     android:textSize="61sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_taper_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="#00BCD4"
+                    android:textSize="18sp"
+                    android:alpha="0.8" />
             </LinearLayout>
 
             <!-- Angle X -->
@@ -128,6 +143,15 @@
                     android:textColor="#FF9800"
                     android:textSize="61sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_taper_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="#FF9800"
+                    android:textSize="18sp"
+                    android:alpha="0.8" />
             </LinearLayout>
         </LinearLayout>
 

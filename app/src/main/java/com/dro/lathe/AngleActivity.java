@@ -28,6 +28,7 @@ public class AngleActivity extends AppCompatActivity {
 
     private TextView tvStartX, tvStartZ;
     private TextView tvAngleZ, tvAngleX;
+    private TextView tvTaperZ, tvTaperX;
     private TextView tvCurrentX, tvCurrentZ;
     private Button btnSetStart;
     private AngleView angleView;
@@ -67,6 +68,8 @@ public class AngleActivity extends AppCompatActivity {
         tvStartZ = findViewById(R.id.tv_start_z);
         tvAngleZ = findViewById(R.id.tv_angle_z);
         tvAngleX = findViewById(R.id.tv_angle_x);
+        tvTaperZ = findViewById(R.id.tv_taper_z);
+        tvTaperX = findViewById(R.id.tv_taper_x);
         btnSetStart = findViewById(R.id.btn_set_start);
         angleView = findViewById(R.id.angle_view);
     }
@@ -158,6 +161,15 @@ public class AngleActivity extends AppCompatActivity {
         tvAngleZ.setText(String.format(Locale.US, "%.2f°", angleZ));
         tvAngleX.setText(String.format(Locale.US, "%.2f°", angleX));
 
+        // Calculate and display taper
+        // Taper = tan(angle) or 1:n format
+        double tanZ = Math.tan(Math.toRadians(angleZ));
+        double tanX = Math.tan(Math.toRadians(angleX));
+
+        // Format as "K=0.xxx" or "1:n"
+        tvTaperZ.setText(formatTaper(tanZ));
+        tvTaperX.setText(formatTaper(tanX));
+
         // Update view
         angleView.setMeasurements(relX, relZ, angleZ);
     }
@@ -187,11 +199,33 @@ public class AngleActivity extends AppCompatActivity {
         tvStartZ.setText("—");
         tvAngleZ.setText("—°");
         tvAngleX.setText("—°");
+        tvTaperZ.setText("—");
+        tvTaperX.setText("—");
 
         btnSetStart.setText("Установить точку");
         btnSetStart.setBackgroundColor(colorButtonNormal);
 
         angleView.reset();
+    }
+
+    /**
+     * Format taper value as "K=tan" or "1:n"
+     * K = tan(angle) - конусность
+     */
+    private String formatTaper(double tan) {
+        if (tan < 0.001) {
+            return String.format(Locale.US, "K=%.4f", tan);
+        } else if (tan > 100) {
+            return String.format(Locale.US, "K=%.2f", tan);
+        } else {
+            // Show as 1:n format when reasonable
+            double n = 1.0 / tan;
+            if (n < 1000) {
+                return String.format(Locale.US, "1:%.2f", n);
+            } else {
+                return String.format(Locale.US, "K=%.4f", tan);
+            }
+        }
     }
 
     private void enableFullscreenMode() {
