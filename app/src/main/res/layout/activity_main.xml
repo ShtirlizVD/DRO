@@ -64,11 +64,13 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_zero_x"
                     style="@style/ZeroButton"
-                    android:text="ZERO"
-                    android:textColor="@color/yellow" />
+                    android:src="@drawable/ic_zero"
+                    android:scaleType="fitCenter"
+                    android:padding="12dp"
+                    android:contentDescription="Zero X" />
             </LinearLayout>
 
             <!-- D Coordinate Row -->
@@ -104,11 +106,13 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_set_d"
                     style="@style/ZeroButton"
-                    android:text="Ø"
-                    android:textColor="@color/yellow" />
+                    android:src="@drawable/ic_diameter"
+                    android:scaleType="fitCenter"
+                    android:padding="12dp"
+                    android:contentDescription="Set Diameter" />
             </LinearLayout>
 
             <!-- Z Coordinate Row -->
@@ -150,11 +154,13 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_zero_z"
                     style="@style/ZeroButton"
-                    android:text="ZERO"
-                    android:textColor="@color/yellow" />
+                    android:src="@drawable/ic_zero"
+                    android:scaleType="fitCenter"
+                    android:padding="12dp"
+                    android:contentDescription="Zero Z" />
             </LinearLayout>
 
             <!-- L Coordinate Row -->
@@ -190,11 +196,13 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_set_l"
                     style="@style/ZeroButton"
-                    android:text="L"
-                    android:textColor="@color/yellow" />
+                    android:src="@drawable/ic_length"
+                    android:scaleType="fitCenter"
+                    android:padding="12dp"
+                    android:contentDescription="Set Length" />
             </LinearLayout>
 
         </LinearLayout>
