@@ -288,15 +288,16 @@ public class AngleView extends View {
         boolean eRight = eX > sX;
         
         float labelHeight = 50f;
-        float labelOffset = 75f;
+        float labelOffsetH = 55f; // Closer for horizontal
+        float labelOffsetV = 80f; // For vertical
         
         // Horizontal side (SP) - OUTSIDE is opposite to where triangle is
-        // Triangle is on the side of E, so outside is opposite to E
+        // Triangle is on the side of E (below or above), so outside is opposite
         String zLabel = String.format("%.2f", Math.abs(relZ));
         float spMidX = (sX + pX) / 2;
         // If E is below S, triangle is below, so OUTSIDE is above
-        float spOutsideY = sY + (eBelow ? -labelOffset : labelOffset);
-        float spInsideY = sY + (eBelow ? labelOffset : -labelOffset);
+        float spOutsideY = sY + (eBelow ? -labelOffsetH : labelOffsetH);
+        float spInsideY = sY + (eBelow ? labelOffsetH : -labelOffsetH);
         
         // Check if outside position hits the edge
         boolean spUseInside = (eBelow && spOutsideY - labelHeight/2 < PADDING) ||
@@ -306,14 +307,16 @@ public class AngleView extends View {
         drawLabelText(canvas, zLabel, spMidX, spLabelY, paintSideGray.getColor());
 
         // Vertical side (PE) - OUTSIDE is opposite to where triangle is
+        // Triangle is on the side of S (left or right of PE), so outside is opposite
         String xLabel = String.format("%.2f", Math.abs(relX));
         float peMidY = (pY + eY) / 2;
-        // If E is right of S, triangle is to the right, so OUTSIDE is to the left
-        float peOutsideX = pX + (eRight ? -labelOffset : labelOffset);
-        float peInsideX = pX + (eRight ? labelOffset : -labelOffset);
+        // If E is right of S, triangle is to the LEFT of PE, so OUTSIDE is to the RIGHT
+        // If E is left of S, triangle is to the RIGHT of PE, so OUTSIDE is to the LEFT
+        float peOutsideX = pX + (eRight ? labelOffsetV : -labelOffsetV);
+        float peInsideX = pX + (eRight ? -labelOffsetV : labelOffsetV);
         
-        boolean peUseInside = (eRight && peOutsideX - 60 < PADDING) ||
-                              (!eRight && peOutsideX + 60 > viewWidth - PADDING);
+        boolean peUseInside = (eRight && peOutsideX + 60 > viewWidth - PADDING) ||
+                              (!eRight && peOutsideX - 60 < PADDING);
         
         float peLabelX = peUseInside ? peInsideX : peOutsideX;
         drawLabelText(canvas, xLabel, peLabelX, peMidY, paintSideGray.getColor());
