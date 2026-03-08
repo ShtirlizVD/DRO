@@ -77,6 +77,12 @@ public class AngleView extends View {
         return paintHypotenuse.getColor();
     }
 
+    public void setArcColors(int colorZ, int colorX) {
+        paintAngleArcZ.setColor(colorZ);
+        paintAngleArcX.setColor(colorX);
+        invalidate();
+    }
+
     public AngleView(Context context) {
         super(context);
         init(context);

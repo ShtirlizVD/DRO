@@ -32,6 +32,8 @@ public class AngleActivity extends AppCompatActivity {
     private TextView tvAngleZ, tvAngleX;
     private TextView tvTaperZ, tvTaperX;
     private TextView tvCurrentX, tvCurrentZ;
+    private TextView tvLabelAngleZ, tvLabelAngleX;
+    private TextView tvLabelTaperZ, tvLabelTaperX;
     private Button btnSetStart;
     private AngleView angleView;
 
@@ -45,6 +47,8 @@ public class AngleActivity extends AppCompatActivity {
 
     private int colorButtonNormal;
     private int colorButtonActive;
+    
+    private int colorX, colorZ;
 
     private static final String PREF_HYP_COLOR = "hypotenuse_color";
 
@@ -60,10 +64,32 @@ public class AngleActivity extends AppCompatActivity {
         colorButtonNormal = ContextCompat.getColor(this, R.color.button_bg);
         colorButtonActive = Color.parseColor("#2E7D32");
 
+        // Load coordinate colors from prefs (same as MainActivity)
+        colorX = prefs.getInt("color_x", ContextCompat.getColor(this, R.color.coord_x));
+        colorZ = prefs.getInt("color_z", ContextCompat.getColor(this, R.color.coord_z));
+
         initViews();
+        applyColors();
         setupListeners();
         setupPositionUpdater();
         loadHypotenuseColor();
+    }
+
+    private void applyColors() {
+        // Apply colors to angle labels and values
+        tvLabelAngleZ.setTextColor(colorZ);
+        tvAngleZ.setTextColor(colorZ);
+        tvLabelAngleX.setTextColor(colorX);
+        tvAngleX.setTextColor(colorX);
+        
+        // Apply colors to taper labels and values
+        tvLabelTaperZ.setTextColor(colorZ);
+        tvTaperZ.setTextColor(colorZ);
+        tvLabelTaperX.setTextColor(colorX);
+        tvTaperX.setTextColor(colorX);
+        
+        // Apply colors to AngleView arcs
+        angleView.setArcColors(colorZ, colorX);
     }
 
     private void initViews() {
@@ -71,10 +97,23 @@ public class AngleActivity extends AppCompatActivity {
         tvCurrentZ = findViewById(R.id.tv_current_z);
         tvStartX = findViewById(R.id.tv_start_x);
         tvStartZ = findViewById(R.id.tv_start_z);
+        
+        // Angle Z
+        tvLabelAngleZ = findViewById(R.id.tv_label_angle_z);
         tvAngleZ = findViewById(R.id.tv_angle_z);
+        
+        // Angle X
+        tvLabelAngleX = findViewById(R.id.tv_label_angle_x);
         tvAngleX = findViewById(R.id.tv_angle_x);
+        
+        // Taper Z
+        tvLabelTaperZ = findViewById(R.id.tv_label_taper_z);
         tvTaperZ = findViewById(R.id.tv_taper_z);
+        
+        // Taper X
+        tvLabelTaperX = findViewById(R.id.tv_label_taper_x);
         tvTaperX = findViewById(R.id.tv_taper_x);
+        
         btnSetStart = findViewById(R.id.btn_set_start);
         angleView = findViewById(R.id.angle_view);
     }
