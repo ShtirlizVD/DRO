@@ -76,21 +76,20 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Start Point Section -->
-
         <!-- Angle Results - large -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_marginTop="6dp"
             android:background="@color/bg_darker"
-            android:padding="10dp">
+            android:padding="8dp">
 
             <!-- Angle Z -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -99,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="Угол (Z)"
                     android:textColor="#00BCD4"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_z"
@@ -108,24 +107,17 @@
                     android:text="—°"
                     android:textColor="#00BCD4"
                     android:textSize="61sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_taper_z"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="—"
-                    android:textColor="#00BCD4"
-                    android:textSize="24sp"
-                    android:alpha="0.8" />
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.8" />
             </LinearLayout>
 
             <!-- Angle X -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginTop="8dp"
                 android:gravity="center">
 
                 <TextView
@@ -133,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="Угол (X)"
                     android:textColor="#FF9800"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_x"
@@ -142,20 +134,13 @@
                     android:text="—°"
                     android:textColor="#FF9800"
                     android:textSize="61sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_taper_x"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="—"
-                    android:textColor="#FF9800"
-                    android:textSize="24sp"
-                    android:alpha="0.8" />
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.8" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Spacer -->
+        <!-- Start Point Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -220,6 +205,70 @@
                 android:text="Установить точку"
                 android:textColor="@color/text_bright"
                 android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Taper Results -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:background="@color/bg_darker"
+            android:padding="8dp">
+
+            <!-- Taper Z -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Конус (Z)"
+                    android:textColor="#00BCD4"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_taper_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="#00BCD4"
+                    android:textSize="61sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.8" />
+            </LinearLayout>
+
+            <!-- Taper X -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Конус (X)"
+                    android:textColor="#FF9800"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_taper_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="#FF9800"
+                    android:textSize="61sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.8" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
