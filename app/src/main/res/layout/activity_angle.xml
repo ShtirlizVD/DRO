@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:text="X: "
                     android:textColor="@color/coord_x"
-                    android:textSize="20sp"
+                    android:textSize="35sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
-                    android:textSize="26sp"
+                    android:textSize="36sp"
                     android:textStyle="bold"
                     android:textAlignment="textEnd"
                     android:gravity="end" />
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:text="Z: "
                     android:textColor="@color/coord_z"
-                    android:textSize="20sp"
+                    android:textSize="35sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -69,7 +69,7 @@
                     android:layout_weight="1"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
-                    android:textSize="26sp"
+                    android:textSize="36sp"
                     android:textStyle="bold"
                     android:textAlignment="textEnd"
                     android:gravity="end" />
@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="1"
+                    android:lineSpacingMultiplier="0.9"
                     android:text="—°"
                     android:textColor="#00BCD4"
                     android:textSize="61sp"
@@ -135,7 +135,7 @@
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="1" />
+                    android:lineSpacingMultiplier="0.9" />
             </LinearLayout>
         </LinearLayout>
 
@@ -203,7 +203,7 @@
                 android:background="@drawable/button_tool"
                 android:text="Установить точку"
                 android:textColor="@color/text_bright"
-                android:textSize="11sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Taper Results -->
@@ -238,7 +238,7 @@
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="1" />
+                    android:lineSpacingMultiplier="0.9" />
             </LinearLayout>
 
             <!-- Taper X -->
@@ -265,7 +265,7 @@
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="1" />
+                    android:lineSpacingMultiplier="0.9" />
             </LinearLayout>
         </LinearLayout>
 
