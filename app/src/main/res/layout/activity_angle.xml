@@ -89,26 +89,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Угол (Z)"
+                    android:text="Угол Z"
                     android:textColor="#00BCD4"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_z"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="1"
                     android:text="—°"
                     android:textColor="#00BCD4"
                     android:textSize="61sp"
-                    android:textStyle="bold"
-                    android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="0.8" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Angle X -->
@@ -122,9 +122,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Угол (X)"
+                    android:text="Угол X"
                     android:textColor="#FF9800"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_x"
@@ -135,7 +135,7 @@
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="0.8" />
+                    android:lineSpacingMultiplier="1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -225,9 +225,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Конус (Z)"
+                    android:text="Конус Z"
                     android:textColor="#00BCD4"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_taper_z"
@@ -238,7 +238,7 @@
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="0.8" />
+                    android:lineSpacingMultiplier="1" />
             </LinearLayout>
 
             <!-- Taper X -->
@@ -252,9 +252,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Конус (X)"
+                    android:text="Конус X"
                     android:textColor="#FF9800"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_taper_x"
@@ -265,7 +265,7 @@
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
-                    android:lineSpacingMultiplier="0.8" />
+                    android:lineSpacingMultiplier="1" />
             </LinearLayout>
         </LinearLayout>
 
