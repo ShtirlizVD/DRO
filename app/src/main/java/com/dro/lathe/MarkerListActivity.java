@@ -107,7 +107,12 @@ public class MarkerListActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.dialog_marker);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setGravity(Gravity.CENTER);
+        
+        android.view.WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        lp.y = 50; // Отступ сверху в пикселях
+        dialog.getWindow().setAttributes(lp);
+        
         dialog.show();
 
         // Get views
@@ -193,7 +198,11 @@ public class MarkerListActivity extends AppCompatActivity {
                 Dialog confirmDialog = new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar);
                 confirmDialog.setContentView(R.layout.dialog_confirm);
                 confirmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                confirmDialog.getWindow().setGravity(Gravity.CENTER);
+                
+                android.view.WindowManager.LayoutParams lp = confirmDialog.getWindow().getAttributes();
+                lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                lp.y = 50;
+                confirmDialog.getWindow().setAttributes(lp);
                 
                 TextView tvConfirmName = confirmDialog.findViewById(R.id.tv_marker_name);
                 Button btnDeleteConfirm = confirmDialog.findViewById(R.id.btn_delete);
