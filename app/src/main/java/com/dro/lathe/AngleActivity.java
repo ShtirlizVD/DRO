@@ -1,12 +1,10 @@
 package com.dro.lathe;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,13 +13,14 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.Locale;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 /**
  * Измерение угла между начальной точкой и текущей позицией
@@ -46,26 +45,6 @@ public class AngleActivity extends AppCompatActivity {
 
     private int colorButtonNormal;
     private int colorButtonActive;
-
-    // Color presets for hypotenuse
-    private static final int[] HYP_COLORS = {
-        Color.parseColor("#FFD700"), // Gold (default)
-        Color.parseColor("#FF5722"), // Deep Orange
-        Color.parseColor("#E91E63"), // Pink
-        Color.parseColor("#9C27B0"), // Purple
-        Color.parseColor("#673AB7"), // Deep Purple
-        Color.parseColor("#3F51B5"), // Indigo
-        Color.parseColor("#2196F3"), // Blue
-        Color.parseColor("#00BCD4"), // Cyan
-        Color.parseColor("#009688"), // Teal
-        Color.parseColor("#4CAF50"), // Green
-        Color.parseColor("#8BC34A"), // Light Green
-        Color.parseColor("#FFEB3B"), // Yellow
-        Color.parseColor("#FF9800"), // Orange
-        Color.parseColor("#795548"), // Brown
-        Color.parseColor("#607D8B"), // Blue Grey
-        Color.parseColor("#FFFFFF"), // White
-    };
 
     private static final String PREF_HYP_COLOR = "hypotenuse_color";
 
@@ -118,46 +97,20 @@ public class AngleActivity extends AppCompatActivity {
     }
 
     private void showColorPickerDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Цвет гипотенузы");
-
-        GridLayout gridLayout = new GridLayout(this);
-        gridLayout.setColumnCount(4);
-        gridLayout.setRowCount(4);
-        gridLayout.setPadding(32, 32, 32, 32);
-
         int currentColor = angleView.getHypotenuseColor();
-
-        for (int color : HYP_COLORS) {
-            View colorView = new View(this);
-            int size = (int) (60 * getResources().getDisplayMetrics().density);
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = size;
-            params.height = size;
-            params.setMargins(8, 8, 8, 8);
-            colorView.setLayoutParams(params);
-            colorView.setBackgroundColor(color);
-
-            // Highlight current color
-            if (color == currentColor) {
-                colorView.setScaleX(1.1f);
-                colorView.setScaleY(1.1f);
-            }
-
-            colorView.setOnClickListener(v -> {
+        
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, currentColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
                 angleView.setHypotenuseColor(color);
                 saveHypotenuseColor(color);
-                ((AlertDialog) gridLayout.getTag()).dismiss();
-            });
+            }
 
-            gridLayout.addView(colorView);
-        }
-
-        builder.setView(gridLayout);
-        builder.setNegativeButton("Отмена", null);
-
-        AlertDialog dialog = builder.create();
-        gridLayout.setTag(dialog);
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                // Отмена
+            }
+        });
         dialog.show();
     }
 
