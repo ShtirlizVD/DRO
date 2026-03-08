@@ -268,15 +268,68 @@
                 android:background="@color/bg_dark"
                 android:layout_marginTop="20dp" />
 
+            <!-- Markers Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/marker_list"
+                android:textColor="@color/text_dim"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_markers"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_menu"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btn_add_marker"
+                    android:layout_width="44dp"
+                    android:layout_height="40dp"
+                    android:text="+"
+                    android:textSize="24sp"
+                    android:textColor="@color/text_bright"
+                    android:background="@drawable/button_menu"
+                    android:layout_marginStart="4dp" />
+
+                <Button
+                    android:id="@+id/btn_delete_marker"
+                    android:layout_width="44dp"
+                    android:layout_height="40dp"
+                    android:text="🗑"
+                    android:textSize="18sp"
+                    android:textColor="@color/text_bright"
+                    android:background="@drawable/button_menu"
+                    android:layout_marginStart="4dp" />
+            </LinearLayout>
+
             <Button
-                android:id="@+id/btn_markers"
+                android:id="@+id/btn_ball"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:text="@string/marker_list"
+                android:text="Шар"
                 android:textColor="@color/text_bright"
                 android:background="@drawable/button_menu"
                 android:textSize="15sp"
+                android:layout_marginTop="6dp"
                 android:layout_marginBottom="6dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_thread"
@@ -297,11 +350,6 @@
                 android:background="@drawable/button_menu"
                 android:textSize="15sp"
                 android:layout_marginBottom="6dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_settings"
