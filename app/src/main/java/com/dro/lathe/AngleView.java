@@ -239,44 +239,51 @@ public class AngleView extends View {
         boolean eBelow = eY > sY;
         
         if (eRight) {
-            // E is to the right of S
             if (eBelow) {
-                // Arc from 0° clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 0, angleDeg, false, paintAngleArcZ);
             } else {
-                // Arc from 0° counter-clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 0, -angleDeg, false, paintAngleArcZ);
             }
         } else {
-            // E is to the left of S
             if (eBelow) {
-                // Arc from 180° counter-clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 180, -angleDeg, false, paintAngleArcZ);
             } else {
-                // Arc from 180° clockwise to hypotenuse
                 canvas.drawArc(arcRectZ, 180, angleDeg, false, paintAngleArcZ);
             }
         }
 
-        // X angle arc at point P (from vertical to hypotenuse)
-        RectF arcRectX = new RectF(pX - arcRadiusX, pY - arcRadiusX, pX + arcRadiusX, pY + arcRadiusX);
+        // X angle arc at point E (from vertical PE to hypotenuse SE)
+        // In point E: vertical PE and hypotenuse SE meet
+        RectF arcRectX = new RectF(eX - arcRadiusX, eY - arcRadiusX, eX + arcRadiusX, eY + arcRadiusX);
         float angleXDeg = 90 - angleDeg;
+        
+        // Hypotenuse direction at E (from E to S)
+        double hypAngleAtE = Math.atan2(sY - eY, sX - eX);
+        
+        // Vertical PE at E goes to P
+        // If E is below P (eBelow relative to sY), PE goes up
+        // If E is above P, PE goes down
         
         if (eRight) {
             if (eBelow) {
-                // Arc from 270° (down) counter-clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 270 - angleXDeg, angleXDeg, false, paintAngleArcX);
+                // PE goes up (90° or -90° in canvas = 270°)
+                // Hypotenuse goes from E to S (up-left)
+                // Arc from 270° (up in canvas = -90°) clockwise to hypotenuse
+                canvas.drawArc(arcRectX, (float)Math.toDegrees(hypAngleAtE), angleXDeg, false, paintAngleArcX);
             } else {
-                // Arc from 90° (up) clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 90, angleXDeg, false, paintAngleArcX);
+                // PE goes down (90° in canvas)
+                // Hypotenuse goes from E to S (down-left)
+                canvas.drawArc(arcRectX, (float)Math.toDegrees(hypAngleAtE) - angleXDeg, angleXDeg, false, paintAngleArcX);
             }
         } else {
             if (eBelow) {
-                // Arc from 270° (down) clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 270, angleXDeg, false, paintAngleArcX);
+                // PE goes up
+                // Hypotenuse goes from E to S (up-right)
+                canvas.drawArc(arcRectX, (float)Math.toDegrees(hypAngleAtE), angleXDeg, false, paintAngleArcX);
             } else {
-                // Arc from 90° (up) counter-clockwise to hypotenuse
-                canvas.drawArc(arcRectX, 90 - angleXDeg, angleXDeg, false, paintAngleArcX);
+                // PE goes down
+                // Hypotenuse goes from E to S (down-right)
+                canvas.drawArc(arcRectX, (float)Math.toDegrees(hypAngleAtE) - angleXDeg, angleXDeg, false, paintAngleArcX);
             }
         }
     }
