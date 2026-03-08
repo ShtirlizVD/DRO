@@ -209,22 +209,15 @@ public class AngleActivity extends AppCompatActivity {
     }
 
     /**
-     * Format taper value as "K=tan" or "1:n"
-     * K = tan(angle) - конусность
+     * Format taper value as "1:n"
+     * Если конусность очень маленькая - показываем прочерк
      */
     private String formatTaper(double tan) {
         if (tan < 0.001) {
-            return String.format(Locale.US, "K=%.4f", tan);
-        } else if (tan > 100) {
-            return String.format(Locale.US, "K=%.2f", tan);
+            return "—";
         } else {
-            // Show as 1:n format when reasonable
             double n = 1.0 / tan;
-            if (n < 1000) {
-                return String.format(Locale.US, "1:%.2f", n);
-            } else {
-                return String.format(Locale.US, "K=%.4f", tan);
-            }
+            return String.format(Locale.US, "1:%.2f", n);
         }
     }
 
