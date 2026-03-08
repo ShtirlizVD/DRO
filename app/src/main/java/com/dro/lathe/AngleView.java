@@ -230,22 +230,35 @@ public class AngleView extends View {
         float angleXDeg = 90 - angleDeg; // Complementary angle
 
         // Dynamic arc radius - larger for smaller angles
-        // Minimum radius when angle is 45°, larger for smaller angles
         float baseRadiusZ = 100f;
         float baseRadiusX = 80f;
         
-        // Increase radius for small angles
-        float arcRadiusZ = baseRadiusZ;
-        float arcRadiusX = baseRadiusX;
+        // Calculate multiplier based on angle
+        // At 30°: 1x, at 10°: 2x, at 5°: 3x
+        float multZ, multX;
         
-        if (angleDeg < 30) {
-            // Small Z angle - increase radius
-            arcRadiusZ = baseRadiusZ + (30 - angleDeg) * 3;
+        if (angleDeg < 5) {
+            multZ = 3f;
+        } else if (angleDeg < 10) {
+            multZ = 2f + (10 - angleDeg) / 5f;
+        } else if (angleDeg < 30) {
+            multZ = 1f + (30 - angleDeg) / 20f;
+        } else {
+            multZ = 1f;
         }
-        if (angleXDeg < 30) {
-            // Small X angle - increase radius
-            arcRadiusX = baseRadiusX + (30 - angleXDeg) * 3;
+        
+        if (angleXDeg < 5) {
+            multX = 3f;
+        } else if (angleXDeg < 10) {
+            multX = 2f + (10 - angleXDeg) / 5f;
+        } else if (angleXDeg < 30) {
+            multX = 1f + (30 - angleXDeg) / 20f;
+        } else {
+            multX = 1f;
         }
+        
+        float arcRadiusZ = baseRadiusZ * multZ;
+        float arcRadiusX = baseRadiusX * multX;
 
         // Z angle arc at point S (from Z axis to hypotenuse)
         RectF arcRectZ = new RectF(sX - arcRadiusZ, sY - arcRadiusZ, sX + arcRadiusZ, sY + arcRadiusZ);
