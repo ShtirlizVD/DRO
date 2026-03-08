@@ -180,6 +180,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         // Double tap on X to toggle mode
         setupDoubleTap(valueX, () -> toggleMode());
 
+        // Long press on ABS coordinates to zero them
+        tvAbsX.setOnLongClickListener(v -> {
+            droData.setRawX(0);
+            updateDisplay();
+            return true;
+        });
+        tvAbsZ.setOnLongClickListener(v -> {
+            droData.setRawZ(0);
+            updateDisplay();
+            return true;
+        });
+
         applyColors();
     }
 

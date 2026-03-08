@@ -257,7 +257,8 @@
                         android:text="0.00"
                         android:textColor="@color/coord_x"
                         android:textSize="34sp"
-                        android:gravity="end" />
+                        android:gravity="end"
+                        android:longClickable="true" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -282,7 +283,8 @@
                         android:text="0.00"
                         android:textColor="@color/coord_z"
                         android:textSize="34sp"
-                        android:gravity="end" />
+                        android:gravity="end"
+                        android:longClickable="true" />
                 </LinearLayout>
             </LinearLayout>
 
