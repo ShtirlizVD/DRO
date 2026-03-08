@@ -223,13 +223,29 @@ public class AngleView extends View {
     private void drawAngleArcs(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
         if (Math.abs(relZ) < 0.1 || Math.abs(relX) < 0.1) return;
 
-        float arcRadiusZ = 100f;
-        float arcRadiusX = 80f;
-
         // Calculate angle of hypotenuse from horizontal (Z axis)
         double hypAngle = Math.atan2(eY - sY, eX - sX);
         float angleDeg = (float) Math.toDegrees(Math.abs(hypAngle));
         if (angleDeg > 90) angleDeg = 180 - angleDeg;
+        float angleXDeg = 90 - angleDeg; // Complementary angle
+
+        // Dynamic arc radius - larger for smaller angles
+        // Minimum radius when angle is 45°, larger for smaller angles
+        float baseRadiusZ = 100f;
+        float baseRadiusX = 80f;
+        
+        // Increase radius for small angles
+        float arcRadiusZ = baseRadiusZ;
+        float arcRadiusX = baseRadiusX;
+        
+        if (angleDeg < 30) {
+            // Small Z angle - increase radius
+            arcRadiusZ = baseRadiusZ + (30 - angleDeg) * 3;
+        }
+        if (angleXDeg < 30) {
+            // Small X angle - increase radius
+            arcRadiusX = baseRadiusX + (30 - angleXDeg) * 3;
+        }
 
         // Z angle arc at point S (from Z axis to hypotenuse)
         RectF arcRectZ = new RectF(sX - arcRadiusZ, sY - arcRadiusZ, sX + arcRadiusZ, sY + arcRadiusZ);
@@ -253,7 +269,6 @@ public class AngleView extends View {
 
         // X angle arc at point E (between vertical PE and hypotenuse ES)
         RectF arcRectX = new RectF(eX - arcRadiusX, eY - arcRadiusX, eX + arcRadiusX, eY + arcRadiusX);
-        float angleXDeg = 90 - angleDeg; // Complementary angle
 
         // Vertical direction from E toward P (on the Y axis)
         // In canvas: 270° = up, 90° = down
