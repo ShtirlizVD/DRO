@@ -103,8 +103,10 @@ public class MarkerListActivity extends AppCompatActivity {
     }
 
     private void showAddDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_marker, null);
+        
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(R.layout.dialog_marker)
+                .setView(view)
                 .setPositiveButton("Добавить", null)
                 .setNegativeButton("Отмена", null)
                 .create();
@@ -112,11 +114,11 @@ public class MarkerListActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
-        // Get views after dialog is shown
-        EditText etName = dialog.findViewById(R.id.et_marker_name);
-        EditText etPosition = dialog.findViewById(R.id.et_marker_position);
-        Button btnCurrent = dialog.findViewById(R.id.btn_current_pos);
-        RadioButton rbX = dialog.findViewById(R.id.rb_axis_x);
+        // Get views
+        EditText etName = view.findViewById(R.id.et_marker_name);
+        EditText etPosition = view.findViewById(R.id.et_marker_position);
+        Button btnCurrent = view.findViewById(R.id.btn_current_pos);
+        RadioButton rbX = view.findViewById(R.id.rb_axis_x);
 
         // Get current ABSOLUTE coordinates
         double currentAbsX = prefs.getFloat("current_abs_x", 0);
