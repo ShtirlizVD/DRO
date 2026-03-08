@@ -231,28 +231,28 @@ public class AngleView extends View {
 
         // Dynamic arc radius - larger for smaller angles
         float baseRadiusZ = 100f;
-        float baseRadiusX = 80f;
+        float baseRadiusX = 100f;
         
         // Calculate multiplier based on angle
-        // At 30°: 1x, at 10°: 2x, at 5°: 3x
+        // At 30°: 1x, at 10°: 4x, at 5°: 5x
         float multZ, multX;
         
         if (angleDeg < 5) {
-            multZ = 3f;
+            multZ = 5f;
         } else if (angleDeg < 10) {
-            multZ = 2f + (10 - angleDeg) / 5f;
+            multZ = 4f + (10 - angleDeg) / 5f;
         } else if (angleDeg < 30) {
-            multZ = 1f + (30 - angleDeg) / 20f;
+            multZ = 1f + (30 - angleDeg) / 20f * 3f;
         } else {
             multZ = 1f;
         }
         
         if (angleXDeg < 5) {
-            multX = 3f;
+            multX = 5f;
         } else if (angleXDeg < 10) {
-            multX = 2f + (10 - angleXDeg) / 5f;
+            multX = 4f + (10 - angleXDeg) / 5f;
         } else if (angleXDeg < 30) {
-            multX = 1f + (30 - angleXDeg) / 20f;
+            multX = 1f + (30 - angleXDeg) / 20f * 3f;
         } else {
             multX = 1f;
         }
