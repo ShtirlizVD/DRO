@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private Button btnConnectOverlay;
     private LinearLayout activeMarkersContainer;
     private TextView tvActiveMarkers;
+    private TextView tvAbsX, tvAbsZ;
 
     // Data
     private DROData droData;
@@ -142,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         btnConnectOverlay = findViewById(R.id.btn_connect_overlay);
         activeMarkersContainer = findViewById(R.id.active_markers_container);
         tvActiveMarkers = findViewById(R.id.tv_active_markers);
+        tvAbsX = findViewById(R.id.tv_abs_x);
+        tvAbsZ = findViewById(R.id.tv_abs_z);
 
         // Button listeners
         btnConnectOverlay.setOnClickListener(v -> onConnectClick());
@@ -618,6 +621,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         valueD.setText(formatValue(droData.getD()));
         valueZ.setText(formatValue(droData.getZ()));
         valueL.setText(formatValue(droData.getL()));
+
+        // Update absolute coordinates display
+        tvAbsX.setText(formatValue(droData.getAbsoluteX()));
+        tvAbsZ.setText(formatValue(droData.getAbsoluteZ()));
 
         prefs.edit()
                 .putFloat("current_x", (float) droData.getX())
