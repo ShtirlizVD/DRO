@@ -188,16 +188,26 @@ public class MarkerListActivity extends AppCompatActivity {
             tvPosition.setText(String.format(Locale.US, "%.3f мм", m.getPosition()));
 
             btnDelete.setOnClickListener(v -> {
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Удалить засечку?")
-                        .setMessage(m.getName())
-                        .setPositiveButton("Удалить", (d, which) -> {
-                            markers.remove(position);
-                            saveMarkers();
-                            notifyDataSetChanged();
-                        })
-                        .setNegativeButton("Отмена", null)
-                        .show();
+                Dialog confirmDialog = new Dialog(getContext());
+                confirmDialog.setContentView(R.layout.dialog_confirm);
+                confirmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                
+                TextView tvName = confirmDialog.findViewById(R.id.tv_marker_name);
+                Button btnDeleteConfirm = confirmDialog.findViewById(R.id.btn_delete);
+                Button btnCancel = confirmDialog.findViewById(R.id.btn_cancel);
+                
+                tvName.setText(m.getName());
+                
+                btnDeleteConfirm.setOnClickListener(d -> {
+                    markers.remove(position);
+                    saveMarkers();
+                    notifyDataSetChanged();
+                    confirmDialog.dismiss();
+                });
+                
+                btnCancel.setOnClickListener(d -> confirmDialog.dismiss());
+                
+                confirmDialog.show();
             });
 
             return convertView;
