@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -150,16 +151,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         findViewById(R.id.btn_set_d).setOnClickListener(v -> onSetDiameter());
         findViewById(R.id.btn_set_l).setOnClickListener(v -> onSetLength());
 
-        // Tool buttons
-        int[] toolIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
-        for (int i = 0; i < 4; i++) {
-            final int toolIndex = i;
-            findViewById(toolIds[i]).setOnClickListener(v -> selectTool(toolIndex));
-            findViewById(toolIds[i]).setOnLongClickListener(v -> {
-                editToolOffset(toolIndex);
-                return true;
-            });
-        }
+        // Tool button - shows popup with 4 tools
+        Button btnTool = findViewById(R.id.btn_tool);
+        btnTool.setOnClickListener(v -> showToolPopup(v));
+        btnTool.setOnLongClickListener(v -> {
+            editToolOffset(currentTool);
+            return true;
+        });
 
         // Markers button - opens MarkerListActivity
         findViewById(R.id.btn_markers).setOnClickListener(v ->
@@ -398,19 +396,46 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         currentTool = index;
 
-        // Подсветка выбранного инструмента через setSelected()
-        int[] toolIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
-        for (int i = 0; i < 4; i++) {
-            Button btn = findViewById(toolIds[i]);
-            btn.setSelected(i == index);
-        }
+        // Update button text
+        Button btnTool = findViewById(R.id.btn_tool);
+        btnTool.setText("Инстр. " + (index + 1));
 
         droData.setOffsetX(tools[index].getOffsetX());
         droData.setOffsetD(tools[index].getOffsetD());
         droData.setOffsetZ(tools[index].getOffsetZ());
         droData.setOffsetL(tools[index].getOffsetL());
 
+        // Save current tool selection
+        prefs.edit().putInt("current_tool", currentTool).apply();
+
         updateDisplay();
+    }
+
+    private void showToolPopup(View anchor) {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_tools, null);
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                true);
+
+        int[] btnIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
+        for (int i = 0; i < 4; i++) {
+            Button btn = popupView.findViewById(btnIds[i]);
+            btn.setSelected(i == currentTool);
+            final int toolIndex = i;
+            btn.setOnClickListener(v -> {
+                selectTool(toolIndex);
+                popupWindow.dismiss();
+            });
+            btn.setOnLongClickListener(v -> {
+                editToolOffset(toolIndex);
+                popupWindow.dismiss();
+                return true;
+            });
+        }
+
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAsDropDown(anchor, 0, -anchor.getHeight() - 200);
     }
 
     private void editToolOffset(int index) {
@@ -699,12 +724,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         updateConnectionState();
         updateActiveMarkersDisplay();
         
-        // Update tool selection UI
-        int[] toolIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
-        for (int i = 0; i < 4; i++) {
-            Button btn = findViewById(toolIds[i]);
-            btn.setSelected(i == currentTool);
-        }
+        // Update tool button text
+        Button btnTool = findViewById(R.id.btn_tool);
+        btnTool.setText("Инстр. " + (currentTool + 1));
     }
 
     private void loadMarkers() {

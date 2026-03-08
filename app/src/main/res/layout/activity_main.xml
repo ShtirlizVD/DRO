@@ -207,66 +207,22 @@
             android:padding="8dp"
             android:background="@color/bg_darker">
 
-            <!-- Tools -->
-            <TextView
+            <!-- Tool Button -->
+            <Button
+                android:id="@+id/btn_tool"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tool"
-                android:textColor="@color/text_dim"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:paddingBottom="6dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_tool_1"
-                    style="@style/ToolButton"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:text="1"
-                    android:textColor="@color/text_bright" />
-
-                <Button
-                    android:id="@+id/btn_tool_2"
-                    style="@style/ToolButton"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:text="2"
-                    android:textColor="@color/text_bright" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_tool_3"
-                    style="@style/ToolButton"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:text="3"
-                    android:textColor="@color/text_bright" />
-
-                <Button
-                    android:id="@+id/btn_tool_4"
-                    style="@style/ToolButton"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:text="4"
-                    android:textColor="@color/text_bright" />
-            </LinearLayout>
+                android:layout_height="52dp"
+                android:text="Инстр. 1"
+                android:textColor="@color/text_bright"
+                android:background="@drawable/button_menu"
+                android:textSize="15sp" />
 
             <!-- Menu Buttons -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/bg_dark"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Markers Button -->
             <Button
