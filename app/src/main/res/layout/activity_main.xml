@@ -64,15 +64,22 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <ImageButton
+                <FrameLayout
                     android:id="@+id/btn_zero_x"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_zero"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/button_zero"
+                    android:background="@drawable/clip_rounded"
                     android:clipToOutline="true"
-                    android:contentDescription="Zero X" />
+                    android:foreground="@drawable/frame_selector"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_zero"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Zero X" />
+                </FrameLayout>
             </LinearLayout>
 
             <!-- D Coordinate Row -->
@@ -108,15 +115,22 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <ImageButton
+                <FrameLayout
                     android:id="@+id/btn_set_d"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_diameter"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/button_zero"
+                    android:background="@drawable/clip_rounded"
                     android:clipToOutline="true"
-                    android:contentDescription="Set Diameter" />
+                    android:foreground="@drawable/frame_selector"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_diameter"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Set Diameter" />
+                </FrameLayout>
             </LinearLayout>
 
             <!-- Z Coordinate Row -->
@@ -158,15 +172,22 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <ImageButton
+                <FrameLayout
                     android:id="@+id/btn_zero_z"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_zero"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/button_zero"
+                    android:background="@drawable/clip_rounded"
                     android:clipToOutline="true"
-                    android:contentDescription="Zero Z" />
+                    android:foreground="@drawable/frame_selector"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_zero"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Zero Z" />
+                </FrameLayout>
             </LinearLayout>
 
             <!-- L Coordinate Row -->
@@ -202,15 +223,22 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <ImageButton
+                <FrameLayout
                     android:id="@+id/btn_set_l"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_length"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/button_zero"
+                    android:background="@drawable/clip_rounded"
                     android:clipToOutline="true"
-                    android:contentDescription="Set Length" />
+                    android:foreground="@drawable/frame_selector"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_length"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Set Length" />
+                </FrameLayout>
             </LinearLayout>
 
         </LinearLayout>
