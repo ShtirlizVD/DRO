@@ -199,7 +199,8 @@ public class AngleActivity extends AppCompatActivity {
     };
 
     private void updateCurrentPosition() {
-        double x = prefs.getFloat("current_x", 0);
+        // Use base X (always radius) for angle calculations, regardless of diameter mode
+        double x = prefs.getFloat("current_x_base", 0);
         double z = prefs.getFloat("current_z", 0);
         updatePositionDisplay(x, z);
     }
@@ -250,7 +251,8 @@ public class AngleActivity extends AppCompatActivity {
 
     private void toggleStartPoint() {
         if (Double.isNaN(startX)) {
-            startX = prefs.getFloat("current_x", 0);
+            // Use base X (always radius) for angle calculations
+            startX = prefs.getFloat("current_x_base", 0);
             startZ = prefs.getFloat("current_z", 0);
 
             tvStartX.setText(String.format(Locale.US, "%.3f", startX));

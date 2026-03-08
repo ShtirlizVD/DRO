@@ -647,6 +647,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         prefs.edit()
                 .putFloat("current_x", (float) droData.getX())
                 .putFloat("current_z", (float) droData.getZ())
+                .putFloat("current_x_base", (float) droData.getBaseX())  // Always radius for angle meter
                 .putFloat("current_abs_x", (float) droData.getAbsoluteX())
                 .putFloat("current_abs_z", (float) droData.getAbsoluteZ())
                 .apply();
