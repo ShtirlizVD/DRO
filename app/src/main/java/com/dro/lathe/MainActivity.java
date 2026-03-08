@@ -415,10 +415,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         dialog.setContentView(R.layout.popup_tools);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         
+        // Position at top right, near the tool button
         android.view.WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
-        lp.x = 16;
-        lp.y = 100;
+        lp.gravity = android.view.Gravity.TOP | android.view.Gravity.RIGHT;
+        lp.x = 10;
+        lp.y = 10;
+        lp.flags &= ~android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         dialog.getWindow().setAttributes(lp);
 
         int[] btnIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
@@ -437,7 +439,23 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
             });
         }
 
+        // Keep fullscreen mode
+        dialog.getWindow().setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        
         dialog.show();
+        
+        // Re-enable fullscreen after show
+        dialog.getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        );
+        dialog.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
     private void editToolOffset(int index) {
