@@ -11,10 +11,10 @@ import android.view.WindowInsetsController;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,6 +71,7 @@ public class MarkerListActivity extends AppCompatActivity {
                 m.setName(obj.getString("name"));
                 m.setAxis(obj.getString("axis").equals("X") ? Marker.Axis.X : Marker.Axis.Z);
                 m.setPosition(obj.getDouble("position"));
+                m.setActive(obj.optBoolean("active", false));
                 list.add(m);
             }
         } catch (JSONException e) {
@@ -88,6 +89,7 @@ public class MarkerListActivity extends AppCompatActivity {
                 obj.put("name", m.getName());
                 obj.put("axis", m.getAxis() == Marker.Axis.X ? "X" : "Z");
                 obj.put("position", m.getPosition());
+                obj.put("active", m.isActive());
                 array.put(obj);
             }
             prefs.edit().putString("markers", array.toString()).apply();
@@ -98,21 +100,21 @@ public class MarkerListActivity extends AppCompatActivity {
 
     private void showAddDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_marker, null);
-        RadioGroup rgAxis = view.findViewById(R.id.rg_axis);
         EditText etName = view.findViewById(R.id.et_marker_name);
         EditText etPosition = view.findViewById(R.id.et_marker_position);
         Button btnCurrent = view.findViewById(R.id.btn_current_pos);
 
-        // Get current position
-        double currentX = prefs.getFloat("current_x", 0);
-        double currentZ = prefs.getFloat("current_z", 0);
+        // Get current ABSOLUTE coordinates (independent of zeroing and tool offsets)
+        // These start from 0 when app launches
+        double currentAbsX = prefs.getFloat("current_abs_x", 0);
+        double currentAbsZ = prefs.getFloat("current_abs_z", 0);
 
         btnCurrent.setOnClickListener(v -> {
             RadioButton rbX = view.findViewById(R.id.rb_axis_x);
             if (rbX.isChecked()) {
-                etPosition.setText(String.format(Locale.US, "%.3f", currentX));
+                etPosition.setText(String.format(Locale.US, "%.3f", currentAbsX));
             } else {
-                etPosition.setText(String.format(Locale.US, "%.3f", currentZ));
+                etPosition.setText(String.format(Locale.US, "%.3f", currentAbsZ));
             }
         });
 
@@ -155,11 +157,19 @@ public class MarkerListActivity extends AppCompatActivity {
 
             Marker m = getItem(position);
 
+            CheckBox cbActive = convertView.findViewById(R.id.cb_active);
             TextView tvAxis = convertView.findViewById(R.id.tv_axis);
             TextView tvName = convertView.findViewById(R.id.tv_name);
             TextView tvPosition = convertView.findViewById(R.id.tv_position);
-            TextView tvDistance = convertView.findViewById(R.id.tv_distance);
             Button btnDelete = convertView.findViewById(R.id.btn_delete);
+
+            // Setup checkbox
+            cbActive.setOnCheckedChangeListener(null); // Remove previous listener
+            cbActive.setChecked(m.isActive());
+            cbActive.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                m.setActive(isChecked);
+                saveMarkers();
+            });
 
             tvAxis.setText(m.getAxis() == Marker.Axis.X ? "X" : "Z");
             int color = m.getAxis() == Marker.Axis.X ?
@@ -169,13 +179,6 @@ public class MarkerListActivity extends AppCompatActivity {
 
             tvName.setText(m.getName());
             tvPosition.setText(String.format(Locale.US, "%.3f мм", m.getPosition()));
-
-            // Calculate distance to current position
-            float currentPos = m.getAxis() == Marker.Axis.X ?
-                    prefs.getFloat("current_x", 0) :
-                    prefs.getFloat("current_z", 0);
-            double distance = m.getPosition() - currentPos;
-            tvDistance.setText(String.format(Locale.US, "Δ %.3f", distance));
 
             btnDelete.setOnClickListener(v -> {
                 new AlertDialog.Builder(getContext())

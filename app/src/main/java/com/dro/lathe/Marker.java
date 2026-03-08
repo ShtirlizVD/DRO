@@ -2,6 +2,7 @@ package com.dro.lathe;
 
 /**
  * Marker model for proximity alerts
+ * Works with relative coordinates - stores raw position from encoder
  */
 public class Marker {
     public enum Axis { X, Z }
@@ -9,15 +10,18 @@ public class Marker {
     private long id;
     private String name;
     private Axis axis;
-    private double position;
+    private double position;  // Raw encoder position (not affected by zeroing)
+    private boolean active;   // Is marker active for proximity alerts
 
     public Marker() {
+        this.active = false;
     }
 
     public Marker(String name, Axis axis, double position) {
         this.name = name;
         this.axis = axis;
         this.position = position;
+        this.active = false;
     }
 
     public long getId() {
@@ -50,5 +54,13 @@ public class Marker {
 
     public void setPosition(double position) {
         this.position = position;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

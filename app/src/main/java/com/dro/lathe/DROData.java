@@ -35,6 +35,16 @@ public class DROData {
         this.resolutionZ = 0.005;
     }
 
+    // Absolute coordinates - raw * resolution, independent of all offsets
+    // These start from 0 when app launches and never change with zeroing
+    public double getAbsoluteX() {
+        return rawX * resolutionX;
+    }
+
+    public double getAbsoluteZ() {
+        return rawZ * resolutionZ;
+    }
+
     // Calculate displayed X (in radius units)
     public double getBaseX() {
         return rawX * resolutionX + toolOffsetX;

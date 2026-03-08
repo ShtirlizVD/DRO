@@ -13,19 +13,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.widget.Button;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,14 +43,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private TextView labelX, labelD, labelZ, labelL;
     private ImageView imgMode;
     private Button btnConnectOverlay;
+    private LinearLayout activeMarkersContainer;
+    private TextView tvActiveMarkers;
 
     // Data
     private DROData droData;
     private final Tool[] tools = new Tool[4];
     private int currentTool = 0;
     private List<Marker> markers = new ArrayList<>();
-    private Spinner spinnerMarkers;
-    private ArrayAdapter<String> markerAdapter;
 
     // Connection
     private BluetoothService bluetoothService;
@@ -67,12 +63,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private double proximityDistance = 5.0;
     private final int[] coordColors = new int[4];
     private ToneGenerator toneGenerator;
-    private Vibrator vibrator;
     
     // Inversion settings (X is inverted by default)
     private boolean invertX = false; // When true, ADDITIONAL inversion is applied (checkbox)
     private boolean invertZ = false; // When true, Z is inverted (checkbox)
     private static final boolean DEFAULT_INVERT_X = true; // X is always inverted by default
+
+    // Marker alert state
+    private Marker lastAlertedMarker = null;
+    private long lastAlertTime = 0;
+    private static final long ALERT_COOLDOWN = 3000; // 3 seconds between alerts for same marker
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         labelL = findViewById(R.id.label_l);
         imgMode = findViewById(R.id.img_mode);
         btnConnectOverlay = findViewById(R.id.btn_connect_overlay);
+        activeMarkersContainer = findViewById(R.id.active_markers_container);
+        tvActiveMarkers = findViewById(R.id.tv_active_markers);
 
         // Button listeners
         btnConnectOverlay.setOnClickListener(v -> onConnectClick());
@@ -159,14 +161,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
             });
         }
 
-        // Markers spinner and buttons
-        spinnerMarkers = findViewById(R.id.spinner_markers);
-        markerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>());
-        markerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMarkers.setAdapter(markerAdapter);
-        
-        findViewById(R.id.btn_add_marker).setOnClickListener(v -> showAddMarkerDialog());
-        findViewById(R.id.btn_delete_marker).setOnClickListener(v -> deleteSelectedMarker());
+        // Markers button - opens MarkerListActivity
+        findViewById(R.id.btn_markers).setOnClickListener(v ->
+                startActivity(new Intent(this, MarkerListActivity.class)));
 
         findViewById(R.id.btn_ball).setOnClickListener(v ->
                 Toast.makeText(this, "Шар: в разработке", Toast.LENGTH_SHORT).show());
@@ -216,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         coordColors[3] = ContextCompat.getColor(this, R.color.coord_l);
 
         toneGenerator = new ToneGenerator(android.media.AudioManager.STREAM_MUSIC, 100);
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         
         // Load saved raw coordinates from last session
         loadSavedCoordinates();
@@ -562,6 +558,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         prefs.edit()
                 .putFloat("current_x", (float) droData.getX())
                 .putFloat("current_z", (float) droData.getZ())
+                .putFloat("current_abs_x", (float) droData.getAbsoluteX())
+                .putFloat("current_abs_z", (float) droData.getAbsoluteZ())
                 .apply();
     }
 
@@ -570,144 +568,75 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
 
     private void checkMarkers() {
-        if (!soundEnabled || markers.isEmpty()) return;
+        if (!soundEnabled) return;
 
-        double x = droData.getD();
-        double z = droData.getZ();
-
-        // Find closest marker and calculate distance
-        double minDistance = Double.MAX_VALUE;
+        // Get active markers only
+        List<Marker> activeMarkers = new ArrayList<>();
         for (Marker m : markers) {
-            double currentPos = m.getAxis() == Marker.Axis.X ? x : z;
-            double distance = Math.abs(currentPos - m.getPosition());
+            if (m.isActive()) {
+                activeMarkers.add(m);
+            }
+        }
+        if (activeMarkers.isEmpty()) return;
+
+        // Use ABSOLUTE coordinates for markers (independent of zeroing and tool offsets)
+        // absoluteX/absoluteZ = raw * resolution (NO offsets at all)
+        double absoluteX = droData.getAbsoluteX();
+        double absoluteZ = droData.getAbsoluteZ();
+
+        // Find if we're close to any active marker
+        Marker closestMarker = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Marker m : activeMarkers) {
+            double currentAbsPos = m.getAxis() == Marker.Axis.X ? absoluteX : absoluteZ;
+            double distance = Math.abs(currentAbsPos - m.getPosition());
             if (distance < minDistance) {
                 minDistance = distance;
+                closestMarker = m;
             }
         }
 
-        // Pinpointer logic: beep frequency based on distance
-        if (minDistance < proximityDistance * 3) {
-            playPinpointerAlert(minDistance);
+        // Check if within proximity distance
+        if (closestMarker != null && minDistance < proximityDistance) {
+            long now = System.currentTimeMillis();
+            // Only alert if enough time passed since last alert for this marker
+            if (closestMarker != lastAlertedMarker || (now - lastAlertTime) > ALERT_COOLDOWN) {
+                playMarkerAlert(closestMarker);
+                lastAlertedMarker = closestMarker;
+                lastAlertTime = now;
+            }
         }
     }
 
-    private void playPinpointerAlert(double distance) {
+    private void playMarkerAlert(Marker marker) {
         if (toneGenerator == null) return;
 
-        // Calculate beep interval based on distance
-        // Closer = faster beeps
-        long interval;
-        if (distance < proximityDistance * 0.2) {
-            // Very close: continuous beep
-            interval = 50;
-        } else if (distance < proximityDistance * 0.5) {
-            interval = 100;
-        } else if (distance < proximityDistance) {
-            interval = 200;
-        } else if (distance < proximityDistance * 2) {
-            interval = 400;
-        } else {
-            interval = 800;
-        }
-
-        // Play beep
-        toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 50);
-        
-        // Schedule next beep if still close
-        if (distance < proximityDistance) {
-            new android.os.Handler().postDelayed(() -> {
-                // Will be checked again in onDataReceived
-            }, interval);
-        }
+        // Play continuous tone for 2 seconds at max volume
+        toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 2000);
     }
 
-    private void showAddMarkerDialog() {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_marker, null);
-        RadioGroup rgAxis = view.findViewById(R.id.rg_axis);
-        EditText etName = view.findViewById(R.id.et_marker_name);
-        EditText etPosition = view.findViewById(R.id.et_marker_position);
-        Button btnCurrent = view.findViewById(R.id.btn_current_pos);
-
-        double currentX = droData.getD();
-        double currentZ = droData.getZ();
-
-        btnCurrent.setOnClickListener(v -> {
-            RadioButton rbX = view.findViewById(R.id.rb_axis_x);
-            if (rbX.isChecked()) {
-                etPosition.setText(String.format(Locale.US, "%.3f", currentX));
-            } else {
-                etPosition.setText(String.format(Locale.US, "%.3f", currentZ));
-            }
-        });
-
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.add_marker)
-                .setView(view)
-                .setPositiveButton("Добавить", (dialog, which) -> {
-                    String name = etName.getText().toString();
-                    if (name.isEmpty()) name = "Засечка";
-
-                    RadioButton rbX = view.findViewById(R.id.rb_axis_x);
-                    Marker.Axis axis = rbX.isChecked() ? Marker.Axis.X : Marker.Axis.Z;
-
-                    double position = 0;
-                    try {
-                        position = Double.parseDouble(etPosition.getText().toString());
-                    } catch (NumberFormatException ignored) {}
-
-                    Marker m = new Marker(name, axis, position);
-                    m.setId(System.currentTimeMillis());
-                    markers.add(m);
-                    saveMarkers();
-                    updateMarkerSpinner();
-                })
-                .setNegativeButton("Отмена", null)
-                .show();
-    }
-
-    private void deleteSelectedMarker() {
-        int pos = spinnerMarkers.getSelectedItemPosition();
-        if (pos >= 0 && pos < markers.size()) {
-            Marker m = markers.get(pos);
-            new AlertDialog.Builder(this)
-                    .setTitle("Удалить засечку?")
-                    .setMessage(m.getName())
-                    .setPositiveButton("Удалить", (dialog, which) -> {
-                        markers.remove(pos);
-                        saveMarkers();
-                        updateMarkerSpinner();
-                    })
-                    .setNegativeButton("Отмена", null)
-                    .show();
-        }
-    }
-
-    private void updateMarkerSpinner() {
-        List<String> items = new ArrayList<>();
+    private void updateActiveMarkersDisplay() {
+        List<Marker> activeMarkers = new ArrayList<>();
         for (Marker m : markers) {
-            String axis = m.getAxis() == Marker.Axis.X ? "X" : "Z";
-            items.add(String.format("%s: %s (%.3f)", axis, m.getName(), m.getPosition()));
-        }
-        markerAdapter.clear();
-        markerAdapter.addAll(items);
-        markerAdapter.notifyDataSetChanged();
-    }
-
-    private void saveMarkers() {
-        try {
-            org.json.JSONArray array = new org.json.JSONArray();
-            for (Marker m : markers) {
-                org.json.JSONObject obj = new org.json.JSONObject();
-                obj.put("id", m.getId());
-                obj.put("name", m.getName());
-                obj.put("axis", m.getAxis() == Marker.Axis.X ? "X" : "Z");
-                obj.put("position", m.getPosition());
-                array.put(obj);
+            if (m.isActive()) {
+                activeMarkers.add(m);
             }
-            prefs.edit().putString("markers", array.toString()).apply();
-        } catch (org.json.JSONException e) {
-            e.printStackTrace();
         }
+
+        if (activeMarkers.isEmpty()) {
+            activeMarkersContainer.setVisibility(View.GONE);
+            return;
+        }
+
+        activeMarkersContainer.setVisibility(View.VISIBLE);
+        StringBuilder sb = new StringBuilder();
+        for (Marker m : activeMarkers) {
+            if (sb.length() > 0) sb.append("\n");
+            String axis = m.getAxis() == Marker.Axis.X ? "X" : "Z";
+            sb.append(String.format("%s: %s (%.3f)", axis, m.getName(), m.getPosition()));
+        }
+        tvActiveMarkers.setText(sb.toString());
     }
 
     private void updateConnectionState() {
@@ -768,6 +697,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         loadMarkers();
         updateDisplay();
         updateConnectionState();
+        updateActiveMarkersDisplay();
         
         // Update tool selection UI
         int[] toolIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
@@ -780,7 +710,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private void loadMarkers() {
         String json = prefs.getString("markers", "[]");
         markers = MarkerListActivity.parseMarkers(json);
-        updateMarkerSpinner();
     }
 
     @Override
