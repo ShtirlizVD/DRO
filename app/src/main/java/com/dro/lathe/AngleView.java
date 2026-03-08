@@ -169,10 +169,10 @@ public class AngleView extends View {
         float centerX = viewWidth / 2f;
         float centerY = viewHeight / 2f;
 
-        // Draw Z axis
-        canvas.drawLine(0, centerY, viewWidth, centerY, paintAxis);
-
         if (Double.isNaN(relX) || Double.isNaN(relZ)) {
+            // Draw center Z axis when no measurements
+            canvas.drawLine(0, centerY, viewWidth, centerY, paintAxis);
+            
             paintLabelText.setTextAlign(Paint.Align.CENTER);
             paintLabelText.setAlpha(150);
             canvas.drawText("Установите начальную точку", centerX, centerY - 20, paintLabelText);
@@ -180,18 +180,25 @@ public class AngleView extends View {
             return;
         }
 
-        // Calculate triangle vertices - centered
+        // Calculate triangle vertices - S and E centered on screen
+        // Midpoint of SE is at screen center
         float halfZ = (float)(relZ * scale / 2);
         float halfX = (float)(relX * scale / 2);
 
+        // S and E are equidistant from center
         float sX = centerX - halfZ;
-        float sY = centerY;
+        float sY = centerY - halfX;
         float eX = centerX + halfZ;
         float eY = centerY + halfX;
+        
+        // P is projection of E onto horizontal line through S (Z axis through S)
         float pX = eX;
         float pY = sY;
 
         boolean triangleAbove = relX < 0;
+        
+        // Draw Z axis through S (horizontal line)
+        canvas.drawLine(0, sY, viewWidth, sY, paintAxis);
 
         // Draw triangle sides
         if (Math.abs(relZ) > 0.01) {
@@ -214,54 +221,82 @@ public class AngleView extends View {
     }
 
     private void drawAngleArcs(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
-        float arcRadius = 50;
+        if (Math.abs(relZ) < 0.1 || Math.abs(relX) < 0.1) return;
 
+        float arcRadiusZ = 60f;
+        float arcRadiusX = 50f;
+
+        // Calculate angle of hypotenuse from horizontal (Z axis)
         double hypAngle = Math.atan2(eY - sY, eX - sX);
-        double angleZ = Math.abs(Math.toDegrees(hypAngle));
-        if (angleZ > 90) angleZ = 180 - angleZ;
+        float angleDeg = (float) Math.toDegrees(Math.abs(hypAngle));
+        if (angleDeg > 90) angleDeg = 180 - angleDeg;
 
-        RectF arcRectZ = new RectF(sX - arcRadius, sY - arcRadius, sX + arcRadius, sY + arcRadius);
-
-        if (Math.abs(relZ) > 0.1 && Math.abs(relX) > 0.1) {
-            if (relZ > 0) {
-                if (triangleAbove) {
-                    canvas.drawArc(arcRectZ, 180 - (float) angleZ, (float) angleZ, false, paintAngleArcZ);
-                } else {
-                    canvas.drawArc(arcRectZ, 0, (float) angleZ, false, paintAngleArcZ);
-                }
+        // Z angle arc at point S (from Z axis to hypotenuse)
+        RectF arcRectZ = new RectF(sX - arcRadiusZ, sY - arcRadiusZ, sX + arcRadiusZ, sY + arcRadiusZ);
+        
+        // Determine arc direction based on E position relative to S
+        boolean eRight = eX > sX;
+        boolean eBelow = eY > sY;
+        
+        if (eRight) {
+            // E is to the right of S
+            if (eBelow) {
+                // Arc from 0° clockwise to hypotenuse
+                canvas.drawArc(arcRectZ, 0, angleDeg, false, paintAngleArcZ);
             } else {
-                if (triangleAbove) {
-                    canvas.drawArc(arcRectZ, 180, (float) angleZ, false, paintAngleArcZ);
-                } else {
-                    canvas.drawArc(arcRectZ, -(float)angleZ, (float) angleZ, false, paintAngleArcZ);
-                }
+                // Arc from 0° counter-clockwise to hypotenuse
+                canvas.drawArc(arcRectZ, 0, -angleDeg, false, paintAngleArcZ);
             }
-
-            float arcRadiusX = 40;
-            RectF arcRectX = new RectF(pX - arcRadiusX, pY - arcRadiusX, pX + arcRadiusX, pY + arcRadiusX);
-            double angleX = 90 - angleZ;
-
-            if (triangleAbove) {
-                canvas.drawArc(arcRectX, 270 - (float) angleX, (float) angleX, false, paintAngleArcX);
+        } else {
+            // E is to the left of S
+            if (eBelow) {
+                // Arc from 180° counter-clockwise to hypotenuse
+                canvas.drawArc(arcRectZ, 180, -angleDeg, false, paintAngleArcZ);
             } else {
-                canvas.drawArc(arcRectX, 90, (float) angleX, false, paintAngleArcX);
+                // Arc from 180° clockwise to hypotenuse
+                canvas.drawArc(arcRectZ, 180, angleDeg, false, paintAngleArcZ);
+            }
+        }
+
+        // X angle arc at point P (from vertical to hypotenuse)
+        RectF arcRectX = new RectF(pX - arcRadiusX, pY - arcRadiusX, pX + arcRadiusX, pY + arcRadiusX);
+        float angleXDeg = 90 - angleDeg;
+        
+        if (eRight) {
+            if (eBelow) {
+                // Arc from 270° (down) counter-clockwise to hypotenuse
+                canvas.drawArc(arcRectX, 270 - angleXDeg, angleXDeg, false, paintAngleArcX);
+            } else {
+                // Arc from 90° (up) clockwise to hypotenuse
+                canvas.drawArc(arcRectX, 90, angleXDeg, false, paintAngleArcX);
+            }
+        } else {
+            if (eBelow) {
+                // Arc from 270° (down) clockwise to hypotenuse
+                canvas.drawArc(arcRectX, 270, angleXDeg, false, paintAngleArcX);
+            } else {
+                // Arc from 90° (up) counter-clockwise to hypotenuse
+                canvas.drawArc(arcRectX, 90 - angleXDeg, angleXDeg, false, paintAngleArcX);
             }
         }
     }
 
     private void drawDimensionLabels(Canvas canvas, float sX, float sY, float pX, float pY, float eX, float eY, boolean triangleAbove) {
-        // Measure text height
+        // Determine E position relative to S
+        boolean eBelow = eY > sY;
+        boolean eRight = eX > sX;
+        
         float labelHeight = 32f;
         
         // Horizontal side (SP) - check if outside fits
         String zLabel = String.format("%.2f", Math.abs(relZ));
         float spMidX = (sX + pX) / 2;
-        float spOutsideY = sY + (triangleAbove ? 40 : -40);
-        float spInsideY = sY + (triangleAbove ? -40 : 40);
+        // Outside is below if triangle goes down (E below S), above if triangle goes up
+        float spOutsideY = sY + (eBelow ? 40 : -40);
+        float spInsideY = sY + (eBelow ? -40 : 40);
         
-        // Check if outside position is within bounds
-        boolean spUseInside = (triangleAbove && spOutsideY + labelHeight/2 > viewHeight - PADDING) ||
-                              (!triangleAbove && spOutsideY - labelHeight/2 < PADDING);
+        boolean spUseInside = (eBelow && spOutsideY + labelHeight/2 > viewHeight - PADDING) ||
+                              (!eBelow && spOutsideY - labelHeight/2 < PADDING);
         
         float spLabelY = spUseInside ? spInsideY : spOutsideY;
         drawLabelWithBackground(canvas, zLabel, spMidX, spLabelY, paintSideGray.getColor());
@@ -269,12 +304,12 @@ public class AngleView extends View {
         // Vertical side (PE) - check if outside fits
         String xLabel = String.format("%.2f", Math.abs(relX));
         float peMidY = (pY + eY) / 2;
-        float peOutsideX = pX + (relZ >= 0 ? 55 : -55);
-        float peInsideX = pX + (relZ >= 0 ? -55 : 55);
+        // Outside is to the right if E is to the right of S, left otherwise
+        float peOutsideX = pX + (eRight ? 55 : -55);
+        float peInsideX = pX + (eRight ? -55 : 55);
         
-        // Check if outside position is within bounds
-        boolean peUseInside = (relZ >= 0 && peOutsideX + 40 > viewWidth - PADDING) ||
-                              (relZ < 0 && peOutsideX - 40 < PADDING);
+        boolean peUseInside = (eRight && peOutsideX + 40 > viewWidth - PADDING) ||
+                              (!eRight && peOutsideX - 40 < PADDING);
         
         float peLabelX = peUseInside ? peInsideX : peOutsideX;
         drawLabelWithBackground(canvas, xLabel, peLabelX, peMidY, paintSideGray.getColor());
