@@ -1045,6 +1045,10 @@ drawable ic_diameter
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_radius
+drawable ic_tool_1
+drawable ic_tool_2
+drawable ic_tool_3
+drawable ic_tool_4
 drawable input_field_background
 drawable notification_action_background
 drawable notification_bg
@@ -1075,6 +1079,7 @@ id SHOW_ALL
 id SHOW_PATH
 id SHOW_PROGRESS
 id SYM
+id abs_coords_container
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -1130,6 +1135,7 @@ id action_mode_bar_stub
 id action_mode_close_button
 id action_text
 id actions
+id active_markers_container
 id activity_chooser_view_content
 id add
 id alertTitle
@@ -1173,9 +1179,11 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btn_add
 id btn_add_marker
 id btn_angle
 id btn_back
+id btn_ball
 id btn_cancel
 id btn_close
 id btn_connect_overlay
@@ -1193,6 +1201,7 @@ id btn_set_l
 id btn_set_start
 id btn_settings
 id btn_thread
+id btn_tool
 id btn_tool_1
 id btn_tool_2
 id btn_tool_3
@@ -1205,6 +1214,7 @@ id buttonPanel
 id cache_measures
 id callMeasure
 id carryVelocity
+id cb_active
 id cb_invert_x
 id cb_invert_z
 id center
@@ -1461,6 +1471,9 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tv_abs_x
+id tv_abs_z
+id tv_active_markers
 id tv_angle_x
 id tv_angle_z
 id tv_axis
@@ -1471,8 +1484,12 @@ id tv_depth
 id tv_depth_inc
 id tv_device
 id tv_diameter
-id tv_distance
 id tv_final_diameter
+id tv_label_angle_x
+id tv_label_angle_z
+id tv_label_taper_x
+id tv_label_taper_z
+id tv_marker_name
 id tv_name
 id tv_no_devices
 id tv_pass_number
@@ -1485,6 +1502,8 @@ id tv_start_diameter
 id tv_start_x
 id tv_start_z
 id tv_tap_drill
+id tv_taper_x
+id tv_taper_z
 id tv_thread_depth
 id tv_thread_diameter
 id tv_thread_name
@@ -1565,6 +1584,7 @@ layout activity_thread_helper
 layout ambilwarna_dialog
 layout ambilwarna_pref_widget
 layout custom_dialog
+layout dialog_confirm
 layout dialog_device_list
 layout dialog_input_value
 layout dialog_marker
@@ -1580,6 +1600,7 @@ layout notification_template_custom_big
 layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout popup_tools
 layout preference
 layout preference_category
 layout preference_category_material

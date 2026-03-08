@@ -42,14 +42,22 @@ drawable ic_diameter
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_radius
+drawable ic_tool_1
+drawable ic_tool_2
+drawable ic_tool_3
+drawable ic_tool_4
 drawable input_field_background
 drawable pass_item_selector
 font courier
 font courierb
+id abs_coords_container
+id active_markers_container
 id angle_view
+id btn_add
 id btn_add_marker
 id btn_angle
 id btn_back
+id btn_ball
 id btn_cancel
 id btn_close
 id btn_connect_overlay
@@ -67,6 +75,7 @@ id btn_set_l
 id btn_set_start
 id btn_settings
 id btn_thread
+id btn_tool
 id btn_tool_1
 id btn_tool_2
 id btn_tool_3
@@ -75,6 +84,7 @@ id btn_type_external
 id btn_type_internal
 id btn_zero_x
 id btn_zero_z
+id cb_active
 id cb_invert_x
 id cb_invert_z
 id dialog_title
@@ -107,6 +117,9 @@ id tab_metric
 id tab_pipe
 id tabs_container
 id thread_list
+id tv_abs_x
+id tv_abs_z
+id tv_active_markers
 id tv_angle_x
 id tv_angle_z
 id tv_axis
@@ -117,8 +130,12 @@ id tv_depth
 id tv_depth_inc
 id tv_device
 id tv_diameter
-id tv_distance
 id tv_final_diameter
+id tv_label_angle_x
+id tv_label_angle_z
+id tv_label_taper_x
+id tv_label_taper_z
+id tv_marker_name
 id tv_name
 id tv_no_devices
 id tv_pass_number
@@ -131,6 +148,8 @@ id tv_start_diameter
 id tv_start_x
 id tv_start_z
 id tv_tap_drill
+id tv_taper_x
+id tv_taper_z
 id tv_thread_depth
 id tv_thread_diameter
 id tv_thread_name
@@ -147,6 +166,7 @@ layout activity_marker_list
 layout activity_settings
 layout activity_thread_detail
 layout activity_thread_helper
+layout dialog_confirm
 layout dialog_device_list
 layout dialog_input_value
 layout dialog_marker
@@ -154,6 +174,7 @@ layout dialog_tool_offset
 layout item_marker
 layout item_pass
 layout item_thread
+layout popup_tools
 string add_marker
 string alert_distance
 string angle

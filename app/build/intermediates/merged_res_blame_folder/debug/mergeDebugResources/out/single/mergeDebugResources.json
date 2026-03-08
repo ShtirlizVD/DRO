@@ -1,174 +1,194 @@
 [
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\xml\\data_extraction_rules.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable_ic_radius.png.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/ic_radius.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-anydpi-v21_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-anydpi-v21\\ic_launcher_background.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-mdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-mdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-mdpi\\ic_launcher_background.png"
+        "merged": "com.dro.lathe.app-debug-32:/drawable-xxxhdpi_ic_launcher_background.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-xxxhdpi/ic_launcher_background.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_dialog_tool_offset.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\dialog_tool_offset.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable_button_cancel.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/button_cancel.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_activity_angle.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\activity_angle.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-xhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_activity_thread_helper.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\activity_thread_helper.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable_ic_tool_3.png.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/ic_tool_3.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_item_thread.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\item_thread.xml"
+        "merged": "com.dro.lathe.app-debug-32:/layout_activity_main.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-xhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-xhdpi\\ic_launcher_background.png"
+        "merged": "com.dro.lathe.app-debug-32:/drawable_button_zero.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/button_zero.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\xml\\backup_rules.xml"
+        "merged": "com.dro.lathe.app-debug-32:/layout_dialog_device_list.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/dialog_device_list.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_button_tool.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\button_tool.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable-anydpi-v21_ic_launcher_foreground.xml.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-anydpi-v21/ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_activity_thread_detail.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\activity_thread_detail.xml"
+        "merged": "com.dro.lathe.app-debug-32:/layout_activity_thread_detail.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/activity_thread_detail.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_dialog_input_value.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\dialog_input_value.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable-ldpi_ic_launcher_foreground.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-ldpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_ic_radius.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\ic_radius.png"
+        "merged": "com.dro.lathe.app-debug-32:/layout_dialog_input_value.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/dialog_input_value.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\font_courier.otf.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\font\\courier.otf"
+        "merged": "com.dro.lathe.app-debug-32:/drawable_button_ok.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/button_ok.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_dialog_device_list.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\dialog_device_list.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable-mdpi_ic_launcher_background.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-mdpi/ic_launcher_background.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-hdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-hdpi\\ic_launcher_background.png"
+        "merged": "com.dro.lathe.app-debug-32:/layout_dialog_confirm.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/dialog_confirm.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-hdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-hdpi\\ic_launcher_foreground.png"
+        "merged": "com.dro.lathe.app-debug-32:/layout_dialog_marker.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/dialog_marker.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\font_courierb.otf.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\font\\courierb.otf"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_input_field_background.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\input_field_background.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_dialog_background.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\dialog_background.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_item_pass.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\item_pass.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-mdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-mdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-xhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-xhdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_button_ok.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\button_ok.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_pass_item_selector.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\pass_item_selector.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_button_cancel.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\button_cancel.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-xxhdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-ldpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-ldpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_button_zero.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\button_zero.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_button_yellow.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\button_yellow.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_dialog_marker.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\dialog_marker.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-anydpi-v21_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-anydpi-v21\\ic_launcher_foreground.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_item_marker.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\item_marker.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\activity_main.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_activity_marker_list.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\activity_marker_list.xml"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-ldpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-ldpi\\ic_launcher_background.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-xxxhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-xxxhdpi\\ic_launcher_background.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_ic_diameter.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\ic_diameter.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-xxhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-xxhdpi\\ic_launcher_background.png"
-    },
-    {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\layout_activity_settings.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\layout\\activity_settings.xml"
+        "merged": "com.dro.lathe.app-debug-32:/layout_activity_marker_list.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/activity_marker_list.xml"
     },
     {
         "merged": "com.dro.lathe.app-debug-32:/layout_activity_angle.xml.flat",
         "source": "com.dro.lathe.app-main-34:/layout/activity_angle.xml"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable_button_menu.xml.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-main-34:\\drawable\\button_menu.xml"
+        "merged": "com.dro.lathe.app-debug-32:/drawable_ic_tool_2.png.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/ic_tool_2.png"
     },
     {
-        "merged": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-debug-32:\\drawable-xxxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\igorvd\\.gradle\\daemon\\8.13\\com.dro.lathe.app-pngs-28:\\drawable-xxxhdpi\\ic_launcher_foreground.png"
+        "merged": "com.dro.lathe.app-debug-32:/layout_item_pass.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/item_pass.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/layout_dialog_tool_offset.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/dialog_tool_offset.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_button_tool.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/button_tool.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_pass_item_selector.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/pass_item_selector.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-hdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_input_field_background.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/input_field_background.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_button_menu.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/button_menu.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-ldpi_ic_launcher_background.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-ldpi/ic_launcher_background.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/xml_data_extraction_rules.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-hdpi_ic_launcher_background.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-hdpi/ic_launcher_background.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_ic_diameter.png.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/ic_diameter.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_ic_tool_1.png.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/ic_tool_1.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/font_courier.otf.flat",
+        "source": "com.dro.lathe.app-main-34:/font/courier.otf"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-anydpi-v21_ic_launcher_background.xml.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-anydpi-v21/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/layout_popup_tools.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/popup_tools.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-xxhdpi_ic_launcher_background.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-xxhdpi/ic_launcher_background.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-xxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/layout_activity_settings.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/layout_activity_thread_helper.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/activity_thread_helper.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-xxxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_button_yellow.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/button_yellow.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/layout_item_marker.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/item_marker.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable-xhdpi_ic_launcher_background.png.flat",
+        "source": "com.dro.lathe.app-pngs-28:/drawable-xhdpi/ic_launcher_background.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_ic_tool_4.png.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/ic_tool_4.png"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/font_courierb.otf.flat",
+        "source": "com.dro.lathe.app-main-34:/font/courierb.otf"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/layout_item_thread.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/layout/item_thread.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/drawable_dialog_background.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/drawable/dialog_background.xml"
+    },
+    {
+        "merged": "com.dro.lathe.app-debug-32:/xml_backup_rules.xml.flat",
+        "source": "com.dro.lathe.app-main-34:/xml/backup_rules.xml"
     }
 ]

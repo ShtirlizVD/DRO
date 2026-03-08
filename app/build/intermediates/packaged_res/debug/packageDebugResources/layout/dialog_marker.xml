@@ -3,17 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/bg_darker"
-    android:padding="16dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_marker"
-        android:textColor="@color/text_bright"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center" />
+    android:background="@drawable/dialog_background"
+    android:padding="20dp">
 
     <!-- Axis Selection -->
     <TextView
@@ -21,20 +12,22 @@
         android:layout_height="wrap_content"
         android:text="Ось"
         android:textColor="@color/text_dim"
-        android:layout_marginTop="16dp" />
+        android:textSize="14sp" />
 
     <RadioGroup
         android:id="@+id/rg_axis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
 
         <RadioButton
             android:id="@+id/rb_axis_x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/coord_x"
-            android:textColor="@color/coord_x" />
+            android:textColor="@color/coord_x"
+            android:buttonTint="@color/coord_x" />
 
         <RadioButton
             android:id="@+id/rb_axis_z"
@@ -42,6 +35,7 @@
             android:layout_height="wrap_content"
             android:text="@string/coord_z"
             android:textColor="@color/coord_z"
+            android:buttonTint="@color/coord_z"
             android:layout_marginStart="32dp" />
     </RadioGroup>
 
@@ -51,14 +45,17 @@
         android:layout_height="wrap_content"
         android:text="@string/marker_name"
         android:textColor="@color/text_dim"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:textSize="14sp" />
 
     <EditText
         android:id="@+id/et_marker_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:textColor="@color/text_bright" />
+        android:textColor="@color/text_bright"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp" />
 
     <!-- Position -->
     <TextView
@@ -66,12 +63,14 @@
         android:layout_height="wrap_content"
         android:text="@string/marker_position"
         android:textColor="@color/text_dim"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
 
         <EditText
             android:id="@+id/et_marker_position"
@@ -80,6 +79,7 @@
             android:layout_weight="1"
             android:inputType="numberSigned|numberDecimal"
             android:textColor="@color/text_bright"
+            android:textSize="16sp"
             android:hint="0.000"
             android:textColorHint="@color/text_dim" />
 
@@ -88,8 +88,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Текущая"
+            android:textColor="@color/text_bright"
             android:background="@drawable/button_menu"
             android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Отмена"
+            android:textColor="@color/text_bright"
+            android:background="@drawable/button_menu"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Добавить"
+            android:textColor="@color/text_bright"
+            android:background="@drawable/button_ok" />
+
     </LinearLayout>
 
 </LinearLayout>

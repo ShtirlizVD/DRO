@@ -31,17 +31,20 @@
                     android:layout_height="wrap_content"
                     android:text="X: "
                     android:textColor="@color/coord_x"
-                    android:textSize="20sp"
+                    android:textSize="35sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_current_x"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd"
+                    android:gravity="end" />
             </LinearLayout>
 
             <LinearLayout
@@ -56,21 +59,22 @@
                     android:layout_height="wrap_content"
                     android:text="Z: "
                     android:textColor="@color/coord_z"
-                    android:textSize="20sp"
+                    android:textSize="35sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_current_z"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd"
+                    android:gravity="end" />
             </LinearLayout>
         </LinearLayout>
-
-        <!-- Start Point Section -->
 
         <!-- Angle Results - large -->
         <LinearLayout
@@ -79,28 +83,29 @@
             android:orientation="vertical"
             android:layout_marginTop="6dp"
             android:background="@color/bg_darker"
-            android:padding="10dp">
+            android:padding="8dp">
 
             <!-- Angle Z -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_label_angle_z"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Угол (Z)"
-                    android:textColor="#00BCD4"
-                    android:textSize="20sp" />
+                    android:text="Угол Z"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_z"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.9"
                     android:text="—°"
-                    android:textColor="#00BCD4"
                     android:textSize="61sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -110,28 +115,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tv_label_angle_x"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Угол (X)"
-                    android:textColor="#FF9800"
-                    android:textSize="20sp" />
+                    android:text="Угол X"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_x"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="—°"
-                    android:textColor="#FF9800"
                     android:textSize="61sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.9" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Spacer -->
+        <!-- Start Point Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,9 +150,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/start_point"
-                android:textColor="@color/coord_x"
+                android:textColor="#4CAF50"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,7 +191,8 @@
                     android:layout_weight="1"
                     android:text="—"
                     android:textColor="@color/text_bright"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:gravity="start" />
             </LinearLayout>
 
             <Button
@@ -195,7 +203,68 @@
                 android:background="@drawable/button_tool"
                 android:text="Установить точку"
                 android:textColor="@color/text_bright"
-                android:textSize="11sp" />
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Taper Results -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="6dp"
+            android:background="@color/bg_darker"
+            android:padding="8dp">
+
+            <!-- Taper Z -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_label_taper_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Конус Z"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_taper_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textSize="61sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.9" />
+            </LinearLayout>
+
+            <!-- Taper X -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="4dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_label_taper_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Конус X"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_taper_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textSize="61sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="0.9" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
