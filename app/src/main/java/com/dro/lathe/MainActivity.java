@@ -438,32 +438,17 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
             });
         }
         
-        // Create PopupWindow
+        // Create PopupWindow - NOT focusable to avoid system bars
         toolPopup = new android.widget.PopupWindow(
             popupView,
             android.view.WindowManager.LayoutParams.WRAP_CONTENT,
             android.view.WindowManager.LayoutParams.WRAP_CONTENT,
-            true  // focusable
+            false  // NOT focusable - prevents system bars from appearing
         );
         toolPopup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         toolPopup.setOutsideTouchable(true);
         toolPopup.setTouchable(true);
-        
-        // Keep fullscreen mode
-        popupView.setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        );
-        
-        // Get button location
-        int[] location = new int[2];
-        anchor.getLocationOnScreen(location);
-        int buttonRight = location[0] + anchor.getWidth();
-        int buttonTop = location[1];
+        toolPopup.setClippingEnabled(false);
         
         // Measure popup to get its size
         popupView.measure(
@@ -472,11 +457,24 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         );
         int popupWidth = popupView.getMeasuredWidth();
         
-        // Show popup to the left of the button (button's right edge aligned with popup's right edge)
-        int xOffset = buttonRight - popupWidth - 10; // 10px margin from right screen edge
-        int yOffset = buttonTop + anchor.getHeight();
+        // Get screen size
+        android.graphics.Point screenSize = new android.graphics.Point();
+        getWindowManager().getDefaultDisplay().getSize(screenSize);
+        
+        // Position in top-right corner
+        int xOffset = screenSize.x - popupWidth - 10;  // 10px margin from right edge
+        int yOffset = 10;  // 10px from top
         
         toolPopup.showAtLocation(anchor, android.view.Gravity.NO_GRAVITY, xOffset, yOffset);
+        
+        // Set touch listener on popup to handle clicks
+        popupView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == android.view.MotionEvent.ACTION_OUTSIDE) {
+                toolPopup.dismiss();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void editToolOffset(int index) {
