@@ -52,7 +52,7 @@
 30-->[androidx.core:core:1.9.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\00eeb73d329f60914ee7cf1a9183d8d3\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
 31
 32    <application
-32-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:18:5-65:19
+32-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:18:5-71:19
 33        android:allowBackup="true"
 33-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:19:9-35
 34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -137,85 +137,51 @@
 75-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:62:13-48
 76            android:theme="@style/Theme.DRO" />
 76-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:63:13-45
-77
-78        <provider
-78-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-79            android:name="androidx.startup.InitializationProvider"
-79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
-80            android:authorities="com.dro.lathe.androidx-startup"
-80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
-81            android:exported="false" >
-81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
-82            <meta-data
-82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-83                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
-84                android:value="androidx.startup" />
-84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
-85            <meta-data
-85-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\igorvd\.gradle\caches\8.13\transforms\9e71723e3e0bf95ef9c5f8429bc855a8\transformed\lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
-86                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-86-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\igorvd\.gradle\caches\8.13\transforms\9e71723e3e0bf95ef9c5f8429bc855a8\transformed\lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
-87                android:value="androidx.startup" />
-87-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\igorvd\.gradle\caches\8.13\transforms\9e71723e3e0bf95ef9c5f8429bc855a8\transformed\lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
-88            <meta-data
-88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-89                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-90                android:value="androidx.startup" />
-90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-91        </provider>
-92
-93        <uses-library
-93-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:25:9-27:40
-94            android:name="androidx.window.extensions"
-94-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:26:13-54
-95            android:required="false" />
-95-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:27:13-37
-96        <uses-library
-96-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:28:9-30:40
-97            android:name="androidx.window.sidecar"
-97-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:29:13-51
-98            android:required="false" />
-98-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:30:13-37
-99
-100        <receiver
-100-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-101            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-101-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-102            android:directBootAware="false"
-102-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-103            android:enabled="true"
-103-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-104            android:exported="true"
-104-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-105            android:permission="android.permission.DUMP" >
-105-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-106            <intent-filter>
-106-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-107                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-107-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-107-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-108            </intent-filter>
-109            <intent-filter>
-109-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-110                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-110-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-110-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-111            </intent-filter>
-112            <intent-filter>
-112-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-113                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-114            </intent-filter>
-115            <intent-filter>
-115-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-116                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\dac026611e494124e2f9ae76190a7245\transformed\profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
-117            </intent-filter>
-118        </receiver>
-119    </application>
-120
-121</manifest>
+77        <activity
+77-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:65:9-69:48
+78            android:name="com.dro.lathe.ThreadDetailActivity"
+78-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:66:13-49
+79            android:exported="false"
+79-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:67:13-37
+80            android:label="@string/thread_detail"
+80-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:68:13-50
+81            android:theme="@style/Theme.DRO" />
+81-->C:\Users\igorvd\Documents\GitHub\DRO\app\src\main\AndroidManifest.xml:69:13-45
+82
+83        <provider
+83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+84            android:name="androidx.startup.InitializationProvider"
+84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+85            android:authorities="com.dro.lathe.androidx-startup"
+85-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+86            android:exported="false" >
+86-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+87            <meta-data
+87-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+88                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+88-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+89                android:value="androidx.startup" />
+89-->[androidx.emoji2:emoji2:1.2.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\4d2453fdc4c3c668e840984901fbd925\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+90            <meta-data
+90-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\igorvd\.gradle\caches\8.13\transforms\bf9829fca42290e1bbf97ad48fa7b15f\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+91                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+91-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\igorvd\.gradle\caches\8.13\transforms\bf9829fca42290e1bbf97ad48fa7b15f\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+92                android:value="androidx.startup" />
+92-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\igorvd\.gradle\caches\8.13\transforms\bf9829fca42290e1bbf97ad48fa7b15f\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+93        </provider>
+94
+95        <uses-library
+95-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:25:9-27:40
+96            android:name="androidx.window.extensions"
+96-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:26:13-54
+97            android:required="false" />
+97-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:27:13-37
+98        <uses-library
+98-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:28:9-30:40
+99            android:name="androidx.window.sidecar"
+99-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:29:13-51
+100            android:required="false" />
+100-->[androidx.window:window:1.0.0] C:\Users\igorvd\.gradle\caches\8.13\transforms\bb7f3afaaf6e1157f1f7752c04e48e1d\transformed\window-1.0.0\AndroidManifest.xml:30:13-37
+101    </application>
+102
+103</manifest>

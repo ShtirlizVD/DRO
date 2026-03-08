@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_dark"
-    android:padding="16dp">
+    android:padding="12dp">
 
-    <!-- Tabs -->
+    <!-- Category Tabs -->
     <LinearLayout
         android:id="@+id/tabs_container"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="Метр."
+            android:text="Метрич."
             android:textSize="12sp"
             android:background="@drawable/button_tool" />
 
@@ -44,13 +44,47 @@
             android:layout_marginStart="4dp" />
     </LinearLayout>
 
+    <!-- Thread Type Selection -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Тип резьбы: "
+            android:textColor="@color/text_dim"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_type_external"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:text="Наруж."
+            android:textSize="11sp"
+            android:background="@drawable/button_tool"
+            android:layout_marginStart="4dp" />
+
+        <Button
+            android:id="@+id/btn_type_internal"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:text="Внутр."
+            android:textSize="11sp"
+            android:background="@drawable/button_tool"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+
     <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="6dp">
 
         <TextView
             android:layout_width="0dp"
@@ -60,6 +94,15 @@
             android:textColor="@color/text_dim"
             android:textSize="12sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Диам."
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="70dp"
@@ -99,11 +142,21 @@
         android:divider="@color/button_border"
         android:dividerHeight="1dp" />
 
+    <!-- Hint -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Нажмите на резьбу для просмотра проходов"
+        android:textColor="@color/text_dim"
+        android:textSize="11sp"
+        android:gravity="center"
+        android:padding="4dp" />
+
     <Button
         android:id="@+id/btn_close"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="Закрыть"
         android:textColor="@color/text_bright"
         android:background="@drawable/button_menu" />

@@ -28,12 +28,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity implements BluetoothService.Callback {
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     // Data
     private DROData droData;
-    private Tool[] tools = new Tool[4];
+    private final Tool[] tools = new Tool[4];
     private int currentTool = 0;
     private List<Marker> markers = new ArrayList<>();
 
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private SharedPreferences prefs;
     private boolean soundEnabled = true;
     private double proximityDistance = 5.0;
-    private int[] coordColors = new int[4];
+    private final int[] coordColors = new int[4];
     private ToneGenerator toneGenerator;
     private Vibrator vibrator;
     

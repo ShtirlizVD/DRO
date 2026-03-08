@@ -8,7 +8,7 @@
 
     <!-- Left Panel - compact -->
     <LinearLayout
-        android:layout_width="140dp"
+        android:layout_width="220dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:text="X: "
                     android:textColor="@color/coord_x"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="Z: "
                     android:textColor="@color/coord_z"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -65,77 +65,12 @@
                     android:layout_height="wrap_content"
                     android:text="0.000"
                     android:textColor="@color/text_bright"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Start Point Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="6dp"
-            android:background="@color/bg_darker"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/start_point"
-                android:textColor="@color/coord_x"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="2dp">
-
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/coord_x"
-                    android:textColor="@color/coord_x"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_start_x"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="—"
-                    android:textColor="@color/text_bright"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/coord_z"
-                    android:textColor="@color/coord_z"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_start_z"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="—"
-                    android:textColor="@color/text_bright"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_set_start"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:text="Установить точку"
-                android:textSize="11sp"
-                android:textColor="@color/text_bright"
-                android:background="@drawable/button_tool" />
-        </LinearLayout>
 
         <!-- Angle Results - large -->
         <LinearLayout
@@ -158,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="Угол (Z)"
                     android:textColor="#00BCD4"
-                    android:textSize="14sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_z"
@@ -166,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:text="—°"
                     android:textColor="#00BCD4"
-                    android:textSize="42sp"
+                    android:textSize="61sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -183,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="Угол (X)"
                     android:textColor="#FF9800"
-                    android:textSize="14sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_angle_x"
@@ -191,12 +126,78 @@
                     android:layout_height="wrap_content"
                     android:text="—°"
                     android:textColor="#FF9800"
-                    android:textSize="42sp"
+                    android:textSize="61sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Spacer -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/bg_darker"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/start_point"
+                android:textColor="@color/coord_x"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coord_x"
+                    android:textColor="@color/coord_x"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_start_x"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/text_bright"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coord_z"
+                    android:textColor="@color/coord_z"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_start_z"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/text_bright"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_set_start"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/button_tool"
+                android:text="Установить точку"
+                android:textColor="@color/text_bright"
+                android:textSize="11sp" />
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -208,7 +209,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:text="Закрыть"
-            android:textSize="12sp"
+            android:textSize="20sp"
             android:textColor="@color/text_bright"
             android:background="@drawable/button_menu" />
     </LinearLayout>
