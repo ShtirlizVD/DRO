@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         int[] btnIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
         for (int i = 0; i < 4; i++) {
-            Button btn = popupView.findViewById(btnIds[i]);
+            android.widget.ImageButton btn = popupView.findViewById(btnIds[i]);
             btn.setSelected(i == currentTool);
             final int toolIndex = i;
             btn.setOnClickListener(v -> {
