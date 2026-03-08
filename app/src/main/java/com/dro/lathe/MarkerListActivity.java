@@ -1,6 +1,6 @@
 package com.dro.lathe;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -103,22 +103,18 @@ public class MarkerListActivity extends AppCompatActivity {
     }
 
     private void showAddDialog() {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_marker, null);
-        
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(view)
-                .setPositiveButton("Добавить", null)
-                .setNegativeButton("Отмена", null)
-                .create();
-
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_marker);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
         // Get views
-        EditText etName = view.findViewById(R.id.et_marker_name);
-        EditText etPosition = view.findViewById(R.id.et_marker_position);
-        Button btnCurrent = view.findViewById(R.id.btn_current_pos);
-        RadioButton rbX = view.findViewById(R.id.rb_axis_x);
+        EditText etName = dialog.findViewById(R.id.et_marker_name);
+        EditText etPosition = dialog.findViewById(R.id.et_marker_position);
+        Button btnCurrent = dialog.findViewById(R.id.btn_current_pos);
+        Button btnAdd = dialog.findViewById(R.id.btn_add);
+        Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+        RadioButton rbX = dialog.findViewById(R.id.rb_axis_x);
 
         // Get current ABSOLUTE coordinates
         double currentAbsX = prefs.getFloat("current_abs_x", 0);
@@ -132,8 +128,7 @@ public class MarkerListActivity extends AppCompatActivity {
             }
         });
 
-        // Override positive button to not dismiss on error
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+        btnAdd.setOnClickListener(v -> {
             String name = etName.getText().toString();
             if (name.isEmpty()) name = "Засечка";
 
@@ -151,6 +146,8 @@ public class MarkerListActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             dialog.dismiss();
         });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
     }
 
     private class MarkerAdapter extends ArrayAdapter<Marker> {
