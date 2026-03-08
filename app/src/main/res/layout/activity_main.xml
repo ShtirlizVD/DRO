@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:text="ABS"
                     android:textColor="@color/text_dim"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:gravity="center" />
 
@@ -246,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:text="X:"
                         android:textColor="@color/coord_x"
-                        android:textSize="12sp"
+                        android:textSize="34sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -254,9 +254,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0.000"
+                        android:text="0.00"
                         android:textColor="@color/coord_x"
-                        android:textSize="12sp"
+                        android:textSize="34sp"
                         android:gravity="end" />
                 </LinearLayout>
 
@@ -271,7 +271,7 @@
                         android:layout_height="wrap_content"
                         android:text="Z:"
                         android:textColor="@color/coord_z"
-                        android:textSize="12sp"
+                        android:textSize="34sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -279,9 +279,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="0.000"
+                        android:text="0.00"
                         android:textColor="@color/coord_z"
-                        android:textSize="12sp"
+                        android:textSize="34sp"
                         android:gravity="end" />
                 </LinearLayout>
             </LinearLayout>

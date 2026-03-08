@@ -622,9 +622,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         valueZ.setText(formatValue(droData.getZ()));
         valueL.setText(formatValue(droData.getL()));
 
-        // Update absolute coordinates display
-        tvAbsX.setText(formatValue(droData.getAbsoluteX()));
-        tvAbsZ.setText(formatValue(droData.getAbsoluteZ()));
+        // Update absolute coordinates display (2 decimal places)
+        tvAbsX.setText(String.format(Locale.US, "%.2f", droData.getAbsoluteX()));
+        tvAbsZ.setText(String.format(Locale.US, "%.2f", droData.getAbsoluteZ()));
 
         prefs.edit()
                 .putFloat("current_x", (float) droData.getX())
