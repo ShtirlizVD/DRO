@@ -2,6 +2,8 @@ package com.dro.lathe;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,7 +58,9 @@ public class MarkerListActivity extends AppCompatActivity {
 
     private void loadMarkers() {
         String json = prefs.getString("markers", "[]");
-        markers = parseMarkers(json);
+        List<Marker> loaded = parseMarkers(json);
+        markers.clear();
+        markers.addAll(loaded);
         adapter.notifyDataSetChanged();
     }
 
@@ -99,18 +103,26 @@ public class MarkerListActivity extends AppCompatActivity {
     }
 
     private void showAddDialog() {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_marker, null);
-        EditText etName = view.findViewById(R.id.et_marker_name);
-        EditText etPosition = view.findViewById(R.id.et_marker_position);
-        Button btnCurrent = view.findViewById(R.id.btn_current_pos);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(R.layout.dialog_marker)
+                .setPositiveButton("Добавить", null)
+                .setNegativeButton("Отмена", null)
+                .create();
 
-        // Get current ABSOLUTE coordinates (independent of zeroing and tool offsets)
-        // These start from 0 when app launches
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        // Get views after dialog is shown
+        EditText etName = dialog.findViewById(R.id.et_marker_name);
+        EditText etPosition = dialog.findViewById(R.id.et_marker_position);
+        Button btnCurrent = dialog.findViewById(R.id.btn_current_pos);
+        RadioButton rbX = dialog.findViewById(R.id.rb_axis_x);
+
+        // Get current ABSOLUTE coordinates
         double currentAbsX = prefs.getFloat("current_abs_x", 0);
         double currentAbsZ = prefs.getFloat("current_abs_z", 0);
 
         btnCurrent.setOnClickListener(v -> {
-            RadioButton rbX = view.findViewById(R.id.rb_axis_x);
             if (rbX.isChecked()) {
                 etPosition.setText(String.format(Locale.US, "%.3f", currentAbsX));
             } else {
@@ -118,29 +130,25 @@ public class MarkerListActivity extends AppCompatActivity {
             }
         });
 
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.add_marker)
-                .setView(view)
-                .setPositiveButton("Добавить", (dialog, which) -> {
-                    String name = etName.getText().toString();
-                    if (name.isEmpty()) name = "Засечка";
+        // Override positive button to not dismiss on error
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String name = etName.getText().toString();
+            if (name.isEmpty()) name = "Засечка";
 
-                    RadioButton rbX = view.findViewById(R.id.rb_axis_x);
-                    Marker.Axis axis = rbX.isChecked() ? Marker.Axis.X : Marker.Axis.Z;
+            Marker.Axis axis = rbX.isChecked() ? Marker.Axis.X : Marker.Axis.Z;
 
-                    double position = 0;
-                    try {
-                        position = Double.parseDouble(etPosition.getText().toString());
-                    } catch (NumberFormatException ignored) {}
+            double position = 0;
+            try {
+                position = Double.parseDouble(etPosition.getText().toString());
+            } catch (NumberFormatException ignored) {}
 
-                    Marker m = new Marker(name, axis, position);
-                    m.setId(System.currentTimeMillis());
-                    markers.add(m);
-                    saveMarkers();
-                    adapter.notifyDataSetChanged();
-                })
-                .setNegativeButton("Отмена", null)
-                .show();
+            Marker m = new Marker(name, axis, position);
+            m.setId(System.currentTimeMillis());
+            markers.add(m);
+            saveMarkers();
+            adapter.notifyDataSetChanged();
+            dialog.dismiss();
+        });
     }
 
     private class MarkerAdapter extends ArrayAdapter<Marker> {
@@ -164,7 +172,7 @@ public class MarkerListActivity extends AppCompatActivity {
             Button btnDelete = convertView.findViewById(R.id.btn_delete);
 
             // Setup checkbox
-            cbActive.setOnCheckedChangeListener(null); // Remove previous listener
+            cbActive.setOnCheckedChangeListener(null);
             cbActive.setChecked(m.isActive());
             cbActive.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 m.setActive(isChecked);
@@ -184,7 +192,7 @@ public class MarkerListActivity extends AppCompatActivity {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Удалить засечку?")
                         .setMessage(m.getName())
-                        .setPositiveButton("Удалить", (dialog, which) -> {
+                        .setPositiveButton("Удалить", (d, which) -> {
                             markers.remove(position);
                             saveMarkers();
                             notifyDataSetChanged();
