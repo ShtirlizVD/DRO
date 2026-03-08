@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_dark"
@@ -64,22 +65,23 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <FrameLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btn_zero_x"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/clip_rounded"
-                    android:clipToOutline="true"
-                    android:foreground="@drawable/frame_selector"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardPreventCornerOverlap="false"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:foreground="@drawable/frame_selector">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_zero"
                         android:scaleType="centerCrop"
                         android:contentDescription="Zero X" />
-                </FrameLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <!-- D Coordinate Row -->
@@ -115,22 +117,23 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <FrameLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btn_set_d"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/clip_rounded"
-                    android:clipToOutline="true"
-                    android:foreground="@drawable/frame_selector"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardPreventCornerOverlap="false"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:foreground="@drawable/frame_selector">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_diameter"
                         android:scaleType="centerCrop"
                         android:contentDescription="Set Diameter" />
-                </FrameLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <!-- Z Coordinate Row -->
@@ -172,22 +175,23 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <FrameLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btn_zero_z"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/clip_rounded"
-                    android:clipToOutline="true"
-                    android:foreground="@drawable/frame_selector"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardPreventCornerOverlap="false"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:foreground="@drawable/frame_selector">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_zero"
                         android:scaleType="centerCrop"
                         android:contentDescription="Zero Z" />
-                </FrameLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <!-- L Coordinate Row -->
@@ -223,22 +227,23 @@
                     android:gravity="center"
                     android:includeFontPadding="false" />
 
-                <FrameLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btn_set_l"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/clip_rounded"
-                    android:clipToOutline="true"
-                    android:foreground="@drawable/frame_selector"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardPreventCornerOverlap="false"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:foreground="@drawable/frame_selector">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_length"
                         android:scaleType="centerCrop"
                         android:contentDescription="Set Length" />
-                </FrameLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>
