@@ -66,10 +66,12 @@
 
                 <ImageButton
                     android:id="@+id/btn_zero_x"
-                    style="@style/ZeroButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/ic_zero"
-                    android:scaleType="fitCenter"
-                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/button_zero"
+                    android:clipToOutline="true"
                     android:contentDescription="Zero X" />
             </LinearLayout>
 
@@ -108,10 +110,12 @@
 
                 <ImageButton
                     android:id="@+id/btn_set_d"
-                    style="@style/ZeroButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/ic_diameter"
-                    android:scaleType="fitCenter"
-                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/button_zero"
+                    android:clipToOutline="true"
                     android:contentDescription="Set Diameter" />
             </LinearLayout>
 
@@ -156,10 +160,12 @@
 
                 <ImageButton
                     android:id="@+id/btn_zero_z"
-                    style="@style/ZeroButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/ic_zero"
-                    android:scaleType="fitCenter"
-                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/button_zero"
+                    android:clipToOutline="true"
                     android:contentDescription="Zero Z" />
             </LinearLayout>
 
@@ -198,10 +204,12 @@
 
                 <ImageButton
                     android:id="@+id/btn_set_l"
-                    style="@style/ZeroButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/ic_length"
-                    android:scaleType="fitCenter"
-                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/button_zero"
+                    android:clipToOutline="true"
                     android:contentDescription="Set Length" />
             </LinearLayout>
 
