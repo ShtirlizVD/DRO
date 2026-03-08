@@ -8,6 +8,10 @@ public class DROData {
     private double rawX;      // Raw encoder X value
     private double rawZ;      // Raw encoder Z value
 
+    // ABS offsets - for zeroing absolute coordinates
+    private double absOffsetRawX;  // Raw value when ABS was zeroed
+    private double absOffsetRawZ;  // Raw value when ABS was zeroed
+
     // Separate offsets for each coordinate
     private double offsetX;   // X offset (zero point for radius)
     private double offsetD;   // D offset (independent diameter adjustment)
@@ -25,6 +29,8 @@ public class DROData {
     public DROData() {
         this.rawX = 0;
         this.rawZ = 0;
+        this.absOffsetRawX = 0;
+        this.absOffsetRawZ = 0;
         this.offsetX = 0;
         this.offsetD = 0;
         this.offsetZ = 0;
@@ -35,15 +41,31 @@ public class DROData {
         this.resolutionZ = 0.005;
     }
 
-    // Absolute coordinates - raw * resolution, independent of all offsets
-    // These start from 0 when app launches and never change with zeroing
+    // Absolute coordinates - (raw - absOffset) * resolution
+    // Can be zeroed by setting absOffsetRaw to current raw value
     public double getAbsoluteX() {
-        return rawX * resolutionX;
+        return (rawX - absOffsetRawX) * resolutionX;
     }
 
     public double getAbsoluteZ() {
-        return rawZ * resolutionZ;
+        return (rawZ - absOffsetRawZ) * resolutionZ;
     }
+
+    // Zero ABS X - current position becomes 0
+    public void zeroAbsX() {
+        absOffsetRawX = rawX;
+    }
+
+    // Zero ABS Z - current position becomes 0
+    public void zeroAbsZ() {
+        absOffsetRawZ = rawZ;
+    }
+
+    // Get/Set ABS offsets for saving/loading
+    public double getAbsOffsetRawX() { return absOffsetRawX; }
+    public double getAbsOffsetRawZ() { return absOffsetRawZ; }
+    public void setAbsOffsetRawX(double v) { absOffsetRawX = v; }
+    public void setAbsOffsetRawZ(double v) { absOffsetRawZ = v; }
 
     // Calculate displayed X (in radius units)
     public double getBaseX() {

@@ -182,12 +182,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         // Long press on ABS coordinates to zero them
         tvAbsX.setOnLongClickListener(v -> {
-            droData.setRawX(0);
+            droData.zeroAbsX();
             updateDisplay();
             return true;
         });
         tvAbsZ.setOnLongClickListener(v -> {
-            droData.setRawZ(0);
+            droData.zeroAbsZ();
             updateDisplay();
             return true;
         });
@@ -242,6 +242,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         double savedRawZ = prefs.getFloat("saved_raw_z", 0);
         droData.setRawX(savedRawX);
         droData.setRawZ(savedRawZ);
+        
+        // Load ABS offsets
+        droData.setAbsOffsetRawX(prefs.getFloat("abs_offset_raw_x", 0));
+        droData.setAbsOffsetRawZ(prefs.getFloat("abs_offset_raw_z", 0));
         
         // Load current tool
         currentTool = prefs.getInt("current_tool", 0);
@@ -821,6 +825,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         prefs.edit()
                 .putFloat("saved_raw_x", (float) droData.getRawX())
                 .putFloat("saved_raw_z", (float) droData.getRawZ())
+                .putFloat("abs_offset_raw_x", (float) droData.getAbsOffsetRawX())
+                .putFloat("abs_offset_raw_z", (float) droData.getAbsOffsetRawZ())
                 .putInt("current_tool", currentTool)
                 .apply();
     }
