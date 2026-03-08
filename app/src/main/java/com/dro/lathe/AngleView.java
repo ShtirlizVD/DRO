@@ -7,7 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
@@ -44,6 +46,37 @@ public class AngleView extends View {
     private static final float PADDING = 20f;
     private static final float LABEL_MARGIN = 60f;
 
+    // Hypotenuse label position for touch detection
+    private float hypLabelX = 0;
+    private float hypLabelY = 0;
+    private static final float LABEL_TOUCH_RADIUS = 60f;
+
+    // Long press handler
+    private Handler longPressHandler;
+    private Runnable longPressRunnable;
+    private float touchStartX, touchStartY;
+    private boolean isLongPress = false;
+
+    // Listener for color picker
+    private OnHypotenuseLongPressListener longPressListener;
+
+    public interface OnHypotenuseLongPressListener {
+        void onHypotenuseLongPress();
+    }
+
+    public void setOnHypotenuseLongPressListener(OnHypotenuseLongPressListener listener) {
+        this.longPressListener = listener;
+    }
+
+    public void setHypotenuseColor(int color) {
+        paintHypotenuse.setColor(color);
+        invalidate();
+    }
+
+    public int getHypotenuseColor() {
+        return paintHypotenuse.getColor();
+    }
+
     public AngleView(Context context) {
         super(context);
         init(context);
@@ -60,6 +93,14 @@ public class AngleView extends View {
     }
 
     private void init(Context context) {
+        longPressHandler = new Handler();
+        longPressRunnable = () -> {
+            isLongPress = true;
+            if (longPressListener != null) {
+                longPressListener.onHypotenuseLongPress();
+            }
+        };
+
         paintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintAxis.setColor(ContextCompat.getColor(context, R.color.text_dim));
         paintAxis.setStrokeWidth(1);
@@ -156,6 +197,51 @@ public class AngleView extends View {
         startX = startZ = Double.NaN;
         scale = 10;
         invalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (Double.isNaN(relX) || Double.isNaN(relZ)) {
+            return super.onTouchEvent(event);
+        }
+
+        float x = event.getX();
+        float y = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                touchStartX = x;
+                touchStartY = y;
+                isLongPress = false;
+
+                // Check if touch is near hypotenuse label
+                float dx = x - hypLabelX;
+                float dy = y - hypLabelY;
+                float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < LABEL_TOUCH_RADIUS) {
+                    longPressHandler.postDelayed(longPressRunnable, 500);
+                    return true;
+                }
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                // Cancel long press if moved too much
+                float moveDx = x - touchStartX;
+                float moveDy = y - touchStartY;
+                float moveDistance = (float) Math.sqrt(moveDx * moveDx + moveDy * moveDy);
+                if (moveDistance > 20) {
+                    longPressHandler.removeCallbacks(longPressRunnable);
+                }
+                break;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                longPressHandler.removeCallbacks(longPressRunnable);
+                break;
+        }
+
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -369,8 +455,8 @@ public class AngleView extends View {
             // Outside direction (away from P)
             float offsetMult = (dot > 0) ? -80 : 80;
             
-            float hypLabelX = seMidX + nx * offsetMult;
-            float hypLabelY = seMidY + ny * offsetMult;
+            hypLabelX = seMidX + nx * offsetMult;
+            hypLabelY = seMidY + ny * offsetMult;
             
             // Check if hypotenuse label fits, if not put inside
             if (hypLabelX < PADDING + 50 || hypLabelX > viewWidth - PADDING - 50 ||
