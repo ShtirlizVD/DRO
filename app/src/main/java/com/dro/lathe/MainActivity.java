@@ -461,9 +461,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         android.graphics.Point screenSize = new android.graphics.Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
         
-        // Position in top-right corner
-        int xOffset = screenSize.x - popupWidth - 10;  // 10px margin from right edge
-        int yOffset = 10;  // 10px from top
+        // Position in top-right corner (exact corner, no margin)
+        int xOffset = screenSize.x - popupWidth;
+        int yOffset = 0;
         
         toolPopup.showAtLocation(anchor, android.view.Gravity.NO_GRAVITY, xOffset, yOffset);
         
