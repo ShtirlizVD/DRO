@@ -503,57 +503,34 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
 
     private void editToolOffset(int index) {
-        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
-        dialog.setContentView(R.layout.dialog_tool_offset);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        
-        EditText etX = dialog.findViewById(R.id.et_offset_x);
-        EditText etD = dialog.findViewById(R.id.et_offset_d);
-        EditText etZ = dialog.findViewById(R.id.et_offset_z);
-        EditText etL = dialog.findViewById(R.id.et_offset_l);
-        TextView tvTitle = dialog.findViewById(R.id.tv_title);
-        Button btnOk = dialog.findViewById(R.id.btn_ok);
-        Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_tool_offset, null);
+        EditText etX = view.findViewById(R.id.et_offset_x);
+        EditText etD = view.findViewById(R.id.et_offset_d);
+        EditText etZ = view.findViewById(R.id.et_offset_z);
+        EditText etL = view.findViewById(R.id.et_offset_l);
 
-        tvTitle.setText("Смещения инструмента " + (index + 1));
         etX.setText(String.format(Locale.US, "%.3f", tools[index].getOffsetX()));
         etD.setText(String.format(Locale.US, "%.3f", tools[index].getOffsetD()));
         etZ.setText(String.format(Locale.US, "%.3f", tools[index].getOffsetZ()));
         etL.setText(String.format(Locale.US, "%.3f", tools[index].getOffsetL()));
 
-        btnOk.setOnClickListener(v -> {
-            try {
-                tools[index].setOffsetX(Double.parseDouble(etX.getText().toString()));
-                tools[index].setOffsetD(Double.parseDouble(etD.getText().toString()));
-                tools[index].setOffsetZ(Double.parseDouble(etZ.getText().toString()));
-                tools[index].setOffsetL(Double.parseDouble(etL.getText().toString()));
-                saveToolOffset(index);
-                if (currentTool == index) {
-                    selectTool(index);
-                }
-            } catch (NumberFormatException ignored) {}
-            dialog.dismiss();
-        });
-
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        // Keep fullscreen mode
-        dialog.getWindow().setFlags(
-            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        
-        dialog.show();
-        
-        // Restore fullscreen after show
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        );
-        dialog.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        new AlertDialog.Builder(this)
+                .setTitle("Смещения инструмента " + (index + 1))
+                .setView(view)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    try {
+                        tools[index].setOffsetX(Double.parseDouble(etX.getText().toString()));
+                        tools[index].setOffsetD(Double.parseDouble(etD.getText().toString()));
+                        tools[index].setOffsetZ(Double.parseDouble(etZ.getText().toString()));
+                        tools[index].setOffsetL(Double.parseDouble(etL.getText().toString()));
+                        saveToolOffset(index);
+                        if (currentTool == index) {
+                            selectTool(index);
+                        }
+                    } catch (NumberFormatException ignored) {}
+                })
+                .setNegativeButton("Отмена", null)
+                .show();
     }
 
     private void saveToolOffset(int index) {
@@ -651,24 +628,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         
-        // Keep fullscreen mode
-        dialog.getWindow().setFlags(
-            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
-        
-        // Restore fullscreen after show
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        );
-        dialog.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         
         etValue.requestFocus();
     }

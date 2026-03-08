@@ -113,23 +113,7 @@ public class MarkerListActivity extends AppCompatActivity {
         lp.y = 50; // Отступ сверху в пикселях
         dialog.getWindow().setAttributes(lp);
         
-        // Keep fullscreen mode
-        dialog.getWindow().setFlags(
-            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        
         dialog.show();
-        
-        // Restore fullscreen after show
-        dialog.getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        );
-        dialog.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
         // Get views
         EditText etName = dialog.findViewById(R.id.et_marker_name);
@@ -220,24 +204,6 @@ public class MarkerListActivity extends AppCompatActivity {
                 lp.y = 50;
                 confirmDialog.getWindow().setAttributes(lp);
                 
-                // Keep fullscreen mode
-                confirmDialog.getWindow().setFlags(
-                    android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-                
-                confirmDialog.show();
-                
-                // Restore fullscreen after show
-                confirmDialog.getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                );
-                confirmDialog.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-                
                 TextView tvConfirmName = confirmDialog.findViewById(R.id.tv_marker_name);
                 Button btnDeleteConfirm = confirmDialog.findViewById(R.id.btn_delete);
                 Button btnCancelConfirm = confirmDialog.findViewById(R.id.btn_cancel);
@@ -252,6 +218,8 @@ public class MarkerListActivity extends AppCompatActivity {
                 });
                 
                 btnCancelConfirm.setOnClickListener(d -> confirmDialog.dismiss());
+                
+                confirmDialog.show();
             });
 
             return convertView;
