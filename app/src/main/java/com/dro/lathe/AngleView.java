@@ -95,12 +95,12 @@ public class AngleView extends View {
         paintLabelText.setFakeBoldText(true);
 
         paintAngleArcZ = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintAngleArcZ.setColor(Color.parseColor("#00BCD4"));
+        paintAngleArcZ.setColor(ContextCompat.getColor(context, R.color.coord_z));
         paintAngleArcZ.setStrokeWidth(5);
         paintAngleArcZ.setStyle(Paint.Style.STROKE);
 
         paintAngleArcX = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintAngleArcX.setColor(Color.parseColor("#FF9800"));
+        paintAngleArcX.setColor(ContextCompat.getColor(context, R.color.coord_x));
         paintAngleArcX.setStrokeWidth(5);
         paintAngleArcX.setStyle(Paint.Style.STROKE);
     }

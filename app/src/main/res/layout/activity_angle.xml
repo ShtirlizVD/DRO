@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Угол Z"
-                    android:textColor="#00BCD4"
+                    android:textColor="@color/coord_z"
                     android:textSize="18sp" />
 
                 <TextView
@@ -106,7 +106,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingMultiplier="0.9"
                     android:text="—°"
-                    android:textColor="#00BCD4"
+                    android:textColor="@color/coord_z"
                     android:textSize="61sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Угол X"
-                    android:textColor="#FF9800"
+                    android:textColor="@color/coord_x"
                     android:textSize="18sp" />
 
                 <TextView
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="—°"
-                    android:textColor="#FF9800"
+                    android:textColor="@color/coord_x"
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
@@ -152,9 +152,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/start_point"
-                android:textColor="@color/coord_x"
+                android:textColor="@color/text_bright"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -192,7 +193,8 @@
                     android:layout_weight="1"
                     android:text="—"
                     android:textColor="@color/text_bright"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:gravity="end" />
             </LinearLayout>
 
             <Button
@@ -226,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Конус Z"
-                    android:textColor="#00BCD4"
+                    android:textColor="@color/coord_z"
                     android:textSize="18sp" />
 
                 <TextView
@@ -234,7 +236,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="—"
-                    android:textColor="#00BCD4"
+                    android:textColor="@color/coord_z"
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
@@ -253,7 +255,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Конус X"
-                    android:textColor="#FF9800"
+                    android:textColor="@color/coord_x"
                     android:textSize="18sp" />
 
                 <TextView
@@ -261,7 +263,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="—"
-                    android:textColor="#FF9800"
+                    android:textColor="@color/coord_x"
                     android:textSize="61sp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
