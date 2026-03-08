@@ -168,6 +168,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         findViewById(R.id.btn_add_marker).setOnClickListener(v -> showAddMarkerDialog());
         findViewById(R.id.btn_delete_marker).setOnClickListener(v -> deleteSelectedMarker());
 
+        findViewById(R.id.btn_ball).setOnClickListener(v ->
+                Toast.makeText(this, "Шар: в разработке", Toast.LENGTH_SHORT).show());
+
         findViewById(R.id.btn_thread).setOnClickListener(v ->
                 startActivity(new Intent(this, ThreadHelperActivity.class)));
 
@@ -777,6 +780,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private void loadMarkers() {
         String json = prefs.getString("markers", "[]");
         markers = MarkerListActivity.parseMarkers(json);
+        updateMarkerSpinner();
     }
 
     @Override
