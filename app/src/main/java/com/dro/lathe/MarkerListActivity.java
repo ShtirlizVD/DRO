@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowInsets;
@@ -103,9 +104,10 @@ public class MarkerListActivity extends AppCompatActivity {
     }
 
     private void showAddDialog() {
-        Dialog dialog = new Dialog(this);
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.dialog_marker);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();
 
         // Get views
@@ -188,9 +190,10 @@ public class MarkerListActivity extends AppCompatActivity {
             tvPosition.setText(String.format(Locale.US, "%.3f мм", m.getPosition()));
 
             btnDelete.setOnClickListener(v -> {
-                Dialog confirmDialog = new Dialog(getContext());
+                Dialog confirmDialog = new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar);
                 confirmDialog.setContentView(R.layout.dialog_confirm);
                 confirmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                confirmDialog.getWindow().setGravity(Gravity.CENTER);
                 
                 TextView tvConfirmName = confirmDialog.findViewById(R.id.tv_marker_name);
                 Button btnDeleteConfirm = confirmDialog.findViewById(R.id.btn_delete);

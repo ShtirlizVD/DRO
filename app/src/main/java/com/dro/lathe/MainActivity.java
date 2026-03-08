@@ -709,7 +709,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     private void loadMarkers() {
         String json = prefs.getString("markers", "[]");
-        markers = MarkerListActivity.parseMarkers(json);
+        List<Marker> loaded = MarkerListActivity.parseMarkers(json);
+        markers.clear();
+        markers.addAll(loaded);
     }
 
     @Override
