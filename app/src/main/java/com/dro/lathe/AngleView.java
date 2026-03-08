@@ -283,7 +283,7 @@ public class AngleView extends View {
                 if (triangleAbove) {
                     canvas.drawArc(arcRectZ, 180, (float) angleZ, false, paintAngleArcZ);
                 } else {
-                    canvas.drawArc(arcRectZ, -angleZ, (float) angleZ, false, paintAngleArcZ);
+                    canvas.drawArc(arcRectZ, -(float)angleZ, (float) angleZ, false, paintAngleArcZ);
                 }
             }
 
