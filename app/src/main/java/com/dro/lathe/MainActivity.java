@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -412,30 +411,33 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
 
     private void showToolPopup(View anchor) {
-        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_tools, null);
-        PopupWindow popupWindow = new PopupWindow(popupView,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                true);
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(R.layout.popup_tools);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        
+        android.view.WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+        lp.x = 16;
+        lp.y = 100;
+        dialog.getWindow().setAttributes(lp);
 
         int[] btnIds = {R.id.btn_tool_1, R.id.btn_tool_2, R.id.btn_tool_3, R.id.btn_tool_4};
         for (int i = 0; i < 4; i++) {
-            Button btn = popupView.findViewById(btnIds[i]);
+            Button btn = dialog.findViewById(btnIds[i]);
             btn.setSelected(i == currentTool);
             final int toolIndex = i;
             btn.setOnClickListener(v -> {
                 selectTool(toolIndex);
-                popupWindow.dismiss();
+                dialog.dismiss();
             });
             btn.setOnLongClickListener(v -> {
                 editToolOffset(toolIndex);
-                popupWindow.dismiss();
+                dialog.dismiss();
                 return true;
             });
         }
 
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.showAsDropDown(anchor, 0, -anchor.getHeight() - 200);
+        dialog.show();
     }
 
     private void editToolOffset(int index) {
