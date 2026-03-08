@@ -8,7 +8,7 @@
 
     <!-- Left Panel - compact -->
     <LinearLayout
-        android:layout_width="180dp"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
