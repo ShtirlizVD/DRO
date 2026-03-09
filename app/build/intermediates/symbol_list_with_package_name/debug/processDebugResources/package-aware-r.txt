@@ -127,6 +127,13 @@ attr buttonStyle
 attr buttonStyleSmall
 attr buttonTint
 attr buttonTintMode
+attr cardBackgroundColor
+attr cardCornerRadius
+attr cardElevation
+attr cardMaxElevation
+attr cardPreventCornerOverlap
+attr cardUseCompatPadding
+attr cardViewStyle
 attr carousel_backwardTransition
 attr carousel_emptyViewsBehavior
 attr carousel_firstView
@@ -184,6 +191,11 @@ attr contentInsetLeft
 attr contentInsetRight
 attr contentInsetStart
 attr contentInsetStartWithNavigation
+attr contentPadding
+attr contentPaddingBottom
+attr contentPaddingLeft
+attr contentPaddingRight
+attr contentPaddingTop
 attr contrast
 attr controlBackground
 attr coordinatorLayoutStyle
@@ -732,6 +744,10 @@ color button_bg_selected
 color button_border
 color button_material_dark
 color button_material_light
+color cardview_dark_background
+color cardview_light_background
+color cardview_shadow_end_color
+color cardview_shadow_start_color
 color coord_d
 color coord_disconnected
 color coord_l
@@ -887,6 +903,9 @@ dimen ambilwarna_hsvHeight
 dimen ambilwarna_hsvWidth
 dimen ambilwarna_hueWidth
 dimen ambilwarna_spacer
+dimen cardview_compat_inset_shadow
+dimen cardview_default_elevation
+dimen cardview_default_radius
 dimen compat_button_inset_horizontal_material
 dimen compat_button_inset_vertical_material
 dimen compat_button_padding_horizontal_material
@@ -1037,18 +1056,27 @@ drawable button_cancel
 drawable button_menu
 drawable button_ok
 drawable button_tool
+drawable button_tool_main
 drawable button_yellow
 drawable button_zero
+drawable button_zero_icon
+drawable clip_rounded
 drawable dialog_background
+drawable frame_normal
+drawable frame_pressed
+drawable frame_selector
 drawable ic_arrow_down_24dp
 drawable ic_diameter
+drawable ic_diameter2
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_length
 drawable ic_radius
 drawable ic_tool_1
 drawable ic_tool_2
 drawable ic_tool_3
 drawable ic_tool_4
+drawable ic_zero
 drawable input_field_background
 drawable notification_action_background
 drawable notification_bg
@@ -1716,6 +1744,7 @@ style Base_AlertDialog_AppCompat_Light
 style Base_Animation_AppCompat_Dialog
 style Base_Animation_AppCompat_DropDownUp
 style Base_Animation_AppCompat_Tooltip
+style Base_CardView
 style Base_DialogWindowTitle_AppCompat
 style Base_DialogWindowTitleBackground_AppCompat
 style Base_TextAppearance_AppCompat
@@ -1868,6 +1897,9 @@ style Base_Widget_AppCompat_TextView_SpinnerItem
 style Base_Widget_AppCompat_Toolbar
 style Base_Widget_AppCompat_Toolbar_Button_Navigation
 style BasePreferenceThemeOverlay
+style CardView
+style CardView_Dark
+style CardView_Light
 style CoordinateLabel
 style CoordinateMode
 style CoordinateValue
@@ -2118,6 +2150,7 @@ styleable AppCompatTheme android_windowIsFloating android_windowAnimationStyle a
 styleable BackgroundStyle android_selectableItemBackground selectableItemBackground
 styleable ButtonBarLayout allowStacking
 styleable Capability queryPatterns shortcutMatchRequired
+styleable CardView android_minWidth android_minHeight cardBackgroundColor cardCornerRadius cardElevation cardMaxElevation cardPreventCornerOverlap cardUseCompatPadding contentPadding contentPaddingBottom contentPaddingLeft contentPaddingRight contentPaddingTop
 styleable Carousel carousel_backwardTransition carousel_emptyViewsBehavior carousel_firstView carousel_forwardTransition carousel_infinite carousel_nextState carousel_previousState carousel_touchUpMode carousel_touchUp_dampeningFactor carousel_touchUp_velocityThreshold
 styleable CheckBoxPreference android_summaryOn android_summaryOff android_disableDependentsState disableDependentsState summaryOff summaryOn
 styleable CheckedTextView android_checkMark checkMarkCompat checkMarkTint checkMarkTintMode

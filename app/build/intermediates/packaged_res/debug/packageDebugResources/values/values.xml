@@ -134,7 +134,7 @@
         <item name="android:background">@drawable/button_tool</item>
     </style>
     <style name="ZeroButton">
-        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">100dp</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.dro.lathe.app-mergeDebugResources-30:/values-pl/values-pl.xml",
+            "outputFile": "com.dro.lathe.app-mergeDebugResources-31:/values-pl/values-pl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\igorvd\\.gradle\\caches\\8.13\\transforms\\9751129cf9a082d51cb0234e0f752002\\transformed\\appcompat-1.6.1\\res\\values-pl\\values-pl.xml",

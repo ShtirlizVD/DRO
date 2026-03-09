@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.dro.lathe.app-mergeDebugResources-30:/values-ms/values-ms.xml",
+            "outputFile": "com.dro.lathe.app-mergeDebugResources-31:/values-ms/values-ms.xml",
             "map": [
                 {
                     "source": "C:\\Users\\igorvd\\.gradle\\caches\\8.13\\transforms\\00eeb73d329f60914ee7cf1a9183d8d3\\transformed\\core-1.9.0\\res\\values-ms\\values-ms.xml",

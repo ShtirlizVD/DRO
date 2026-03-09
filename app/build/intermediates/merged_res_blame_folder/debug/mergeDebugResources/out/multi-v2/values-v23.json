@@ -1,8 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "com.dro.lathe.app-mergeDebugResources-30:/values-v23/values-v23.xml",
+            "outputFile": "com.dro.lathe.app-mergeDebugResources-31:/values-v23/values-v23.xml",
             "map": [
+                {
+                    "source": "C:\\Users\\igorvd\\.gradle\\caches\\8.13\\transforms\\b8b6d42c6730402ebe1ed69b252eb7e4\\transformed\\cardview-1.0.0\\res\\values-v23\\values-v23.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "200"
+                    },
+                    "to": {
+                        "startLines": "50",
+                        "startColumns": "4",
+                        "startOffsets": "3232",
+                        "endLines": "52",
+                        "endColumns": "12",
+                        "endOffsets": "3377"
+                    }
+                },
                 {
                     "source": "C:\\Users\\igorvd\\.gradle\\caches\\8.13\\transforms\\9751129cf9a082d51cb0234e0f752002\\transformed\\appcompat-1.6.1\\res\\values-v23\\values-v23.xml",
                     "from": {
