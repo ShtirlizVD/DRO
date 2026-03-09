@@ -8,7 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.ToneGenerator;
 import android.os.Build;
@@ -193,6 +199,77 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         });
 
         applyColors();
+
+        // Setup rounded button icons programmatically (works on all devices)
+        setupRoundedButton(findViewById(R.id.btn_zero_x), R.drawable.ic_zero);
+        setupRoundedButton(findViewById(R.id.btn_zero_z), R.drawable.ic_zero);
+        setupRoundedButton(findViewById(R.id.btn_set_d), R.drawable.ic_diameter);
+        setupRoundedButton(findViewById(R.id.btn_set_l), R.drawable.ic_length);
+    }
+
+    private void setupRoundedButton(View cardView, int imageResId) {
+        if (cardView == null) return;
+
+        // Find ImageView inside CardView
+        ImageView imageView = null;
+        if (cardView instanceof android.view.ViewGroup) {
+            android.view.ViewGroup vg = (android.view.ViewGroup) cardView;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                if (vg.getChildAt(i) instanceof ImageView) {
+                    imageView = (ImageView) vg.getChildAt(i);
+                    break;
+                }
+            }
+        }
+
+        if (imageView == null) return;
+
+        // Get dimensions
+        int width = dpToPx(100);
+        int height = dpToPx(100);
+        float radius = dpToPx(12);
+
+        // Create rounded bitmap
+        Bitmap roundedBitmap = createRoundedBitmap(imageResId, width, height, radius);
+        if (roundedBitmap != null) {
+            imageView.setImageBitmap(roundedBitmap);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+    }
+
+    private Bitmap createRoundedBitmap(int resId, int width, int height, float cornerRadius) {
+        try {
+            // Load original bitmap
+            android.graphics.drawable.Drawable drawable = getResources().getDrawable(resId);
+            Bitmap original = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(original);
+            drawable.setBounds(0, 0, width, height);
+            drawable.draw(canvas);
+
+            // Create rounded result
+            Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas resultCanvas = new Canvas(result);
+
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setFilterBitmap(true);
+
+            Path path = new Path();
+            RectF rect = new RectF(0, 0, width, height);
+            path.addRoundRect(rect, cornerRadius, cornerRadius, Path.Direction.CW);
+
+            resultCanvas.clipPath(path);
+            resultCanvas.drawBitmap(original, 0, 0, paint);
+
+            original.recycle();
+            return result;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
     }
 
     private void setupDoubleTap(View view, Runnable action) {
