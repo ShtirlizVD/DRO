@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         // Setup rounded button icons programmatically (works on all devices)
         setupRoundedButton(findViewById(R.id.btn_zero_x), R.drawable.ic_zero);
         setupRoundedButton(findViewById(R.id.btn_zero_z), R.drawable.ic_zero);
-        setupRoundedButton(findViewById(R.id.btn_set_d), R.drawable.ic_diameter);
+        setupRoundedButton(findViewById(R.id.btn_set_d), R.drawable.ic_diameter2);
         setupRoundedButton(findViewById(R.id.btn_set_l), R.drawable.ic_length);
     }
 
